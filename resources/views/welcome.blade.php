@@ -30,7 +30,7 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(15, 5, 25, 0.4) 40%, rgba(45, 27, 78, 0.4) 75%, rgba(139, 92, 246, 0.3) 100%) !important;
+        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 29, 61, 0.4) 40%, rgba(3, 79, 132, 0.4) 75%, rgba(0, 180, 216, 0.3) 100%) !important;
         backdrop-filter: blur(5px) !important;
         -webkit-backdrop-filter: blur(5px) !important;
         justify-content: center !important;
@@ -76,7 +76,7 @@
     }
 
     #loginModal .modal-header {
-        background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         padding: 20px !important;
         border-radius: 16px 16px 0 0 !important;
@@ -150,7 +150,7 @@
     #registerModal .form-group input:focus,
     #registerModal .form-group select:focus {
         outline: none !important;
-        border-color: #8b5cf6 !important;
+        border-color: #00b4d8 !important;
         box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
     }
 
@@ -182,11 +182,11 @@
 
     #loginModal .checkbox-group input[type="checkbox"]:checked {
         background-color: #8b5cf6 !important;
-        border-color: #8b5cf6 !important;
+        border-color: #00b4d8 !important;
     }
 
     #loginModal .forgot-link {
-        color: #8b5cf6 !important;
+        color: #00b4d8 !important;
         text-decoration: none !important;
         font-size: 0.9rem !important;
         font-weight: 500 !important;
@@ -207,7 +207,7 @@
 
     #loginModal .login-submit-btn {
         width: 100% !important;
-        background: linear-gradient(120deg, #0f0519 0%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         border: none !important;
         padding: 12px !important;
@@ -231,7 +231,7 @@
     }
 
     #loginModal .register-link a {
-        color: #8b5cf6 !important;
+        color: #00b4d8 !important;
         text-decoration: none !important;
         font-weight: 600 !important;
         transition: all 0.2s ease !important;
@@ -244,7 +244,7 @@
     #registerModal .register-link a:hover {
         text-decoration: none !important;
         background-color: rgba(139, 92, 246, 0.1) !important;
-        border-color: #8b5cf6 !important;
+        border-color: #00b4d8 !important;
         color: #7c3aed !important;
     }
 
@@ -256,7 +256,7 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(15, 5, 25, 0.4) 40%, rgba(45, 27, 78, 0.4) 75%, rgba(139, 92, 246, 0.3) 100%) !important;
+        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 29, 61, 0.4) 40%, rgba(3, 79, 132, 0.4) 75%, rgba(0, 180, 216, 0.3) 100%) !important;
         backdrop-filter: blur(5px) !important;
         -webkit-backdrop-filter: blur(5px) !important;
         display: flex !important;
@@ -279,7 +279,7 @@
 
     #futureDevModal .modal-header,
     #marketplaceModal .modal-header {
-        background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         padding: 20px !important;
         border-radius: 16px 16px 0 0 !important;
@@ -328,7 +328,7 @@
     #futureDevModal .login-submit-btn,
     #marketplaceModal .login-submit-btn {
         width: 100% !important;
-        background: linear-gradient(120deg, #0f0519 0%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         border: none !important;
         padding: 12px !important;
@@ -351,7 +351,7 @@
         left: 0 !important;
         width: 100% !important;
         height: 100% !important;
-        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(15, 5, 25, 0.4) 40%, rgba(45, 27, 78, 0.4) 75%, rgba(139, 92, 246, 0.3) 100%) !important;
+        background: linear-gradient(120deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 29, 61, 0.4) 40%, rgba(3, 79, 132, 0.4) 75%, rgba(0, 180, 216, 0.3) 100%) !important;
         backdrop-filter: blur(5px) !important;
         -webkit-backdrop-filter: blur(5px) !important;
         justify-content: center !important;
@@ -371,7 +371,7 @@
     }
 
     #registerModal .modal-header {
-        background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         padding: 20px !important;
         border-radius: 16px 16px 0 0 !important;
@@ -425,7 +425,7 @@
 
     #registerModal .login-submit-btn {
         width: 100% !important;
-        background: linear-gradient(120deg, #0f0519 0%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+        background: linear-gradient(120deg, #001d3d 0%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
         color: white !important;
         border: none !important;
         padding: 12px !important;
@@ -449,7 +449,7 @@
     }
 
     #registerModal .register-link a {
-        color: #8b5cf6 !important;
+        color: #00b4d8 !important;
         text-decoration: none !important;
         font-weight: 600 !important;
         transition: all 0.2s ease !important;
@@ -850,9 +850,8 @@
             </div>
             <div class="nav-menu">
                 <a href="#" class="nav-link">HOME</a>
-                <a href="#" class="nav-link">COURSES</a>
-                <a href="#" class="nav-link" id="marketplaceBtn">MARKETPLACE</a>
-                <a href="#" class="nav-link" id="pricingBtn">PRICING</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+                <a href="#features" class="nav-link">FEATURES</a>
                 <button class="login-btn nav-auth-btn" id="loginBtn">
                     <i class="fas fa-user"></i>
                     Login
@@ -951,8 +950,72 @@
         </div>
     </section>
 
+    <!-- About Section -->
+    <section id="about" class="about" style="padding: 80px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 20px;">About Our Platform</h2>
+                <p style="font-size: 1.1rem; color: #64748b; max-width: 600px; margin: 0 auto;">Empowering education through innovative technology and comprehensive learning management solutions</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto;">
+                <div>
+                    <h3 style="font-size: 2rem; font-weight: 600; color: #0f172a; margin-bottom: 24px;">Transform Your Learning Experience</h3>
+                    <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 20px;">
+                        Our Learning Management System prototype represents the future of digital education. Built with cutting-edge technology and designed with user experience at its core, we provide a comprehensive platform for educators and learners alike.
+                    </p>
+                    <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 30px;">
+                        From course creation and management to progress tracking and certification, our platform streamlines the entire educational workflow while maintaining the highest standards of user engagement and learning effectiveness.
+                    </p>
+                    <div style="display: flex; gap: 30px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">10K+</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Active Users</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">500+</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Courses Available</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">98%</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Satisfaction Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 119, 182, 0.2);">
+                        <h4 style="color: white; font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Why Choose Our Platform?</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
+                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                Multi-role dashboard system
+                            </li>
+                            <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
+                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                Advanced progress tracking
+                            </li>
+                            <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
+                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                Two-way communication system
+                            </li>
+                            <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
+                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                Certificate generation
+                            </li>
+                            <li style="color: rgba(255,255,255,0.9); display: flex; align-items: center;">
+                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                Modern, responsive design
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
-    <section class="features">
+    <section id="features" class="features">
         <div class="container">
             <div class="section-header">
                 <h2>Powerful Features for Modern Learning</h2>
@@ -960,7 +1023,7 @@
             </div>
             
             <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up" style="background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
+                <div class="feature-card" data-aos="fade-up" style="background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important; border: 1px solid rgba(0, 180, 216, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
                     <div class="feature-icon" style="background: rgba(255, 255, 255, 0.2) !important; color: white !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.6rem !important; margin-bottom: 0.875rem !important; border: 2px solid rgba(255, 255, 255, 0.3) !important; backdrop-filter: blur(10px) !important;">
                         <i class="fas fa-users-cog"></i>
                     </div>
@@ -1017,14 +1080,15 @@
                 </div>
                 <div class="footer-links">
                     <div class="link-group">
-                        <h4>Platform</h4>
-                        <a href="#" id="footerFeaturesBtn">Features</a>
-                        <a href="#" id="footerCoursesBtn">Courses</a>
+                        <h4>Navigation</h4>
+                        <a href="#" onclick="scrollToTop()">Home</a>
+                        <a href="#about">About</a>
+                        <a href="#features">Features</a>
                     </div>
                     <div class="link-group">
-                        <h4>Services</h4>
-                        <a href="#" id="footerMarketplaceBtn">Marketplace</a>
-                        <a href="#" id="footerPricingBtn">Pricing</a>
+                        <h4>Platform</h4>
+                        <a href="#" onclick="document.getElementById('loginBtn').click()">Login</a>
+                        <a href="#about">Learn More</a>
                     </div>
                 </div>
             </div>

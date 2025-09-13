@@ -1,14 +1,14 @@
 /* Base Variables CSS: assets/css/base/variables.css */
 
 :root {
-    /* Color Gradients */
-    --ultra-deep-purple: linear-gradient(120deg, #000000 0%, #0a0214 20%, #0f0519 40%, #1a0b2e 60%, #2d1b4e 75%, #4c1d95 85%, #6d28d9 92%, #8b5cf6 100%);
-    --royal-purple: linear-gradient(135deg, #0f051a 0%, #1a0926 20%, #2e0f38 40%, #430d4b 60%, #5b21b6 80%, #7c3aed 100%);
-    --electric-purple: linear-gradient(135deg, #210b32 0%, #3a2081 25%, #4a1d78 50%, #7b337d 75%, #c874b2 100%);
-    --neon-accent: linear-gradient(135deg, #ff006e 0%, #fb8500 50%, #ffbe0b 100%);
-    --cosmic-gradient: linear-gradient(135deg, #120348 0%, #210535 20%, #430d4b 40%, #7b337d 60%, #c874b2 80%, #f5d5e0 100%);
-    --matrix-purple: linear-gradient(45deg, #0f051a 0%, #210b32 25%, #3a2081 50%, #5b21b6 75%, #8b5cf6 100%);
-    --lighter-purple: linear-gradient(135deg, #3a2081 0%, #5b21b6 30%, #7b337d 60%, #8b5cf6 80%, #a78bfa 100%);
+    /* Color Gradients - Blue Corporate Theme */
+    --ultra-deep-blue: linear-gradient(120deg, #000814 0%, #001d3d 20%, #003566 40%, #0077b6 60%, #0096c7 75%, #00b4d8 85%, #48cae4 92%, #90e0ef 100%);
+    --royal-blue: linear-gradient(135deg, #001d3d 0%, #003566 20%, #034f84 40%, #0077b6 60%, #0096c7 80%, #00b4d8 100%);
+    --electric-blue: linear-gradient(135deg, #002855 0%, #003f88 25%, #0066cc 50%, #338fff 75%, #66b3ff 100%);
+    --neon-accent: linear-gradient(135deg, #0077b6 0%, #00b4d8 50%, #48cae4 100%);
+    --cosmic-gradient: linear-gradient(135deg, #001d3d 0%, #003566 20%, #034f84 40%, #0077b6 60%, #48cae4 80%, #caf0f8 100%);
+    --matrix-blue: linear-gradient(45deg, #001d3d 0%, #003566 25%, #0077b6 50%, #00b4d8 75%, #48cae4 100%);
+    --lighter-blue: linear-gradient(135deg, #0077b6 0%, #00b4d8 30%, #48cae4 60%, #90e0ef 80%, #caf0f8 100%);
     
     /* Text Colors */
     --text-primary: #2d3748;
