@@ -18,6 +18,7 @@ Route::prefix('api/admin')->name('admin.api.')->middleware(['auth', 'super_admin
     // Dashboard
     Route::get('/dashboard-stats', [AdminApiController::class, 'getDashboardStats'])->name('dashboard.stats');
     Route::get('/user-growth-chart', [AdminApiController::class, 'getUserGrowthChart'])->name('user.growth.chart');
+    Route::get('/course-growth-chart', [AdminApiController::class, 'getCourseGrowthChart'])->name('course.growth.chart');
     Route::get('/revenue-chart', [AdminApiController::class, 'getRevenueChart'])->name('revenue.chart');
     
     // User Management

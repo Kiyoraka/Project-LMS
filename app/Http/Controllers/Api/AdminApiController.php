@@ -150,14 +150,24 @@ class AdminApiController extends Controller
         // Sort all activities by timestamp and take the 5 most recent
         $recentActivities = $recentActivities->sortByDesc('timestamp')->take(5)->values();
 
+        // Teacher statistics
+        $totalTeachers = User::where('role', 'teacher')->count();
+        $newTeachersLastMonth = User::where('role', 'teacher')
+            ->whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])->count();
+        $newTeachersThisMonth = User::where('role', 'teacher')
+            ->where('created_at', '>=', $currentMonthStart)->count();
+        $teacherGrowth = $newTeachersLastMonth > 0
+            ? round(($newTeachersThisMonth - $newTeachersLastMonth) / $newTeachersLastMonth * 100, 1)
+            : 100;
+
         // Main statistics for dashboard cards
         $mainStats = [
             'totalUsers' => $totalUsers,
             'userGrowth' => $userGrowth,
             'activeCourses' => $activeCourses,
             'courseGrowth' => $courseGrowth,
-            'monthlyRevenue' => $revenueThisMonth,
-            'revenueGrowth' => $revenueGrowth,
+            'totalTeachers' => $totalTeachers,
+            'teacherGrowth' => $teacherGrowth,
             'newEnrollments' => $newEnrollmentsThisMonth,
             'enrollmentGrowth' => $enrollmentGrowth
         ];
@@ -320,6 +330,68 @@ class AdminApiController extends Controller
                 ], 400);
         }
         
+        return response()->json([
+            'labels' => $labels,
+            'data' => $result
+        ]);
+    }
+
+    /**
+     * Get course growth chart data.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCourseGrowthChart(Request $request): JsonResponse
+    {
+        $period = $request->input('period', 'month');
+        $result = [];
+        $labels = [];
+
+        switch ($period) {
+            case 'week':
+                // Last 7 days
+                $startDate = now()->subDays(6)->startOfDay();
+                for ($i = 0; $i < 7; $i++) {
+                    $date = clone $startDate;
+                    $date->addDays($i);
+                    $labels[] = $date->format('D');
+                    $result[] = \App\Models\Course::whereDate('created_at', $date->toDateString())->count();
+                }
+                break;
+
+            case 'month':
+                // Last 30 days grouped by week
+                $startDate = now()->subDays(29)->startOfDay();
+                for ($i = 0; $i < 4; $i++) {
+                    $weekStart = clone $startDate;
+                    $weekStart->addDays($i * 7);
+                    $weekEnd = clone $weekStart;
+                    $weekEnd->addDays(6);
+                    $labels[] = $weekStart->format('M d') . ' - ' . $weekEnd->format('M d');
+                    $result[] = \App\Models\Course::whereBetween('created_at', [$weekStart, $weekEnd])->count();
+                }
+                break;
+
+            case 'year':
+                // Last 12 months
+                $startDate = now()->subMonths(11)->startOfMonth();
+                for ($i = 0; $i < 12; $i++) {
+                    $date = clone $startDate;
+                    $date->addMonths($i);
+                    $labels[] = $date->format('M');
+                    $nextMonth = clone $date;
+                    $nextMonth->addMonth();
+                    $result[] = \App\Models\Course::whereBetween('created_at', [$date, $nextMonth->subSecond()])->count();
+                }
+                break;
+
+            default:
+                return response()->json([
+                    'error' => 'Invalid period. Use week, month, or year.'
+                ], 400);
+        }
+
         return response()->json([
             'labels' => $labels,
             'data' => $result
