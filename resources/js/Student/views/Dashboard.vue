@@ -640,19 +640,19 @@ export default {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -763,7 +763,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #6a5acd;
+  color: #0077b6;
 }
 
 .course-content {
@@ -806,7 +806,7 @@ export default {
 }
 
 .progress-fill.bg-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
 }
 
 .progress-fill.bg-success {
@@ -888,7 +888,7 @@ export default {
 }
 
 .activity-icon.bg-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
 }
 
 .activity-icon.bg-secondary {
@@ -935,8 +935,8 @@ export default {
 
 /* Button Styling */
 .btn-primary {
-  background-color: #6a5acd;
-  border-color: #6a5acd;
+  background-color: #0077b6;
+  border-color: #0077b6;
   border-radius: 8px;
   padding: 8px 16px;
   font-weight: 500;
@@ -944,20 +944,20 @@ export default {
 }
 
 .btn-primary:hover {
-  background-color: #5a4ac7;
-  border-color: #5a4ac7;
+  background-color: #001d3d;
+  border-color: #001d3d;
 }
 
 .btn-outline-primary {
-  color: #6a5acd;
-  border-color: #6a5acd;
+  color: #0077b6;
+  border-color: #0077b6;
   border-radius: 8px;
   padding: 8px 16px;
   font-weight: 500;
 }
 
 .btn-outline-primary:hover {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
 }
 
@@ -978,7 +978,7 @@ export default {
 }
 
 .badge.bg-primary {
-  background-color: #6a5acd !important;
+  background-color: #0077b6 !important;
 }
 
 /* Responsive Design */
@@ -1055,7 +1055,7 @@ export default {
   align-items: center;
   gap: 16px;
   padding: 24px;
-  background: linear-gradient(135deg, #f59f0b 0%, #ffbc3e 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%);
   color: white;
   position: relative;
 }

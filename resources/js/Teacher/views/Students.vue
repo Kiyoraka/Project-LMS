@@ -670,7 +670,7 @@ onUnmounted(() => {
 
 /* Header Section */
 .students-page-header {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -714,19 +714,19 @@ onUnmounted(() => {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -814,8 +814,8 @@ onUnmounted(() => {
 
 .search-input:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-box i {
@@ -874,8 +874,8 @@ onUnmounted(() => {
 
 .form-select:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 /* Error and Loading States */
@@ -1090,7 +1090,7 @@ onUnmounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3f66ff, #4d85f5);
+  background: linear-gradient(90deg, #001d3d, #0077b6);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -1098,7 +1098,7 @@ onUnmounted(() => {
 .progress-percentage {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #4d85f5;
+  color: #0077b6;
   min-width: 45px;
   text-align: right;
 }
@@ -1118,14 +1118,14 @@ onUnmounted(() => {
 }
 
 .btn-primary {
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
-  box-shadow: 0 2px 5px rgba(77, 133, 245, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 119, 182, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #3b66cc;
-  box-shadow: 0 4px 8px rgba(77, 133, 245, 0.4);
+  background-color: #001d3d;
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.4);
 }
 
 .btn-secondary {
@@ -1313,12 +1313,12 @@ onUnmounted(() => {
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   border-radius: 50%;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 2px 4px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 119, 182, 0.3);
 }
 
 .course-text {
@@ -1380,7 +1380,7 @@ onUnmounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981, #059669);
+  background: linear-gradient(90deg, #001d3d, #0077b6);
   border-radius: 3px;
   transition: width 0.3s ease;
 }
@@ -1581,8 +1581,8 @@ onUnmounted(() => {
 }
 
 .page-btn.active {
-  background-color: #4d85f5;
-  border-color: #4d85f5;
+  background-color: #0077b6;
+  border-color: #0077b6;
   color: white;
 }
 
@@ -1831,7 +1831,7 @@ onUnmounted(() => {
 .stat-item .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #4d85f5;
+  color: #0077b6;
   margin-bottom: 4px;
   display: block;
 }

@@ -800,7 +800,7 @@ onMounted(() => {
 
 /* Header Section */
 .courses-header {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -844,19 +844,19 @@ onMounted(() => {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .stat-icon {
@@ -944,7 +944,7 @@ onMounted(() => {
 
 .search-input:focus {
   outline: none;
-  border-color: #4d85f5;
+  border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
 }
 
@@ -981,13 +981,13 @@ onMounted(() => {
 }
 
 .nav-link:hover {
-  color: #4d85f5;
+  color: #0077b6;
   background-color: rgba(77, 133, 245, 0.05);
 }
 
 .nav-link.active {
-  color: #4d85f5;
-  border-bottom: 3px solid #4d85f5;
+  color: #0077b6;
+  border-bottom: 3px solid #0077b6;
   font-weight: 600;
 }
 
@@ -1035,7 +1035,7 @@ onMounted(() => {
   position: absolute;
   top: 15px;
   left: 15px;
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
   font-size: 0.75rem;
   font-weight: 500;
@@ -1107,7 +1107,7 @@ onMounted(() => {
 }
 
 .meta-item i {
-  color: #4d85f5;
+  color: #0077b6;
   margin-right: 5px;
 }
 
@@ -1123,7 +1123,7 @@ onMounted(() => {
 
 .progress-value {
   font-size: 0.85rem;
-  color: #4d85f5;
+  color: #0077b6;
   font-weight: 600;
 }
 
@@ -1136,7 +1136,7 @@ onMounted(() => {
 
 .progress-fill {
   height: 100%;
-  background-color: #4d85f5;
+  background-color: #0077b6;
   border-radius: 3px;
 }
 
@@ -1162,24 +1162,24 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
   box-shadow: 0 2px 5px rgba(77, 133, 245, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #3b66cc;
+  background-color: #001d3d;
   box-shadow: 0 4px 8px rgba(77, 133, 245, 0.4);
 }
 
 .btn-outline-primary {
-  border: 1px solid #4d85f5;
-  color: #4d85f5;
+  border: 1px solid #0077b6;
+  color: #0077b6;
   background-color: transparent;
 }
 
 .btn-outline-primary:hover {
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
 }
 
@@ -1433,7 +1433,7 @@ onMounted(() => {
 }
 
 .text-primary {
-  color: #4d85f5;
+  color: #0077b6;
 }
 
 .btn-sm {
@@ -1557,7 +1557,7 @@ onMounted(() => {
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #4d85f5;
+  border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
 }
 

@@ -420,7 +420,7 @@ export default {
 /* Sidebar Styles */
 .sidebar {
   width: 280px;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   transition: all 0.3s ease;
   display: flex;
@@ -542,7 +542,7 @@ export default {
   height: 32px;
   border-radius: 50%;
   margin-right: 8px;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -596,7 +596,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(to right, #6a5acd, #8a6ccf);
+  background: linear-gradient(to right, #001d3d, #0077b6);
   color: white;
 }
 
@@ -659,8 +659,8 @@ export default {
 
 .dropdown-item:hover {
   background-color: #f3f4f6;
-  border-left-color: #6a5acd;
-  color: #6a5acd;
+  border-left-color: #0077b6;
+  color: #0077b6;
 }
 
 .dropdown-item i {
@@ -782,7 +782,7 @@ export default {
 
 /* Mobile Header */
 .mobile-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 12px 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -945,7 +945,7 @@ export default {
 }
 
 .mobile-nav-item.router-link-active {
-  color: #6a5acd;
+  color: #0077b6;
   font-weight: 600;
 }
 
@@ -1005,7 +1005,7 @@ export default {
 }
 
 .mobile-profile-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 20px;
   border-radius: 12px 12px 0 0;
@@ -1082,7 +1082,7 @@ export default {
 
 .mobile-profile-action:hover {
   background-color: #f7fafc;
-  color: #6a5acd;
+  color: #0077b6;
 }
 
 .mobile-profile-action.logout:hover {

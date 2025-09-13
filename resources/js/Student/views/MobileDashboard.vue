@@ -470,7 +470,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   position: sticky;
   top: 0;
@@ -540,7 +540,7 @@ export default {
 
 .mobile-menu-header {
   padding: 20px;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   display: flex;
   align-items: center;
@@ -586,8 +586,8 @@ export default {
 .mobile-nav-item:hover,
 .mobile-nav-item.router-link-active {
   background-color: #f3f4f6;
-  border-left-color: #6a5acd;
-  color: #6a5acd;
+  border-left-color: #0077b6;
+  color: #0077b6;
 }
 
 .mobile-nav-item i {
@@ -659,19 +659,19 @@ export default {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -724,7 +724,7 @@ export default {
 }
 
 .view-all-link {
-  color: #6a5acd;
+  color: #0077b6;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -735,7 +735,7 @@ export default {
 }
 
 .view-all-btn {
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -747,7 +747,7 @@ export default {
 }
 
 .view-all-btn:hover {
-  background-color: #5a4abd;
+  background-color: #001d3d;
 }
 
 /* My Courses Section */
@@ -782,7 +782,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #6a5acd;
+  color: #0077b6;
 }
 
 .course-content {
@@ -804,7 +804,7 @@ export default {
 }
 
 .course-level {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   padding: 2px 8px;
   border-radius: 12px;
@@ -838,7 +838,7 @@ export default {
 }
 
 .progress-fill.bg-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
 }
 
 .progress-fill.bg-success {
@@ -859,7 +859,7 @@ export default {
   display: block;
   width: 100%;
   padding: 8px 16px;
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   text-decoration: none;
   border-radius: 6px;
@@ -869,7 +869,7 @@ export default {
 }
 
 .mobile-course-btn:hover {
-  background-color: #5a4abd;
+  background-color: #001d3d;
 }
 
 .empty-courses {
@@ -890,7 +890,7 @@ export default {
   display: inline-block;
   margin-top: 12px;
   padding: 8px 16px;
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   text-decoration: none;
   border-radius: 6px;
@@ -937,7 +937,7 @@ export default {
 }
 
 .activity-icon.bg-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
 }
 
 .activity-icon.bg-secondary {
@@ -957,7 +957,7 @@ export default {
 
 .activity-course {
   font-size: 0.75rem;
-  color: #6a5acd;
+  color: #0077b6;
   font-weight: 500;
   margin-bottom: 2px;
 }
@@ -1068,7 +1068,7 @@ export default {
   width: 32px;
   height: 32px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #6a5acd;
+  border-top: 3px solid #0077b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -1086,7 +1086,7 @@ export default {
 }
 
 .retry-btn {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -1098,7 +1098,7 @@ export default {
 }
 
 .retry-btn:active {
-  background-color: #5a4abd;
+  background-color: #001d3d;
 }
 
 /* Achievement Modal */
@@ -1143,7 +1143,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background: linear-gradient(135deg, #f59f0b, #ff8c00);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
 }
 
@@ -1170,7 +1170,7 @@ export default {
 .achievement-progress {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #6a5acd;
+  color: #0077b6;
 }
 
 .achievements-list {
@@ -1194,8 +1194,8 @@ export default {
 }
 
 .achievement-item.achieved {
-  background: linear-gradient(135deg, #fff3cd, #fff8e1);
-  border-color: #f59f0b;
+  background: linear-gradient(135deg, #e6f3ff, #f0f8ff);
+  border-color: #0077b6;
 }
 
 .achievement-item .achievement-icon {
@@ -1215,7 +1215,7 @@ export default {
 }
 
 .achievement-item.achieved .achievement-icon {
-  background: linear-gradient(135deg, #f59f0b, #ff8c00);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
 }
 

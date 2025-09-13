@@ -990,7 +990,7 @@ export default {
 
 /* Header Section */
 .messages-page-header {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -1053,19 +1053,19 @@ export default {
 }
 
 .stat-card.bg-blue {
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .stat-card.bg-green {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .stat-card.bg-orange {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .stat-card.bg-purple {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -1153,8 +1153,8 @@ export default {
 
 .search-input:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-icon {
@@ -1190,13 +1190,13 @@ export default {
 }
 
 .tab-btn:hover {
-  color: #4d85f5;
-  background-color: rgba(77, 133, 245, 0.05);
+  color: #0077b6;
+  background-color: rgba(0, 119, 182, 0.05);
 }
 
 .tab-btn.active {
-  color: #4d85f5;
-  border-bottom: 3px solid #4d85f5;
+  color: #0077b6;
+  border-bottom: 3px solid #0077b6;
   font-weight: 600;
 }
 
@@ -1250,8 +1250,8 @@ export default {
 
 .filter-select:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 /* Messages Grid */
@@ -1292,7 +1292,7 @@ export default {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   display: flex;
   align-items: center;
@@ -1374,7 +1374,7 @@ export default {
 }
 
 .meta-item i {
-  color: #4d85f5;
+  color: #0077b6;
   margin-right: 5px;
 }
 
@@ -1417,14 +1417,14 @@ export default {
 }
 
 .btn-primary {
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
-  box-shadow: 0 2px 5px rgba(77, 133, 245, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 119, 182, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #3b66cc;
-  box-shadow: 0 4px 8px rgba(77, 133, 245, 0.4);
+  background-color: #001d3d;
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.4);
 }
 
 .btn-primary:disabled {
@@ -1495,8 +1495,8 @@ export default {
 
 .form-control:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .bulk-message-info {
@@ -1530,8 +1530,8 @@ export default {
 
 .form-select:focus {
   outline: none;
-  border-color: #4d85f5;
-  box-shadow: 0 0 0 3px rgba(77, 133, 245, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .form-actions {
@@ -1557,7 +1557,7 @@ export default {
     width: 40px;
     height: 40px;
   border: 4px solid #f3f4f6;
-  border-top: 4px solid #4d85f5;
+  border-top: 4px solid #0077b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -1841,7 +1841,7 @@ export default {
 }
 
 .text-primary {
-  color: #4d85f5;
+  color: #0077b6;
 }
 
 /* Animation for spinner */
@@ -1937,7 +1937,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #3f66ff, #4d85f5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
 }
 
@@ -1978,7 +1978,7 @@ export default {
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 20px;
-  border-left: 4px solid #4d85f5;
+  border-left: 4px solid #0077b6;
 }
 
 .info-row {
@@ -2042,12 +2042,12 @@ export default {
 
 .btn-outline-primary {
   background-color: transparent;
-  color: #4d85f5;
-  border: 1px solid #4d85f5;
+  color: #0077b6;
+  border: 1px solid #0077b6;
 }
 
 .btn-outline-primary:hover {
-  background-color: #4d85f5;
+  background-color: #0077b6;
   color: white;
 }
 
