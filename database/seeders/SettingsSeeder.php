@@ -13,7 +13,7 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         // General settings
-        Setting::set('general', 'siteName', 'Aidel Learning Management System', 'The name of the site');
+        Setting::set('general', 'siteName', 'Learning Management System Prototype', 'The name of the site');
         Setting::set('general', 'site_description', 'Advanced Learning Management System', 'The site description');
         Setting::set('general', 'timezone', 'UTC', 'Default timezone for the system');
         Setting::set('general', 'dateFormat', 'MM/DD/YYYY', 'Default date format for the system');
@@ -23,19 +23,19 @@ class SettingsSeeder extends Seeder
         Setting::set('general', 'faviconPath', '', 'Path to the uploaded favicon');
         Setting::set('general', 'allow_registrations', true, 'Allow new user registrations');
         Setting::set('general', 'default_role', 'student', 'Default role for new registrations');
-        Setting::set('general', 'admin_email', 'admin@aidel.com', 'System administrator email');
+        Setting::set('general', 'admin_email', 'admin@demo.com', 'System administrator email');
         
         // Appearance settings
         Setting::set('appearance', 'theme', 'default', 'The active theme');
-        Setting::set('appearance', 'primary_color', '#7c3aed', 'Primary brand color');
-        Setting::set('appearance', 'secondary_color', '#6366f1', 'Secondary brand color');
+        Setting::set('appearance', 'primary_color', '#3b82f6', 'Primary brand color');
+        Setting::set('appearance', 'secondary_color', '#1d4ed8', 'Secondary brand color');
         Setting::set('appearance', 'logo_path', '/assets/images/logo.svg', 'Path to the site logo');
         Setting::set('appearance', 'favicon_path', '/favicon.ico', 'Path to the favicon');
         Setting::set('appearance', 'show_footer', true, 'Whether to show the footer');
         
         // Email settings
-        Setting::set('email', 'from_address', 'noreply@aidel.com', 'Email address for outgoing emails');
-        Setting::set('email', 'from_name', 'Aidel LMS', 'Name for outgoing emails');
+        Setting::set('email', 'from_address', 'noreply@demo.com', 'Email address for outgoing emails');
+        Setting::set('email', 'from_name', 'LMS Prototype', 'Name for outgoing emails');
         Setting::set('email', 'notification_new_user', true, 'Send notification on new user registration');
         Setting::set('email', 'notification_new_course', true, 'Send notification on new course creation');
         Setting::set('email', 'notification_course_completion', true, 'Send notification on course completion');

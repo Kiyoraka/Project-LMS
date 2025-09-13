@@ -4,7 +4,7 @@ import axios from 'axios';
 // Global reactive state for site settings
 const siteSettings = ref({
   general: {
-    siteName: 'Aidel LMS',
+    siteName: 'LMS Prototype',
     logoPath: '',
     faviconPath: ''
   }
@@ -14,7 +14,7 @@ const isLoading = ref(false);
 
 export function useSiteSettings() {
   // Computed properties for easy access
-  const siteName = computed(() => siteSettings.value.general?.siteName || 'Aidel LMS');
+  const siteName = computed(() => siteSettings.value.general?.siteName || 'LMS Prototype');
   const logoUrl = computed(() => {
     const path = siteSettings.value.general?.logoPath;
     if (!path) return '/assets/images/logo.svg'; // fallback

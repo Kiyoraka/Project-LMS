@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Aidel LMS Deployment Script
+# LMS Prototype Deployment Script
 # Usage: ./deploy.sh [environment]
 # Example: ./deploy.sh production
 
 set -e
 
 ENVIRONMENT=${1:-production}
-APP_NAME="aidel-lms"
+APP_NAME="lms-prototype"
 BACKUP_DIR="/var/backups/$APP_NAME"
 WEB_ROOT="/var/www/html"
 
@@ -64,7 +64,7 @@ sudo systemctl reload nginx
 sudo systemctl reload php8.2-fpm
 
 # Restart queue workers if they exist
-if sudo systemctl is-active --quiet aidel-queue; then
+if sudo systemctl is-active --quiet lms-queue; then
     sudo -u www-data php artisan queue:restart
 fi
 

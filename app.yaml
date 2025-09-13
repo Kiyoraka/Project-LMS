@@ -1,9 +1,9 @@
-name: aidel-lms
+name: lms-prototype
 services:
 - name: web
   source_dir: /
   github:
-    repo: Kiyoraka/Aidel-Learning-Management-System
+    repo: demo/learning-management-system
     branch: main
     deploy_on_push: true
   build_command: |
@@ -35,7 +35,7 @@ services:
   envs:
   # App Configuration
   - key: APP_NAME
-    value: "Aidel LMS"
+    value: "LMS Prototype"
   - key: APP_ENV
     value: production
   - key: APP_KEY
@@ -104,11 +104,11 @@ services:
   - key: MAIL_FROM_ADDRESS
     value: ${MAIL_USERNAME}
   - key: MAIL_FROM_NAME
-    value: "Aidel LMS"
+    value: "LMS Prototype"
 
   # Vite Configuration
   - key: VITE_APP_NAME
-    value: "Aidel LMS"
+    value: "LMS Prototype"
 
 databases:
 - name: db
@@ -116,5 +116,5 @@ databases:
   version: "8"
   size: basic-xs
   num_nodes: 1
-  db_name: aidel_lms
-  db_user: aidel_user 
+  db_name: lms_prototype
+  db_user: lms_user 
