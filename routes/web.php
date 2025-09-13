@@ -27,17 +27,24 @@ Route::get('/api/site-settings', function () {
         
         $storedLogoPath = $appearanceSettings['logo_path'] ?? $generalSettings['logoPath'] ?? '';
         $storedFaviconPath = $appearanceSettings['favicon_path'] ?? $generalSettings['faviconPath'] ?? '';
-        
-        if ($storedLogoPath) {
+
+        // If stored path is a static file path, use it directly
+        if ($storedLogoPath && (strpos($storedLogoPath, '/assets/') === 0 || strpos($storedLogoPath, '/images/') === 0)) {
+            $logoPath = $storedLogoPath;
+        } elseif ($storedLogoPath && strpos($storedLogoPath, '/storage/') === 0) {
+            // If it's a storage path, use the public-logo endpoint
             $logoPath = url('/public-logo');
         } else {
             $logoPath = '/assets/images/logo.svg'; // fallback
         }
-        
-        if ($storedFaviconPath) {
+
+        // Update favicon to use SVG favicon
+        if ($storedFaviconPath && (strpos($storedFaviconPath, '/favicon') === 0)) {
+            $faviconPath = '/favicon.svg'; // Use SVG favicon instead
+        } elseif ($storedFaviconPath && strpos($storedFaviconPath, '/storage/') === 0) {
             $faviconPath = url('/public-favicon');
         } else {
-            $faviconPath = '/favicon.ico'; // fallback
+            $faviconPath = '/favicon.svg'; // fallback to SVG
         }
         
         return response()->json([
