@@ -33,10 +33,6 @@
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </router-link>
-          <router-link :to="{ name: 'admin.users' }" class="mobile-nav-item" @click="closeMobileMenu">
-            <i class="fas fa-users"></i>
-            <span>User Management</span>
-          </router-link>
           <router-link :to="{ name: 'admin.settings' }" class="mobile-nav-item" @click="closeMobileMenu">
             <i class="fas fa-cog"></i>
             <span>Settings</span>
@@ -102,10 +98,6 @@
           <span>Dashboard</span>
         </router-link>
         
-        <router-link :to="{ name: 'admin.users' }" class="nav-item">
-          <i class="fas fa-users"></i>
-          <span>User Management</span>
-        </router-link>
         
         <router-link :to="{ name: 'admin.settings' }" class="nav-item">
           <i class="fas fa-cog"></i>
@@ -266,8 +258,6 @@ const pageTitle = computed(() => {
   switch (route.name) {
     case 'admin.dashboard':
       return 'Dashboard Overview';
-    case 'admin.users':
-      return 'User Management';
     case 'admin.settings':
       return 'System Settings';
     default:

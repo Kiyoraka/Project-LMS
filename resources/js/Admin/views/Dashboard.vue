@@ -132,7 +132,7 @@
             <div v-else>
               <div v-for="user in recentRegistrations" :key="user.id" class="registration-item">
                 <div class="user-info">
-                  <div class="user-avatar">
+                  <div class="user-avatar" :class="getUserAvatarClass(user.role)">
                     <i class="fas fa-user"></i>
                   </div>
                   <div class="user-details">
@@ -144,24 +144,6 @@
                       <span v-if="user.is_recent" class="recent-badge">New</span>
                     </div>
                   </div>
-                </div>
-                <div class="user-actions">
-                  <div class="activity-indicator">
-                    <span v-if="user.last_login" class="active-user" :title="'Last login: ' + user.last_login_formatted">
-                      <i class="fas fa-circle"></i>
-                    </span>
-                    <span v-else class="inactive-user" title="Never logged in">
-                      <i class="fas fa-circle"></i>
-                    </span>
-                  </div>
-                  <button 
-                    @click="deleteUser(user)" 
-                    class="delete-btn"
-                    title="Delete user"
-                    :disabled="user.role === 'super_admin'"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
                 </div>
               </div>
             </div>
@@ -214,6 +196,16 @@ const getActivityIcon = (type) => {
     enrollment: 'fas fa-user-graduate'
   };
   return icons[type] || 'fas fa-bell';
+};
+
+// Helper function to get avatar class based on user role
+const getUserAvatarClass = (role) => {
+  const classes = {
+    super_admin: 'avatar-admin',
+    teacher: 'avatar-teacher',
+    student: 'avatar-student'
+  };
+  return classes[role] || 'avatar-student';
 };
 
 // Fetch dashboard data from API
@@ -274,35 +266,6 @@ const fetchDashboardData = async () => {
   }
 };
 
-// Delete user function
-const deleteUser = async (user) => {
-  if (!confirm(`Are you sure you want to delete user "${user.name}" (${user.email})?`)) {
-    return;
-  }
-  
-  try {
-    const response = await axios.delete(`/api/admin/users/${user.id}`);
-    
-    // Remove user from the local list
-    recentRegistrations.value = recentRegistrations.value.filter(u => u.id !== user.id);
-    
-    // Show success message
-    alert(response.data.message || 'User deleted successfully');
-    
-    // Refresh dashboard stats
-    fetchDashboardData();
-    
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    
-    let errorMessage = 'Failed to delete user. Please try again.';
-    if (error.response?.data?.error) {
-      errorMessage = error.response.data.error;
-    }
-    
-    alert(errorMessage);
-  }
-};
 
 // Initialize and update user growth chart with fallback data if API fails
 const initUserChart = async () => {
@@ -544,7 +507,7 @@ onUnmounted(() => {
 }
 
 .stats-icon.users {
-  background: linear-gradient(135deg, #0077b6, #001d3d);
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
 }
 
 .stats-icon.courses {
@@ -913,12 +876,23 @@ onUnmounted(() => {
   height: 40px;
   border-radius: 8px;
   margin-right: 12px;
-  background: #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
-  font-size: 1.2rem;
+  color: white;
+  font-size: 1rem;
+}
+
+.user-avatar.avatar-admin {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.user-avatar.avatar-teacher {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.user-avatar.avatar-student {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
 }
 
 .user-info .user-details {
@@ -955,49 +929,6 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
-.user-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.activity-indicator {
-  display: flex;
-  align-items: center;
-}
-
-.active-user, .inactive-user {
-  font-size: 0.6rem;
-  cursor: help;
-}
-
-.active-user {
-  color: #10b981;
-}
-
-.inactive-user {
-  color: #ef4444;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  color: #ef4444;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.delete-btn:hover:not(:disabled) {
-  background-color: #fee2e2;
-}
-
-.delete-btn:disabled {
-  color: #9ca3af;
-  cursor: not-allowed;
-}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -1048,10 +979,6 @@ onUnmounted(() => {
     width: 100%;
   }
   
-  .user-actions {
-    align-self: flex-end;
-    margin-top: 8px;
-  }
   
   .user-meta {
     gap: 6px;
