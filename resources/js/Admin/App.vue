@@ -268,6 +268,81 @@
         </div>
       </div>
     </teleport>
+
+    <!-- Change Password Modal -->
+    <teleport to="body" v-if="showChangePasswordModal">
+      <div class="add-user-modal-overlay" @click="closeChangePasswordModal">
+        <div class="add-user-modal-container" @click.stop>
+          <div class="add-user-modal-header">
+            <h3>Change Password</h3>
+            <button @click="closeChangePasswordModal" class="add-user-modal-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <form @submit.prevent="changePassword" class="add-user-modal-form">
+            <div class="add-user-form-group">
+              <label for="current_password">Current Password</label>
+              <input
+                type="password"
+                id="current_password"
+                v-model="passwordData.current_password"
+                placeholder="Enter your current password"
+                required
+                :disabled="isChangingPassword"
+                autocomplete="current-password"
+              >
+            </div>
+
+            <div class="add-user-form-group">
+              <label for="new_password">New Password</label>
+              <input
+                type="password"
+                id="new_password"
+                v-model="passwordData.new_password"
+                placeholder="Enter your new password (min. 8 characters)"
+                required
+                :disabled="isChangingPassword"
+                autocomplete="new-password"
+                minlength="8"
+              >
+            </div>
+
+            <div class="add-user-form-group">
+              <label for="new_password_confirmation">Confirm New Password</label>
+              <input
+                type="password"
+                id="new_password_confirmation"
+                v-model="passwordData.new_password_confirmation"
+                placeholder="Confirm your new password"
+                required
+                :disabled="isChangingPassword"
+                autocomplete="new-password"
+                minlength="8"
+              >
+            </div>
+
+            <div class="add-user-password-info">
+              <div class="add-user-info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Password must be at least <strong>8 characters long</strong> and different from your current password.</span>
+              </div>
+            </div>
+
+            <div class="add-user-modal-actions">
+              <button type="button" @click="closeChangePasswordModal" class="add-user-btn-outline">
+                Cancel
+              </button>
+              <button type="submit" class="add-user-btn-primary" :disabled="isChangingPassword">
+                <i v-if="isChangingPassword" class="fas fa-spinner fa-spin"></i>
+                <i v-else class="fas fa-key"></i>
+                {{ isChangingPassword ? 'Changing...' : 'Change Password' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -320,6 +395,15 @@ const notificationData = ref({
   type: 'success', // 'success', 'error', 'warning'
   title: '',
   message: ''
+});
+
+// Change password modal state
+const showChangePasswordModal = ref(false);
+const isChangingPassword = ref(false);
+const passwordData = ref({
+  current_password: '',
+  new_password: '',
+  new_password_confirmation: ''
 });
 
 const toggleProfileMenu = () => {
@@ -434,9 +518,82 @@ const updateProfile = async () => {
 };
 
 const openChangePassword = () => {
-  // In a real app, this would open a change password modal
-  alert('Change password form would open here');
+  // Clear the form
+  passwordData.value = {
+    current_password: '',
+    new_password: '',
+    new_password_confirmation: ''
+  };
+
+  showChangePasswordModal.value = true;
   profileMenuOpen.value = false;
+};
+
+const closeChangePasswordModal = () => {
+  showChangePasswordModal.value = false;
+  isChangingPassword.value = false;
+
+  // Clear the form
+  passwordData.value = {
+    current_password: '',
+    new_password: '',
+    new_password_confirmation: ''
+  };
+};
+
+const changePassword = async () => {
+  // Validate form data
+  if (!passwordData.value.current_password.trim()) {
+    showNotification('error', 'Validation Error', 'Please enter your current password');
+    return;
+  }
+
+  if (!passwordData.value.new_password.trim()) {
+    showNotification('error', 'Validation Error', 'Please enter a new password');
+    return;
+  }
+
+  if (passwordData.value.new_password.length < 8) {
+    showNotification('error', 'Password Too Short', 'New password must be at least 8 characters long');
+    return;
+  }
+
+  if (passwordData.value.new_password !== passwordData.value.new_password_confirmation) {
+    showNotification('error', 'Password Mismatch', 'New password and confirmation do not match');
+    return;
+  }
+
+  if (passwordData.value.current_password === passwordData.value.new_password) {
+    showNotification('error', 'Same Password', 'New password must be different from current password');
+    return;
+  }
+
+  isChangingPassword.value = true;
+
+  try {
+    // Send password change request to API
+    const response = await axios.post('/api/admin/change-password', {
+      current_password: passwordData.value.current_password,
+      new_password: passwordData.value.new_password,
+      new_password_confirmation: passwordData.value.new_password_confirmation
+    });
+
+    if (response.data && response.data.success) {
+      // Show success message
+      showNotification('success', 'Password Changed', 'Your password has been updated successfully!');
+      closeChangePasswordModal();
+    } else {
+      throw new Error(response.data.message || 'Password change failed');
+    }
+  } catch (error) {
+    console.error('Error changing password:', error);
+
+    // Show specific error message from server if available
+    const errorMessage = error.response?.data?.message || 'Failed to change password. Please try again.';
+    showNotification('error', 'Password Change Failed', errorMessage);
+  } finally {
+    isChangingPassword.value = false;
+  }
 };
 
 // User data (loaded from API)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class AdminApiController extends Controller
 {
@@ -810,6 +811,58 @@ class AdminApiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update profile',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Change admin password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePassword(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+            'new_password_confirmation' => 'required|string'
+        ]);
+
+        try {
+            // Check if current password is correct
+            if (!Hash::check($validated['current_password'], $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Current password is incorrect'
+                ], 400);
+            }
+
+            // Check if new password is different from current
+            if (Hash::check($validated['new_password'], $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'New password must be different from current password'
+                ], 400);
+            }
+
+            // Update password
+            $user->update([
+                'password' => Hash::make($validated['new_password'])
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password changed successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to change password',
                 'error' => $e->getMessage()
             ], 500);
         }

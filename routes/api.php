@@ -130,6 +130,7 @@ Route::prefix('admin')->name('api.admin.')->middleware(['web', 'auth', 'super_ad
     // Profile Management
     Route::get('/profile', [AdminApiController::class, 'getProfile'])->name('profile.show');
     Route::put('/profile', [AdminApiController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/change-password', [AdminApiController::class, 'changePassword'])->name('change.password');
 
     // File Uploads
     Route::post('/upload-logo', [AdminApiController::class, 'uploadLogo'])->name('upload.logo');
