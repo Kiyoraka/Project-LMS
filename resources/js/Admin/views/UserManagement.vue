@@ -147,69 +147,6 @@
       </div>
     </div>
     
-    <!-- Add User Modal -->
-    <div v-if="showAddUserModal" class="modal-overlay">
-      <div class="modal">
-        <div class="modal-header">
-          <h3>Add New User</h3>
-          <button @click="showAddUserModal = false" class="modal-close">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form @submit.prevent="addUser">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" v-model="newUser.name" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" v-model="newUser.email" required>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label for="role">Role</label>
-                <select id="role" v-model="newUser.role" required>
-                  <option value="super_admin">Super Admin</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="student">Student</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label for="status">Status</label>
-                <select id="status" v-model="newUser.status" required>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" v-model="newUser.password" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="confirm_password">Confirm Password</label>
-              <input type="password" id="confirm_password" v-model="newUser.confirm_password" required>
-            </div>
-            
-            <div class="form-actions">
-              <button type="button" @click="showAddUserModal = false" class="btn-outline">
-                Cancel
-              </button>
-              <button type="submit" class="btn-primary">
-                Add User
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    
     <!-- Edit User Modal -->
     <div v-if="showEditUserModal" class="modal-overlay">
       <div class="modal">
