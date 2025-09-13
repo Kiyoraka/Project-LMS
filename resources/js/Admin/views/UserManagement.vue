@@ -310,7 +310,7 @@
             <div class="add-user-password-info">
               <div class="add-user-info-box">
                 <i class="fas fa-info-circle"></i>
-                <span>Default password will be set to: <strong>admin123</strong></span>
+                <span>Default password will be set to: <strong>Admin123</strong></span>
               </div>
             </div>
 
@@ -358,7 +358,7 @@ const newUser = ref({
   email: '',
   role: '',
   phone: '',
-  password: 'admin123',
+  password: 'Admin123',
   bio: '',
   is_active: true
 });
@@ -725,7 +725,7 @@ const openAddUserModal = () => {
     email: '',
     role: '',
     phone: '',
-    password: 'admin123',
+    password: 'Admin123',
     bio: '',
     is_active: true
   };
@@ -754,7 +754,7 @@ const submitAddUser = async () => {
     }
 
     // Ensure password is set to default
-    newUser.value.password = 'admin123';
+    newUser.value.password = 'Admin123';
 
     // Submit to API
     const response = await fetch('/api/admin/users', {
