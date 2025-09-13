@@ -1449,12 +1449,50 @@
 
         // Quick login function for demo users
         function quickLogin(email, password) {
-            document.getElementById('modal-email').value = email;
-            document.getElementById('modal-password').value = password;
-            document.getElementById('remember-me').checked = true;
+            console.log('QuickLogin called with:', email);
 
-            // Submit the form automatically
-            document.getElementById('loginForm').submit();
+            // Get CSRF token
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            console.log('CSRF token from meta:', csrfToken);
+
+            if (!csrfToken) {
+                console.error('CSRF token not found!');
+                alert('Security token missing. Please refresh the page.');
+                return;
+            }
+
+            // Use AJAX instead of form submission for better error handling
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    remember: true
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success && data.redirect) {
+                    window.location.href = data.redirect;
+                } else {
+                    console.error('Login failed:', data);
+                    alert('Login failed: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                alert('Login error: ' + error.message);
+            });
         }
 
         // Login button click handler
