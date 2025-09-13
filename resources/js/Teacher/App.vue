@@ -412,7 +412,7 @@ onMounted(async () => {
 }
 
 .mobile-header {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 12px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -530,11 +530,11 @@ onMounted(async () => {
 }
 
 .mobile-nav-item:active {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .mobile-nav-item.router-link-active {
-  color: #3b82f6;
+  color: #0077b6;
   font-weight: 600;
 }
 
@@ -576,7 +576,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   border-radius: 20px 20px 0 0;
 }
@@ -637,7 +637,7 @@ onMounted(async () => {
 }
 
 .mobile-profile-action:active {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .mobile-profile-action.logout {
@@ -670,7 +670,7 @@ onMounted(async () => {
 /* Sidebar Styles */
 .sidebar {
   width: 280px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   transition: all 0.3s ease;
   display: flex;
@@ -789,8 +789,8 @@ onMounted(async () => {
 }
 
 .search-box input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-box i {
@@ -829,7 +829,7 @@ onMounted(async () => {
   height: 32px;
   border-radius: 50%;
   margin-right: 8px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -884,7 +884,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(to right, #3b82f6, #1d4ed8);
+  background: linear-gradient(to right, #001d3d, #0077b6);
   color: white;
 }
 
@@ -941,8 +941,8 @@ onMounted(async () => {
 
 .dropdown-item:hover {
   background-color: #f3f4f6;
-  border-left-color: #3b82f6;
-  color: #3b82f6;
+  border-left-color: #0077b6;
+  color: #0077b6;
 }
 
 .dropdown-item i {

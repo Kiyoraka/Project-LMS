@@ -787,7 +787,7 @@ onMounted(() => {
 }
 
 .module-number {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   width: 24px;
   height: 24px;
@@ -823,7 +823,7 @@ onMounted(() => {
 .lesson-icon {
   width: 32px;
   height: 32px;
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   border-radius: 6px;
   display: flex;
@@ -844,7 +844,7 @@ onMounted(() => {
 }
 
 .lesson-number {
-  color: #3b82f6;
+  color: #0077b6;
   font-weight: 600;
   margin-right: 0.5rem;
 }
@@ -861,7 +861,7 @@ onMounted(() => {
 }
 
 .duration {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .type {
@@ -986,7 +986,7 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
 }
 
@@ -1176,7 +1176,7 @@ onMounted(() => {
 }
 
 .analytics-icon.enrollment {
-  background: #3b82f6;
+  background: #0077b6;
 }
 
 .analytics-icon.completion {
@@ -1291,7 +1291,7 @@ onMounted(() => {
   font-weight: 600;
   color: #374151;
   padding-left: 0.5rem;
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid #0077b6;
 }
 
 .lesson-performance-list {
@@ -1399,7 +1399,7 @@ onMounted(() => {
 .analytics-loading i {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .analytics-loading p {

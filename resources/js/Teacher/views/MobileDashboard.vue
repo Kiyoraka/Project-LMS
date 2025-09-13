@@ -127,7 +127,7 @@ onMounted(() => {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
 .bg-success {
@@ -183,7 +183,7 @@ onMounted(() => {
 }
 
 .mobile-action-btn.primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
 .mobile-action-btn.secondary {
@@ -206,7 +206,7 @@ onMounted(() => {
   width: 32px;
   height: 32px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #3b82f6;
+  border-top: 3px solid #0077b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;

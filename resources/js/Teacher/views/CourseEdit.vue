@@ -573,7 +573,7 @@ onMounted(() => {
 
 .loading-spinner {
   font-size: 2rem;
-  color: #3b82f6;
+  color: #0077b6;
   margin-bottom: 20px;
 }
 
@@ -682,7 +682,7 @@ onMounted(() => {
 }
 
 .section-header h3 i {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 /* Form Layout */
@@ -723,8 +723,8 @@ onMounted(() => {
 
 .form-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .form-input:invalid {
@@ -768,7 +768,7 @@ onMounted(() => {
 }
 
 .chapter-number {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   border-radius: 50%;
   width: 24px;
@@ -813,7 +813,7 @@ onMounted(() => {
 }
 
 .form-help i {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 /* Empty State */
@@ -1003,14 +1003,14 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
   background: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.3);
 }
 
 .btn-secondary {
@@ -1099,7 +1099,7 @@ onMounted(() => {
 
 .image-loading .loading-spinner {
   font-size: 2rem;
-  color: #3b82f6;
+  color: #0077b6;
   margin-bottom: 15px;
 }
 

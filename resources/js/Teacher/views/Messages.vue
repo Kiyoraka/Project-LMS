@@ -1870,7 +1870,7 @@ export default {
 }
 
 .toast-notification.info {
-  background-color: #3b82f6;
+  background-color: #0077b6;
 }
 
 .toast-notification.success {

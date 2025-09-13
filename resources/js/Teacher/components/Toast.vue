@@ -239,15 +239,15 @@ defineExpose({
 }
 
 .toast-info .toast-content {
-  border-left-color: #3b82f6;
+  border-left-color: #0077b6;
 }
 
 .toast-info .toast-icon {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .toast-info .toast-progress-bar {
-  background-color: #3b82f6;
+  background-color: #0077b6;
 }
 
 /* Animations */

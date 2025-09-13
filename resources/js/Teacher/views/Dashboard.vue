@@ -293,12 +293,12 @@ function initializeChart() {
         datasets: [{
           label: 'New Enrollments',
           data: chartData.value.data,
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(0, 119, 182, 0.1)',
+          borderColor: '#0077b6',
           borderWidth: 2,
           tension: 0.4,
           fill: true,
-          pointBackgroundColor: '#3b82f6',
+          pointBackgroundColor: '#0077b6',
           pointRadius: 4,
           pointHoverRadius: 6
         }]
@@ -432,7 +432,7 @@ onMounted(async () => {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
 .bg-success {
@@ -534,7 +534,7 @@ onMounted(async () => {
   width: 32px;
   height: 32px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #3b82f6;
+  border-top: 3px solid #0077b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 12px;
@@ -639,9 +639,9 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: #0077b6;
   color: white;
-  border: 1px solid #3b82f6;
+  border: 1px solid #0077b6;
 }
 
 .btn-primary:hover {
@@ -650,12 +650,12 @@ onMounted(async () => {
 
 .btn-outline-primary {
   background-color: transparent;
-  color: #3b82f6;
-  border: 1px solid #3b82f6;
+  color: #0077b6;
+  border: 1px solid #0077b6;
 }
 
 .btn-outline-primary:hover {
-  background-color: #3b82f6;
+  background-color: #0077b6;
   color: white;
 }
 
@@ -772,7 +772,7 @@ onMounted(async () => {
 
 .progress-fill-modern {
   height: 100%;
-  background-color: #3b82f6;
+  background-color: #0077b6;
   border-radius: 2px;
   position: absolute;
   top: 0;

@@ -262,8 +262,8 @@ const changePassword = async () => {
 
 .form-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .password-input-wrapper {
@@ -361,9 +361,9 @@ const changePassword = async () => {
 }
 
 .btn-save {
-  background-color: #3b82f6;
+  background-color: #0077b6;
   color: white;
-  border: 1px solid #3b82f6;
+  border: 1px solid #0077b6;
 }
 
 .btn-save:hover:not(:disabled) {

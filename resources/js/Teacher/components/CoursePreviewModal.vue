@@ -437,7 +437,7 @@ watch(() => props.visible, (newValue) => {
 }
 
 .module-number {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   width: 24px;
   height: 24px;
@@ -475,13 +475,13 @@ watch(() => props.visible, (newValue) => {
 
 .lesson-preview.active {
   background: #dbeafe;
-  border: 1px solid #3b82f6;
+  border: 1px solid #0077b6;
 }
 
 .lesson-icon {
   width: 32px;
   height: 32px;
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   border-radius: 6px;
   display: flex;
@@ -502,7 +502,7 @@ watch(() => props.visible, (newValue) => {
 }
 
 .lesson-number {
-  color: #3b82f6;
+  color: #0077b6;
   font-weight: 600;
   margin-right: 0.5rem;
 }
@@ -519,7 +519,7 @@ watch(() => props.visible, (newValue) => {
 }
 
 .duration {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .type {
@@ -543,7 +543,7 @@ watch(() => props.visible, (newValue) => {
 }
 
 .preview-btn {
-  background: #3b82f6;
+  background: #0077b6;
   color: white;
   border: none;
   padding: 0.5rem 1rem;

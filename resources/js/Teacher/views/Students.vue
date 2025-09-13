@@ -839,7 +839,7 @@ onUnmounted(() => {
 }
 
 .loading-indicator i {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 /* Filters */
@@ -1405,7 +1405,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
   border: none;
   border-radius: 6px;
@@ -1413,14 +1413,14 @@ onUnmounted(() => {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 119, 182, 0.3);
   white-space: nowrap;
 }
 
 .view-btn:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  background: linear-gradient(135deg, #001d3d, #1e40af);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.4);
 }
 
 .btn {
@@ -1446,9 +1446,9 @@ onUnmounted(() => {
 }
 
 .btn-primary {
-  background-color: #3b82f6;
+  background-color: #0077b6;
   color: white;
-  border: 1px solid #3b82f6;
+  border: 1px solid #0077b6;
 }
 
 .btn-primary:hover {
@@ -1457,12 +1457,12 @@ onUnmounted(() => {
 
 .btn-outline-primary {
   background-color: transparent;
-  color: #3b82f6;
-  border: 1px solid #3b82f6;
+  color: #0077b6;
+  border: 1px solid #0077b6;
 }
 
 .btn-outline-primary:hover {
-  background-color: #3b82f6;
+  background-color: #0077b6;
   color: white;
 }
 

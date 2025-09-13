@@ -442,7 +442,7 @@ export default {
 }
 
 .composer-title i {
-  color: #3b82f6;
+  color: #0077b6;
 }
 
 .toggle-btn {
@@ -450,7 +450,7 @@ export default {
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
   border: none;
   border-radius: 6px;
@@ -498,8 +498,8 @@ export default {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px #3b82f6;
+  border-color: #0077b6;
+  box-shadow: 0 0 0 1px #0077b6;
 }
 
 .form-textarea {
@@ -630,7 +630,7 @@ export default {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
 }
 
@@ -697,7 +697,7 @@ export default {
 }
 
 .sent-message-card:hover {
-  border-color: #3b82f6;
+  border-color: #0077b6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -731,7 +731,7 @@ export default {
 
 .broadcast-badge {
   background: #dbeafe;
-  color: #3b82f6;
+  color: #0077b6;
   padding: 2px 6px;
   border-radius: 10px;
   font-size: 0.75rem;
