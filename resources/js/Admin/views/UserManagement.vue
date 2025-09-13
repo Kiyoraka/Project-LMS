@@ -250,92 +250,94 @@
       <span>{{ error }}</span>
     </div>
 
-    <!-- Add User Modal -->
-    <div v-if="showAddUserModal" class="modal-overlay" @click="closeAddUserModal">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>Add New User</h3>
-          <button @click="closeAddUserModal" class="modal-close">
-            <i class="fas fa-times"></i>
-          </button>
+    <!-- Add User Modal - Rebuilt -->
+    <teleport to="body" v-if="showAddUserModal">
+      <div class="add-user-modal-overlay" @click="closeAddUserModal">
+        <div class="add-user-modal-container" @click.stop>
+          <div class="add-user-modal-header">
+            <h3>Add New User</h3>
+            <button @click="closeAddUserModal" class="add-user-modal-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <form @submit.prevent="submitAddUser" class="add-user-modal-form">
+            <div class="add-user-form-row">
+              <div class="add-user-form-group">
+                <label for="userName">Full Name *</label>
+                <input
+                  type="text"
+                  id="userName"
+                  v-model="newUser.name"
+                  placeholder="Enter full name"
+                  required
+                >
+              </div>
+
+              <div class="add-user-form-group">
+                <label for="userEmail">Email Address *</label>
+                <input
+                  type="email"
+                  id="userEmail"
+                  v-model="newUser.email"
+                  placeholder="Enter email address"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="add-user-form-row">
+              <div class="add-user-form-group">
+                <label for="userRole">Role *</label>
+                <select id="userRole" v-model="newUser.role" required>
+                  <option value="">Select Role</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="student">Student</option>
+                </select>
+              </div>
+
+              <div class="add-user-form-group">
+                <label for="userPhone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="userPhone"
+                  v-model="newUser.phone"
+                  placeholder="Enter phone number"
+                >
+              </div>
+            </div>
+
+            <div class="add-user-password-info">
+              <div class="add-user-info-box">
+                <i class="fas fa-info-circle"></i>
+                <span>Default password will be set to: <strong>admin123</strong></span>
+              </div>
+            </div>
+
+            <div class="add-user-form-group">
+              <label for="userBio">Bio (Optional)</label>
+              <textarea
+                id="userBio"
+                v-model="newUser.bio"
+                placeholder="Enter brief bio or description"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="add-user-modal-actions">
+              <button type="button" @click="closeAddUserModal" class="add-user-btn-outline">
+                Cancel
+              </button>
+              <button type="submit" class="add-user-btn-primary" :disabled="isSubmitting">
+                <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
+                <i v-else class="fas fa-user-plus"></i>
+                {{ isSubmitting ? 'Adding...' : 'Add User' }}
+              </button>
+            </div>
+          </form>
         </div>
-
-        <form @submit.prevent="submitAddUser" class="add-user-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="userName">Full Name *</label>
-              <input
-                type="text"
-                id="userName"
-                v-model="newUser.name"
-                placeholder="Enter full name"
-                required
-              >
-            </div>
-
-            <div class="form-group">
-              <label for="userEmail">Email Address *</label>
-              <input
-                type="email"
-                id="userEmail"
-                v-model="newUser.email"
-                placeholder="Enter email address"
-                required
-              >
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="userRole">Role *</label>
-              <select id="userRole" v-model="newUser.role" required>
-                <option value="">Select Role</option>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="userPhone">Phone Number</label>
-              <input
-                type="tel"
-                id="userPhone"
-                v-model="newUser.phone"
-                placeholder="Enter phone number"
-              >
-            </div>
-          </div>
-
-          <div class="password-info">
-            <div class="info-box">
-              <i class="fas fa-info-circle"></i>
-              <span>Default password will be set to: <strong>admin123</strong></span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="userBio">Bio (Optional)</label>
-            <textarea
-              id="userBio"
-              v-model="newUser.bio"
-              placeholder="Enter brief bio or description"
-              rows="3"
-            ></textarea>
-          </div>
-
-          <div class="modal-actions">
-            <button type="button" @click="closeAddUserModal" class="btn-outline">
-              Cancel
-            </button>
-            <button type="submit" class="btn-primary" :disabled="isSubmitting">
-              <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
-              <i v-else class="fas fa-user-plus"></i>
-              {{ isSubmitting ? 'Adding...' : 'Add User' }}
-            </button>
-          </div>
-        </form>
       </div>
-    </div>
+    </teleport>
   </div>
 </template>
 
@@ -716,6 +718,7 @@ const fetchUsers = async () => {
 };
 // Modal functions
 const openAddUserModal = () => {
+  console.log('🔍 Opening modal - before state change');
   // Reset form
   newUser.value = {
     name: '',
@@ -726,10 +729,13 @@ const openAddUserModal = () => {
     bio: '',
     is_active: true
   };
+  console.log('🔍 Setting showAddUserModal to true');
   showAddUserModal.value = true;
+  console.log('🔍 Modal opened - state changed');
 };
 
 const closeAddUserModal = () => {
+  console.log('🔍 Closing modal');
   showAddUserModal.value = false;
   error.value = '';
   successMessage.value = '';
@@ -1099,37 +1105,46 @@ onMounted(async () => {
 }
 
 .action-btn.edit {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #0077b6, #001d3d);
+  box-shadow: 0 2px 4px rgba(0, 119, 182, 0.3);
 }
 
 .action-btn.edit:hover {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #005577, #001122);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.4);
 }
 
 .action-btn.delete {
-  background-color: #ef4444;
+  background: linear-gradient(135deg, #b91c1c, #7f1d1d);
+  box-shadow: 0 2px 4px rgba(185, 28, 28, 0.3);
 }
 
 .action-btn.delete:hover {
-  background-color: #dc2626;
+  background: linear-gradient(135deg, #991b1b, #6b1616);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(185, 28, 28, 0.4);
 }
 
 .action-btn.approve {
-  background: #10b981;
+  background: linear-gradient(135deg, #10b981, #047857);
   color: #fff;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
 }
 
 .action-btn.approve:hover {
-  background: #059669;
+  background: linear-gradient(135deg, #059669, #065f46);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
 }
 
 /* Pagination */
@@ -1493,22 +1508,22 @@ onMounted(async () => {
   box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
 }
 
-/* Modal Styles */
-.modal-overlay {
+/* Add User Modal - Clean Rebuild */
+.add-user-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
+  padding: 20px;
 }
 
-.modal-content {
+.add-user-modal-container {
   background: white;
   border-radius: 12px;
   width: 100%;
@@ -1516,10 +1531,9 @@ onMounted(async () => {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  animation: slideIn 0.3s ease;
 }
 
-.modal-header {
+.add-user-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1530,13 +1544,13 @@ onMounted(async () => {
   border-radius: 12px 12px 0 0;
 }
 
-.modal-header h3 {
+.add-user-modal-header h3 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
 }
 
-.modal-close {
+.add-user-modal-close {
   background: none;
   border: none;
   color: white;
@@ -1547,38 +1561,37 @@ onMounted(async () => {
   transition: background-color 0.2s;
 }
 
-.modal-close:hover {
+.add-user-modal-close:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Form Styles */
-.add-user-form {
+.add-user-modal-form {
   padding: 24px;
 }
 
-.form-row {
+.add-user-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 16px;
 }
 
-.form-group {
+.add-user-form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
 }
 
-.form-group label {
+.add-user-form-group label {
   font-weight: 500;
   margin-bottom: 6px;
   color: #374151;
   font-size: 0.9rem;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.add-user-form-group input,
+.add-user-form-group select,
+.add-user-form-group textarea {
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
@@ -1586,21 +1599,46 @@ onMounted(async () => {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.add-user-form-group input:focus,
+.add-user-form-group select:focus,
+.add-user-form-group textarea:focus {
   outline: none;
   border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
-.form-group textarea {
+.add-user-form-group textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-/* Modal Actions */
-.modal-actions {
+.add-user-password-info {
+  margin-bottom: 16px;
+}
+
+.add-user-info-box {
+  background: linear-gradient(135deg, #e0f2fe, #b3e5fc);
+  border: 1px solid #0077b6;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #01579b;
+  font-size: 0.9rem;
+}
+
+.add-user-info-box i {
+  color: #0077b6;
+  font-size: 1rem;
+}
+
+.add-user-info-box strong {
+  color: #004d40;
+  font-weight: 600;
+}
+
+.add-user-modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -1609,7 +1647,7 @@ onMounted(async () => {
   border-top: 1px solid #e5e7eb;
 }
 
-.btn-primary {
+.add-user-btn-primary {
   background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
   border: none;
@@ -1623,19 +1661,19 @@ onMounted(async () => {
   gap: 8px;
 }
 
-.btn-primary:hover:not(:disabled) {
+.add-user-btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, #005577, #001122);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
 }
 
-.btn-primary:disabled {
+.add-user-btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
-.btn-outline {
+.add-user-btn-outline {
   background: white;
   color: #6b7280;
   border: 1px solid #d1d5db;
@@ -1646,75 +1684,26 @@ onMounted(async () => {
   transition: all 0.2s ease;
 }
 
-.btn-outline:hover {
+.add-user-btn-outline:hover {
   background: #f9fafb;
   border-color: #9ca3af;
   color: #374151;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Password Info */
-.password-info {
-  margin-bottom: 16px;
-}
-
-.info-box {
-  background: linear-gradient(135deg, #e0f2fe, #b3e5fc);
-  border: 1px solid #0077b6;
-  border-radius: 8px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #01579b;
-  font-size: 0.9rem;
-}
-
-.info-box i {
-  color: #0077b6;
-  font-size: 1rem;
-}
-
-.info-box strong {
-  color: #004d40;
-  font-weight: 600;
-}
-
-/* Responsive */
+/* Add User Modal Responsive */
 @media (max-width: 768px) {
-  .modal-content {
-    margin: 20px;
-    max-width: calc(100% - 40px);
+  .add-user-modal-container {
+    margin: 10px;
+    max-width: calc(100% - 20px);
   }
 
-  .form-row {
+  .add-user-form-row {
     grid-template-columns: 1fr;
     gap: 0;
   }
 
-  .modal-actions {
+  .add-user-modal-actions {
     flex-direction: column-reverse;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    align-items: stretch;
   }
 }
 </style>
