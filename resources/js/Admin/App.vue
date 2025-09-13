@@ -585,12 +585,8 @@ const changePassword = async () => {
     if (response.data && response.data.success) {
       console.log('✅ Password change successful:', response.data.debug_info);
 
-      // Show success message with additional info
-      const successMessage = response.data.debug_info
-        ? `Your password has been updated successfully! (User ID: ${response.data.debug_info.user_id})`
-        : 'Your password has been updated successfully!';
-
-      showNotification('success', 'Password Changed', successMessage);
+      // Show clean success message
+      showNotification('success', 'Password Changed', 'Your password has been updated successfully!');
       closeChangePasswordModal();
 
       // Optional: Force user to re-authenticate after password change
