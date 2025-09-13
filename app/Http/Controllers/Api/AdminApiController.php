@@ -826,6 +826,12 @@ class AdminApiController extends Controller
     {
         $user = $request->user();
 
+        \Log::info('🔐 Password change attempt', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'timestamp' => now()
+        ]);
+
         $validated = $request->validate([
             'current_password' => 'required|string',
             'new_password' => 'required|string|min:8|confirmed',
@@ -833,36 +839,167 @@ class AdminApiController extends Controller
         ]);
 
         try {
+            // Log current password hash (for debugging - remove in production)
+            \Log::info('🔍 Current password verification', [
+                'user_id' => $user->id,
+                'current_password_hash_exists' => !empty($user->password),
+                'current_password_hash_length' => strlen($user->password ?? ''),
+                'password_provided' => !empty($validated['current_password'])
+            ]);
+
             // Check if current password is correct
             if (!Hash::check($validated['current_password'], $user->password)) {
+                \Log::warning('❌ Current password verification failed', [
+                    'user_id' => $user->id,
+                    'user_email' => $user->email
+                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Current password is incorrect'
                 ], 400);
             }
 
+            \Log::info('✅ Current password verified successfully', [
+                'user_id' => $user->id
+            ]);
+
             // Check if new password is different from current
             if (Hash::check($validated['new_password'], $user->password)) {
+                \Log::warning('❌ New password same as current', [
+                    'user_id' => $user->id
+                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'New password must be different from current password'
                 ], 400);
             }
 
-            // Update password
-            $user->update([
-                'password' => Hash::make($validated['new_password'])
+            // Get the old password hash for comparison
+            $oldPasswordHash = $user->password;
+
+            // Create new password hash
+            $newPasswordHash = Hash::make($validated['new_password']);
+
+            \Log::info('🔒 Creating new password hash', [
+                'user_id' => $user->id,
+                'old_hash_length' => strlen($oldPasswordHash ?? ''),
+                'new_hash_length' => strlen($newPasswordHash),
+                'hashes_different' => $oldPasswordHash !== $newPasswordHash
+            ]);
+
+            // Update password in database
+            $updateResult = $user->update([
+                'password' => $newPasswordHash,
+                'updated_at' => now()
+            ]);
+
+            \Log::info('💾 Database update result', [
+                'user_id' => $user->id,
+                'update_successful' => $updateResult,
+                'new_updated_at' => $user->fresh()->updated_at
+            ]);
+
+            // Verify the password was actually saved
+            $userAfterUpdate = $user->fresh(); // Get fresh data from database
+            $passwordSavedCorrectly = Hash::check($validated['new_password'], $userAfterUpdate->password);
+
+            \Log::info('🔍 Password save verification', [
+                'user_id' => $user->id,
+                'password_saved_correctly' => $passwordSavedCorrectly,
+                'hash_in_db' => substr($userAfterUpdate->password, 0, 20) . '...',
+                'updated_at_changed' => $userAfterUpdate->updated_at != $user->updated_at
+            ]);
+
+            if (!$passwordSavedCorrectly) {
+                \Log::error('❌ Password verification failed after save', [
+                    'user_id' => $user->id,
+                    'user_email' => $user->email
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Password save verification failed'
+                ], 500);
+            }
+
+            \Log::info('✅ Password changed successfully', [
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+                'timestamp' => now()
             ]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Password changed successfully'
+                'message' => 'Password changed successfully',
+                'debug_info' => [
+                    'user_id' => $user->id,
+                    'updated_at' => $userAfterUpdate->updated_at,
+                    'verification_passed' => true
+                ]
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('❌ Password change failed with exception', [
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to change password',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Verify password for testing purposes.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyPassword(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'password' => 'required|string'
+        ]);
+
+        try {
+            $isCorrect = Hash::check($validated['password'], $user->password);
+
+            \Log::info('🔍 Password verification test', [
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+                'password_correct' => $isCorrect,
+                'hash_length' => strlen($user->password ?? ''),
+                'timestamp' => now()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'password_correct' => $isCorrect,
+                'user_info' => [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'updated_at' => $user->updated_at
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('❌ Password verification failed', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Password verification failed',
                 'error' => $e->getMessage()
             ], 500);
         }

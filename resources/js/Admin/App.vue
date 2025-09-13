@@ -571,6 +571,8 @@ const changePassword = async () => {
   isChangingPassword.value = true;
 
   try {
+    console.log('🔐 Sending password change request...');
+
     // Send password change request to API
     const response = await axios.post('/api/admin/change-password', {
       current_password: passwordData.value.current_password,
@@ -578,10 +580,23 @@ const changePassword = async () => {
       new_password_confirmation: passwordData.value.new_password_confirmation
     });
 
+    console.log('📡 Password change response received:', response.data);
+
     if (response.data && response.data.success) {
-      // Show success message
-      showNotification('success', 'Password Changed', 'Your password has been updated successfully!');
+      console.log('✅ Password change successful:', response.data.debug_info);
+
+      // Show success message with additional info
+      const successMessage = response.data.debug_info
+        ? `Your password has been updated successfully! (User ID: ${response.data.debug_info.user_id})`
+        : 'Your password has been updated successfully!';
+
+      showNotification('success', 'Password Changed', successMessage);
       closeChangePasswordModal();
+
+      // Optional: Force user to re-authenticate after password change
+      // This ensures the new password is working
+      console.log('💡 Password change completed. User can continue using the system.');
+
     } else {
       throw new Error(response.data.message || 'Password change failed');
     }
