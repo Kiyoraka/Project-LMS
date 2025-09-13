@@ -20,7 +20,7 @@
 
 /* Additional Utility Styles */
 .text-gradient {
-    background: var(--lighter-purple);
+    background: var(--lighter-blue);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

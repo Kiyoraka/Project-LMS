@@ -954,33 +954,33 @@
     <section id="about" class="about" style="padding: 80px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
         <div class="container">
             <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-                <h2 style="font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 20px;">Redefining Digital Education</h2>
-                <p style="font-size: 1.1rem; color: #64748b; max-width: 600px; margin: 0 auto;">Where innovation meets education - creating immersive learning experiences that drive real results</p>
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: #001d3d; margin-bottom: 20px;">Redefining Digital Education</h2>
+                <p style="font-size: 1.1rem; color: #0077b6; max-width: 600px; margin: 0 auto;">Where innovation meets education - creating immersive learning experiences that drive real results</p>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto;">
                 <div>
-                    <h3 style="font-size: 2rem; font-weight: 600; color: #0f172a; margin-bottom: 24px;">Education Reimagined for the Digital Age</h3>
-                    <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 20px;">
+                    <h3 style="font-size: 2rem; font-weight: 600; color: #001d3d; margin-bottom: 24px;">Education Reimagined for the Digital Age</h3>
+                    <p style="font-size: 1rem; line-height: 1.8; color: #003566; margin-bottom: 20px;">
                         Our advanced LMS prototype breaks traditional boundaries by delivering personalized, interactive learning experiences.
                         With intelligent content delivery and adaptive learning paths, we ensure every student reaches their full potential.
                     </p>
-                    <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 30px;">
+                    <p style="font-size: 1rem; line-height: 1.8; color: #003566; margin-bottom: 30px;">
                         Built on enterprise-grade architecture with intuitive design principles, our platform empowers institutions to
                         scale their educational impact while maintaining quality and engagement across all learning modalities.
                     </p>
                     <div style="display: flex; gap: 30px;">
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">10K+</div>
-                            <div style="font-size: 0.9rem; color: #64748b;">Active Users</div>
+                            <div style="font-size: 0.9rem; color: #0077b6;">Active Users</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">500+</div>
-                            <div style="font-size: 0.9rem; color: #64748b;">Courses Available</div>
+                            <div style="font-size: 0.9rem; color: #0077b6;">Courses Available</div>
                         </div>
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">98%</div>
-                            <div style="font-size: 0.9rem; color: #64748b;">Satisfaction Rate</div>
+                            <div style="font-size: 0.9rem; color: #0077b6;">Satisfaction Rate</div>
                         </div>
                     </div>
                 </div>
