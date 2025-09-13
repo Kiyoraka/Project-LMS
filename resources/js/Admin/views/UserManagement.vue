@@ -1478,12 +1478,15 @@ onMounted(async () => {
   background: linear-gradient(135deg, #6b7280, #4b5563);
   color: white;
   border: 1px solid #9ca3af;
-  padding: 6px 12px;
+  padding: 10px 16px;
   font-size: 0.95rem;
-  border-radius: 6px;
-  height: 32px;
+  border-radius: 8px;
+  font-weight: 500;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(107, 114, 128, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-reset:hover {
