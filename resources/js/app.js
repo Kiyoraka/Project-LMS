@@ -14,7 +14,6 @@ const pinia = createPinia();
 import AdminApp from './Admin/App.vue';
 import AdminDashboard from './Admin/views/ConditionalDashboard.vue';
 import UserManagement from './Admin/views/UserManagement.vue';
-import Settings from './Admin/views/Settings.vue';
 
 // Create Admin router instance with explicit configuration  
 const adminRouter = createRouter({
@@ -33,11 +32,6 @@ const adminRouter = createRouter({
             path: '/admin/users',
             name: 'admin.users',
             component: UserManagement,
-        },
-        {
-            path: '/admin/settings',
-            name: 'admin.settings',
-            component: Settings,
         }
     ]
 });

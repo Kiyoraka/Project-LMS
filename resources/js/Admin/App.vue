@@ -37,10 +37,6 @@
             <i class="fas fa-users"></i>
             <span>User Management</span>
           </router-link>
-          <router-link :to="{ name: 'admin.settings' }" class="mobile-nav-item" @click="closeMobileMenu">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
-          </router-link>
           <a href="#" @click.prevent="handleLogout" class="mobile-nav-item logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
@@ -106,11 +102,6 @@
         <router-link :to="{ name: 'admin.users' }" class="nav-item">
           <i class="fas fa-users"></i>
           <span>User Management</span>
-        </router-link>
-
-        <router-link :to="{ name: 'admin.settings' }" class="nav-item">
-          <i class="fas fa-cog"></i>
-          <span>Settings</span>
         </router-link>
         
         <a href="#" @click.prevent="handleLogout" class="nav-item logout">
@@ -269,8 +260,6 @@ const pageTitle = computed(() => {
       return 'Dashboard Overview';
     case 'admin.users':
       return 'User Management';
-    case 'admin.settings':
-      return 'System Settings';
     default:
       return 'Admin Dashboard';
   }
