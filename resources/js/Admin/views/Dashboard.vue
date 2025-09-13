@@ -28,22 +28,15 @@
         </div>
       </div>
       
-      <div class="stats-card future-feature">
-        <div class="stats-icon revenue">
-          <i class="fas fa-dollar-sign"></i>
+      <div class="stats-card">
+        <div class="stats-icon teachers">
+          <i class="fas fa-chalkboard-teacher"></i>
         </div>
         <div class="stats-content">
-          <h3>Monthly Revenue</h3>
-          <div class="stats-value">${{ stats.monthlyRevenue.toLocaleString() }}</div>
-          <div class="stats-change" :class="stats.revenueGrowth >= 0 ? 'positive' : 'negative'">
-            <i :class="stats.revenueGrowth >= 0 ? 'fas fa-arrow-up' : 'fas fa-arrow-down'"></i>
-            {{ Math.abs(stats.revenueGrowth) }}% from last month
-          </div>
-        </div>
-        <div class="future-overlay">
-          <div class="future-text">
-            <i class="fas fa-cog fa-spin"></i>
-            <span>Future Development</span>
+          <h3>Total Teachers</h3>
+          <div class="stats-value">{{ stats.totalTeachers }}</div>
+          <div class="stats-change positive">
+            <i class="fas fa-arrow-up"></i> {{ stats.teacherGrowth }}% from last month
           </div>
         </div>
       </div>
@@ -81,11 +74,11 @@
         </div>
       </div>
       
-      <div class="chart-card future-feature">
+      <div class="chart-card">
         <div class="chart-header">
-          <h3>Revenue Analysis</h3>
+          <h3>Course Growth</h3>
           <div class="chart-actions">
-            <select v-model="revenueChartPeriod" @change="updateRevenueChart">
+            <select v-model="courseChartPeriod" @change="updateCourseChart">
               <option value="week">Last Week</option>
               <option value="month">Last Month</option>
               <option value="year">Last Year</option>
@@ -94,13 +87,7 @@
         </div>
         <div class="chart-body">
           <!-- Chart component would be rendered here -->
-          <canvas ref="revenueChartRef" class="chart-canvas"></canvas>
-        </div>
-        <div class="future-overlay">
-          <div class="future-text">
-            <i class="fas fa-cog fa-spin"></i>
-            <span>Future Development</span>
-          </div>
+          <canvas ref="courseChartRef" class="chart-canvas"></canvas>
         </div>
       </div>
     </div>
@@ -192,13 +179,13 @@ import axios from 'axios';
 
 // Chart references
 const userChartRef = ref(null);
-const revenueChartRef = ref(null);
+const courseChartRef = ref(null);
 let userChart = null;
-let revenueChart = null;
+let courseChart = null;
 
 // Chart period selectors
 const userChartPeriod = ref('month');
-const revenueChartPeriod = ref('month');
+const courseChartPeriod = ref('month');
 
 // Data from API
 const stats = ref({
@@ -206,8 +193,8 @@ const stats = ref({
   userGrowth: 0,
   activeCourses: 0,
   courseGrowth: 0,
-  monthlyRevenue: 0,
-  revenueGrowth: 0,
+  totalTeachers: 0,
+  teacherGrowth: 0,
   newEnrollments: 0,
   enrollmentGrowth: 0
 });
@@ -250,9 +237,9 @@ const fetchDashboardData = async () => {
         totalUsers: data.totalUsers || 0,
         userGrowth: data.userGrowth || 0,
         activeCourses: data.activeCourses || 0,
-        courseGrowth: data.courseGrowth || 0, 
-        monthlyRevenue: data.monthlyRevenue || 0,
-        revenueGrowth: data.revenueGrowth || 0,
+        courseGrowth: data.courseGrowth || 0,
+        totalTeachers: data.totalTeachers || 0,
+        teacherGrowth: data.teacherGrowth || 0,
         newEnrollments: data.newEnrollments || 0,
         enrollmentGrowth: data.enrollmentGrowth || 0
       };
@@ -279,8 +266,8 @@ const fetchDashboardData = async () => {
       userGrowth: 0,
       activeCourses: 0,
       courseGrowth: 0,
-      monthlyRevenue: 0,
-      revenueGrowth: 0,
+      totalTeachers: 0,
+      teacherGrowth: 0,
       newEnrollments: 0,
       enrollmentGrowth: 0
     };
@@ -391,57 +378,57 @@ const initUserChart = async () => {
   }
 };
 
-// Initialize and update revenue chart with fallback data if API fails
-const initRevenueChart = async () => {
+// Initialize and update course chart with fallback data if API fails
+const initCourseChart = async () => {
   try {
     // Make sure refs are available
-    if (!revenueChartRef.value) {
-      console.warn('Revenue chart ref not available yet, skipping chart initialization');
+    if (!courseChartRef.value) {
+      console.warn('Course chart ref not available yet, skipping chart initialization');
       return;
     }
 
     let labels = [];
     let data = [];
-    
+
     try {
-      // Try to fetch revenue data from API
-      const response = await axios.get(`/api/admin/revenue-chart?period=${revenueChartPeriod.value}`);
-      console.log('Revenue API Response:', response.data);
-      
+      // Try to fetch course growth data from API
+      const response = await axios.get(`/api/admin/course-growth-chart?period=${courseChartPeriod.value}`);
+      console.log('Course Growth API Response:', response.data);
+
       if (response.data && response.data.labels && response.data.data) {
         labels = response.data.labels;
         data = response.data.data;
       }
     } catch (err) {
-      console.warn('Could not fetch revenue data, using fallback:', err);
+      console.warn('Could not fetch course growth data, using fallback:', err);
       // Generate fallback data if API call fails
-      if (revenueChartPeriod.value === 'week') {
+      if (courseChartPeriod.value === 'week') {
         labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        data = [0, 0, 0, 0, 0, 0, 0]; // No revenue yet
-      } else if (revenueChartPeriod.value === 'month') {
+        data = [0, 0, 0, 0, 0, 0, 0]; // No new courses yet
+      } else if (courseChartPeriod.value === 'month') {
         labels = Array.from({ length: 30 }, (_, i) => `Day ${i+1}`);
-        data = Array(30).fill(0); // No revenue yet
+        data = Array(30).fill(0); // No new courses yet
       } else {
         labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // No revenue yet
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; // No new courses yet
       }
     }
-    
-    const revenueCanvas = revenueChartRef.value;
-    const revenueCtx = revenueCanvas.getContext('2d');
-    
-    if (revenueChart) {
-      revenueChart.destroy(); // Destroy existing chart if it exists
+
+    const courseCanvas = courseChartRef.value;
+    const courseCtx = courseCanvas.getContext('2d');
+
+    if (courseChart) {
+      courseChart.destroy(); // Destroy existing chart if it exists
     }
-    
-    revenueChart = new Chart(revenueCtx, {
+
+    courseChart = new Chart(courseCtx, {
       type: 'bar',
       data: {
         labels: labels,
         datasets: [{
-          label: 'Revenue',
+          label: 'New Courses',
           data: data,
-          backgroundColor: 'rgba(124, 58, 237, 0.7)'
+          backgroundColor: 'rgba(16, 185, 129, 0.7)'
         }]
       },
       options: {
@@ -455,14 +442,14 @@ const initRevenueChart = async () => {
       }
     });
   } catch (error) {
-    console.error('Error initializing revenue chart:', error);
+    console.error('Error initializing course chart:', error);
   }
 };
 
 // Initialize both charts
 const initCharts = () => {
   initUserChart();
-  initRevenueChart();
+  initCourseChart();
 };
 
 // Update charts based on selected period
@@ -470,8 +457,8 @@ const updateUserChart = () => {
   initUserChart();
 };
 
-const updateRevenueChart = () => {
-  initRevenueChart();
+const updateCourseChart = () => {
+  initCourseChart();
 };
 
 // For interval cleanup
@@ -505,10 +492,10 @@ onUnmounted(() => {
     userChart.destroy();
     userChart = null;
   }
-  
-  if (revenueChart) {
-    revenueChart.destroy();
-    revenueChart = null;
+
+  if (courseChart) {
+    courseChart.destroy();
+    courseChart = null;
   }
 });
 </script>
@@ -564,8 +551,8 @@ onUnmounted(() => {
   background: linear-gradient(135deg, #10b981, #059669);
 }
 
-.stats-icon.revenue {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+.stats-icon.teachers {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
 }
 
 .stats-icon.enrollments {
