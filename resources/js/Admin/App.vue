@@ -238,6 +238,36 @@
         </div>
       </div>
     </teleport>
+
+    <!-- Notification Modal -->
+    <teleport to="body" v-if="showNotificationModal">
+      <div class="notification-modal-overlay" @click="closeNotificationModal">
+        <div class="notification-modal-container" @click.stop>
+          <div class="notification-modal-header" :class="`notification-${notificationData.type}`">
+            <div class="notification-icon">
+              <i v-if="notificationData.type === 'success'" class="fas fa-check-circle"></i>
+              <i v-else-if="notificationData.type === 'error'" class="fas fa-exclamation-circle"></i>
+              <i v-else-if="notificationData.type === 'warning'" class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>{{ notificationData.title }}</h3>
+            <button @click="closeNotificationModal" class="notification-modal-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="notification-modal-body">
+            <p>{{ notificationData.message }}</p>
+          </div>
+
+          <div class="notification-modal-actions">
+            <button @click="closeNotificationModal" class="notification-btn-primary" :class="`notification-btn-${notificationData.type}`">
+              <i class="fas fa-check"></i>
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -282,6 +312,14 @@ const isUpdatingProfile = ref(false);
 const profileData = ref({
   name: '',
   email: ''
+});
+
+// Notification modal state
+const showNotificationModal = ref(false);
+const notificationData = ref({
+  type: 'success', // 'success', 'error', 'warning'
+  title: '',
+  message: ''
 });
 
 const toggleProfileMenu = () => {
@@ -339,17 +377,27 @@ const closeProfileSettingsModal = () => {
   isUpdatingProfile.value = false;
 };
 
+// Notification helper functions
+const showNotification = (type, title, message) => {
+  notificationData.value = { type, title, message };
+  showNotificationModal.value = true;
+};
+
+const closeNotificationModal = () => {
+  showNotificationModal.value = false;
+};
+
 const updateProfile = async () => {
   // Validate form data
   if (!profileData.value.name.trim() || !profileData.value.email.trim()) {
-    alert('Please fill in all required fields');
+    showNotification('error', 'Validation Error', 'Please fill in all required fields');
     return;
   }
 
   // Validate email format
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(profileData.value.email)) {
-    alert('Please enter a valid email address');
+    showNotification('error', 'Invalid Email', 'Please enter a valid email address');
     return;
   }
 
@@ -368,7 +416,7 @@ const updateProfile = async () => {
       user.value.email = response.data.user.email || profileData.value.email;
 
       // Show success message
-      alert('Profile updated successfully!');
+      showNotification('success', 'Success!', 'Profile updated successfully!');
 
       closeProfileSettingsModal();
     } else {
@@ -379,7 +427,7 @@ const updateProfile = async () => {
 
     // Show specific error message from server if available
     const errorMessage = error.response?.data?.message || 'Failed to update profile. Please try again.';
-    alert(errorMessage);
+    showNotification('error', 'Update Failed', errorMessage);
   } finally {
     isUpdatingProfile.value = false;
   }
@@ -1188,5 +1236,179 @@ onUnmounted(() => {
   background-color: #f9fafb;
   color: #9ca3af;
   cursor: not-allowed;
+}
+
+/* Notification Modal Styles */
+.notification-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.notification-modal-container {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.notification-modal-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  gap: 12px;
+}
+
+.notification-modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: #6b7280;
+}
+
+.notification-modal-close:hover {
+  background: #f3f4f6;
+}
+
+.notification-modal-body {
+  padding: 20px 24px;
+}
+
+.notification-modal-body p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.notification-modal-actions {
+  padding: 16px 24px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-btn-primary {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+/* Success Theme */
+.notification-success {
+  background: linear-gradient(135deg, #10b981, #047857);
+  color: white;
+}
+
+.notification-success .notification-icon {
+  color: #10b981;
+}
+
+.notification-success .notification-modal-close {
+  color: white;
+}
+
+.notification-success .notification-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-btn-success {
+  background: linear-gradient(135deg, #10b981, #047857);
+}
+
+.notification-btn-success:hover {
+  background: linear-gradient(135deg, #059669, #065f46);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Error Theme */
+.notification-error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.notification-error .notification-icon {
+  color: #ef4444;
+}
+
+.notification-error .notification-modal-close {
+  color: white;
+}
+
+.notification-error .notification-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-btn-error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.notification-btn-error:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Warning Theme */
+.notification-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.notification-warning .notification-icon {
+  color: #f59e0b;
+}
+
+.notification-warning .notification-modal-close {
+  color: white;
+}
+
+.notification-warning .notification-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-btn-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.notification-btn-warning:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 </style>
