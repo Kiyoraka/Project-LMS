@@ -1661,11 +1661,11 @@ onMounted(async () => {
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
   }
 }
 
