@@ -1,0 +1,92 @@
+/* Main CSS File: assets/css/main.css */
+/* This file imports all modular CSS files in the correct cascade order */
+
+/* Base Styles */
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'base/layout.css';
+
+/* Component Styles */
+@import 'components/navigation.css';
+@import 'components/modal.css';
+@import 'components/buttons.css';
+@import 'components/cards.css';
+
+/* Section Styles */
+@import 'sections/hero.css';
+@import 'sections/features.css';
+@import 'sections/cta.css';
+@import 'sections/footer.css';
+
+/* Additional Utility Styles */
+.text-gradient {
+    background: var(--lighter-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Notification System Styles */
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--notification-info);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 350px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem;
+}
+
+.notification-success {
+    background: var(--notification-success);
+}
+
+.notification-error {
+    background: var(--notification-error);
+}
+
+.notification-warning {
+    background: var(--notification-warning);
+}
+
+.notification-info {
+    background: var(--notification-info);
+}

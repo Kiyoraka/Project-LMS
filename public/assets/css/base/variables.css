@@ -1,0 +1,31 @@
+/* Base Variables CSS: assets/css/base/variables.css */
+
+:root {
+    /* Color Gradients */
+    --ultra-deep-purple: linear-gradient(120deg, #000000 0%, #0a0214 20%, #0f0519 40%, #1a0b2e 60%, #2d1b4e 75%, #4c1d95 85%, #6d28d9 92%, #8b5cf6 100%);
+    --royal-purple: linear-gradient(135deg, #0f051a 0%, #1a0926 20%, #2e0f38 40%, #430d4b 60%, #5b21b6 80%, #7c3aed 100%);
+    --electric-purple: linear-gradient(135deg, #210b32 0%, #3a2081 25%, #4a1d78 50%, #7b337d 75%, #c874b2 100%);
+    --neon-accent: linear-gradient(135deg, #ff006e 0%, #fb8500 50%, #ffbe0b 100%);
+    --cosmic-gradient: linear-gradient(135deg, #120348 0%, #210535 20%, #430d4b 40%, #7b337d 60%, #c874b2 80%, #f5d5e0 100%);
+    --matrix-purple: linear-gradient(45deg, #0f051a 0%, #210b32 25%, #3a2081 50%, #5b21b6 75%, #8b5cf6 100%);
+    --lighter-purple: linear-gradient(135deg, #3a2081 0%, #5b21b6 30%, #7b337d 60%, #8b5cf6 80%, #a78bfa 100%);
+    
+    /* Text Colors */
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-light: rgba(255, 255, 255, 0.9);
+    
+    /* Shadow Effects */
+    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    
+    /* UI Elements */
+    --border-radius: 20px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Notification Colors */
+    --notification-success: linear-gradient(135deg, #10b981, #059669);
+    --notification-error: linear-gradient(135deg, #ef4444, #dc2626);
+    --notification-warning: linear-gradient(135deg, #f59e0b, #d97706);
+    --notification-info: linear-gradient(135deg, #3b82f6, #2563eb);
+}

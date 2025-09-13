@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f8f9fa"/>
+  <rect x="50" y="40" width="200" height="120" fill="#e9ecef" rx="8"/>
+  <circle cx="150" cy="80" r="20" fill="#6c757d"/>
+  <rect x="70" y="110" width="160" height="8" fill="#6c757d" rx="4"/>
+  <rect x="90" y="130" width="120" height="6" fill="#adb5bd" rx="3"/>
+  <text x="150" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6c757d">Course Thumbnail</text>
+</svg> 

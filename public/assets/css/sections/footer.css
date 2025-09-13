@@ -1,0 +1,181 @@
+/* Footer Section CSS: assets/css/sections/footer.css */
+
+/* Footer Container */
+.footer {
+    background: var(--ultra-deep-purple);
+    color: white;
+    padding: 2rem 0 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Effect */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at 10% 50%, rgba(0, 0, 0, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 30%, rgba(139, 92, 246, 0.3) 0%, transparent 70%),
+        linear-gradient(120deg, rgba(0, 0, 0, 0.2) 0%, transparent 75%, rgba(139, 92, 246, 0.15) 100%);
+    pointer-events: none;
+}
+
+/* Footer Content Layout */
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Brand Section */
+.footer-brand p {
+    opacity: 0.8;
+    margin-top: 1rem;
+    max-width: 300px;
+}
+
+/* Footer Logo (specific to footer) */
+.footer .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: var(--transition);
+}
+
+.footer .logo i {
+    font-size: 2rem;
+    background: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer .logo:hover {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+/* Links Section */
+.footer-links {
+    display: flex;
+    gap: 3rem;
+}
+
+.link-group h4 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.link-group a {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+    position: relative;
+    padding-left: 0;
+}
+
+.link-group a:hover {
+    color: white;
+    padding-left: 0.5rem;
+}
+
+.link-group a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 1px;
+    background: white;
+    transition: var(--transition);
+    opacity: 0;
+}
+
+.link-group a:hover::before {
+    width: 0.3rem;
+    opacity: 1;
+}
+
+/* Copyright Section */
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.8;
+    position: relative;
+    z-index: 1;
+}
+
+/* Social Media Links (for future use) */
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.social-link i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-brand p {
+        max-width: 100%;
+    }
+    
+    .footer-links {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 1.5rem 0 1rem;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .link-group h4 {
+        margin-bottom: 0.75rem;
+    }
+}

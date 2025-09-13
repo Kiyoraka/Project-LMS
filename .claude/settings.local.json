@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git log:*)",
+      "Read(//d/Afif Personal/Kiyo Software TechLab/Alice - Memory Of Eternal/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

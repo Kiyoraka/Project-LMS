@@ -1,0 +1,423 @@
+<template>
+  <div class="secure-video-player">
+    <div v-if="!videoReady" class="video-loading">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p>Loading secure video...</p>
+    </div>
+    
+    <div v-if="error" class="video-error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>Unable to load video. Please try again later.</p>
+    </div>
+    
+    <div 
+      v-show="embedUrl && !error" 
+      class="video-container"
+      :class="{ 'video-loading': !videoReady }"
+    >
+      <iframe
+        ref="videoFrame"
+        :src="embedUrl"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        @load="onVideoLoad"
+        @error="onVideoError"
+        class="video-iframe"
+      ></iframe>
+      
+      <!-- Video overlay for additional protection -->
+      <div v-if="showOverlay" class="video-overlay" @click="hideOverlay">
+        <div class="overlay-content">
+          <div class="play-button">
+            <i class="fas fa-play"></i>
+          </div>
+          <p class="overlay-text">Click to play video</p>
+          <div class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            Secure Learning Content
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Video Information -->
+    <div v-if="lesson" class="video-info">
+      <h4 class="video-title">{{ lesson.title }}</h4>
+      <div class="video-meta">
+        <span v-if="lesson.duration_minutes" class="duration">
+          <i class="fas fa-clock"></i>
+          {{ lesson.duration_minutes }} minutes
+        </span>
+        <span class="security-badge">
+          <i class="fas fa-lock"></i>
+          Protected Content
+        </span>
+      </div>
+      <p v-if="lesson.description" class="video-description">{{ lesson.description }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+
+const props = defineProps({
+  videoUrl: {
+    type: String,
+    required: true
+  },
+  lesson: {
+    type: Object,
+    default: null
+  },
+  autoplay: {
+    type: Boolean,
+    default: false
+  },
+  showOverlay: {
+    type: Boolean,
+    default: true
+  }
+});
+
+const emit = defineEmits(['ready', 'error', 'play', 'pause']);
+
+const videoFrame = ref(null);
+const videoReady = ref(false);
+const error = ref(false);
+const showOverlay = ref(props.showOverlay);
+
+// Convert YouTube URL to secure embed URL
+const embedUrl = computed(() => {
+  if (!props.videoUrl) return null;
+  
+  try {
+    const url = new URL(props.videoUrl);
+    let videoId = null;
+    
+    // Extract video ID from different YouTube URL formats
+    if (url.hostname === 'www.youtube.com' || url.hostname === 'youtube.com') {
+      videoId = url.searchParams.get('v');
+    } else if (url.hostname === 'youtu.be') {
+      videoId = url.pathname.slice(1);
+    } else if (url.hostname === 'www.youtube-nocookie.com') {
+      // Already an embed URL
+      return props.videoUrl;
+    }
+    
+    if (!videoId) {
+      throw new Error('Invalid YouTube URL');
+    }
+    
+    // Use youtube-nocookie.com for better privacy
+    const embedParams = new URLSearchParams({
+      rel: '0',           // Don't show related videos
+      modestbranding: '1', // Minimal YouTube branding
+      controls: '1',       // Show player controls
+      disablekb: '1',     // Disable keyboard controls
+      fs: '1',            // Allow fullscreen
+      iv_load_policy: '3', // Hide video annotations
+      start: '0'          // Start from beginning
+    });
+    
+    if (props.autoplay) {
+      embedParams.set('autoplay', '1');
+    }
+    
+    return `https://www.youtube-nocookie.com/embed/${videoId}?${embedParams.toString()}`;
+    
+  } catch (err) {
+    console.error('Error processing video URL:', err);
+    error.value = true;
+    return null;
+  }
+});
+
+function onVideoLoad() {
+  videoReady.value = true;
+  emit('ready');
+}
+
+function onVideoError() {
+  error.value = true;
+  emit('error');
+}
+
+function hideOverlay() {
+  showOverlay.value = false;
+  emit('play');
+}
+
+// Prevent right-click on video
+function preventContextMenu(event) {
+  event.preventDefault();
+  return false;
+}
+
+// Prevent video download attempts
+function preventVideoSave(event) {
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    return false;
+  }
+}
+
+// Security measures
+onMounted(() => {
+  // Add event listeners for security
+  document.addEventListener('contextmenu', preventContextMenu);
+  document.addEventListener('keydown', preventVideoSave);
+  
+  // Prevent iframe manipulation
+  if (videoFrame.value) {
+    videoFrame.value.addEventListener('load', () => {
+      try {
+        // Additional security could be implemented here
+        // Note: Due to CORS, we can't access iframe content directly
+      } catch (err) {
+        // Expected for cross-origin iframes
+      }
+    });
+  }
+});
+
+onUnmounted(() => {
+  // Clean up event listeners
+  document.removeEventListener('contextmenu', preventContextMenu);
+  document.removeEventListener('keydown', preventVideoSave);
+});
+
+// Watch for URL changes
+watch(() => props.videoUrl, () => {
+  videoReady.value = false;
+  error.value = false;
+  showOverlay.value = props.showOverlay;
+});
+</script>
+
+<style scoped>
+.secure-video-player {
+  width: 100%;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  background: #000;
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  transition: opacity 0.3s ease;
+}
+
+.video-container.video-loading .video-iframe {
+  opacity: 0;
+}
+
+.video-loading,
+.video-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background: #1a1a1a;
+  color: white;
+  text-align: center;
+}
+
+.loading-spinner {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.video-error {
+  color: #ef4444;
+}
+
+.video-error i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.video-overlay:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.play-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.video-overlay:hover .play-button {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.overlay-text {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.video-info {
+  padding: 1.5rem;
+  background: white;
+}
+
+.video-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.video-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.video-description {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .play-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .overlay-text {
+    font-size: 1rem;
+  }
+  
+  .video-info {
+    padding: 1rem;
+  }
+  
+  .video-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Prevent text selection on video overlay */
+.video-overlay {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Disable drag on video */
+.video-iframe {
+  pointer-events: auto;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+</style> 

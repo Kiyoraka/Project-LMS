@@ -1,0 +1,120 @@
+name: aidel-lms
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: Kiyoraka/Aidel-Learning-Management-System
+    branch: main
+    deploy_on_push: true
+  build_command: |
+    composer install --no-dev --optimize-autoloader --no-interaction
+    npm ci --only=production
+    npm run build
+    php artisan config:clear
+  run_command: |
+    php artisan storage:link
+    php artisan migrate --force
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+    heroku-php-apache2 public/
+  environment_slug: php
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 80
+  
+  # Health Check
+  health_check:
+    http_path: /
+    initial_delay_seconds: 60
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+
+  envs:
+  # App Configuration
+  - key: APP_NAME
+    value: "Aidel LMS"
+  - key: APP_ENV
+    value: production
+  - key: APP_KEY
+    scope: RUN_AND_BUILD_TIME
+    type: SECRET
+  - key: APP_DEBUG
+    value: "false"
+  - key: APP_URL
+    value: ${APP_URL}
+  - key: APP_TIMEZONE
+    value: UTC
+  - key: APP_LOCALE
+    value: en
+  - key: APP_FALLBACK_LOCALE
+    value: en
+
+  # Logging
+  - key: LOG_CHANNEL
+    value: stack
+  - key: LOG_LEVEL
+    value: error
+
+  # Session & Cache
+  - key: SESSION_DRIVER
+    value: database
+  - key: SESSION_LIFETIME
+    value: "120"
+  - key: CACHE_DRIVER
+    value: database
+  - key: QUEUE_CONNECTION
+    value: database
+
+  # File Storage
+  - key: FILESYSTEM_DISK
+    value: local
+
+  # Database (auto-populated when you add database)
+  - key: DB_CONNECTION
+    value: mysql
+  - key: DB_HOST
+    value: ${db.HOSTNAME}
+  - key: DB_PORT
+    value: ${db.PORT}
+  - key: DB_DATABASE
+    value: ${db.DATABASE}
+  - key: DB_USERNAME
+    value: ${db.USERNAME}
+  - key: DB_PASSWORD
+    value: ${db.PASSWORD}
+
+  # Mail Configuration (you'll need to set these secrets)
+  - key: MAIL_MAILER
+    value: smtp
+  - key: MAIL_HOST
+    value: smtp.gmail.com
+  - key: MAIL_PORT
+    value: "587"
+  - key: MAIL_USERNAME
+    scope: RUN_AND_BUILD_TIME
+    type: SECRET
+  - key: MAIL_PASSWORD
+    scope: RUN_AND_BUILD_TIME
+    type: SECRET
+  - key: MAIL_ENCRYPTION
+    value: tls
+  - key: MAIL_FROM_ADDRESS
+    value: ${MAIL_USERNAME}
+  - key: MAIL_FROM_NAME
+    value: "Aidel LMS"
+
+  # Vite Configuration
+  - key: VITE_APP_NAME
+    value: "Aidel LMS"
+
+databases:
+- name: db
+  engine: MYSQL
+  version: "8"
+  size: basic-xs
+  num_nodes: 1
+  db_name: aidel_lms
+  db_user: aidel_user 

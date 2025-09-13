@@ -1,0 +1,430 @@
+/* Cards Component CSS: assets/css/components/cards.css */
+
+/* Base Card */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Feature Card */
+.feature-card {
+    background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+    padding: 1.5rem !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    min-height: auto !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px) !important;
+    box-shadow: 0 20px 40px rgba(15, 5, 25, 0.6) !important;
+}
+
+/* Touch-friendly mobile interactions */
+@media (hover: none) and (pointer: coarse) {
+    .feature-card:hover {
+        transform: none !important;
+        box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important;
+    }
+    
+    .feature-card:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.1s ease !important;
+    }
+    
+    .feature-card:hover .feature-icon {
+        transform: none !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        box-shadow: none !important;
+    }
+}
+
+.feature-icon {
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 auto 0.875rem !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.6rem !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg) !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.625rem !important;
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    line-height: 1.3 !important;
+}
+
+.feature-card p {
+    color: rgba(255, 255, 255, 0.9) !important;
+    line-height: 1.45 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    font-size: 0.875rem !important;
+    margin: 0 !important;
+}
+
+/* Welcome Card */
+.welcome-card {
+    background: rgba(18, 3, 72, 0.3);
+    backdrop-filter: blur(25px);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(18, 3, 72, 0.4);
+}
+
+.welcome-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(255, 0, 110, 0.1), transparent, rgba(139, 92, 246, 0.1), transparent);
+    animation: rotate 8s linear infinite;
+    pointer-events: none;
+}
+
+.welcome-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: rgba(18, 3, 72, 0.5);
+    border-radius: calc(var(--border-radius) - 10px);
+    pointer-events: none;
+}
+
+.welcome-badge {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.welcome-text {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    background: var(--neon-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+}
+
+.to-text {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.25rem;
+}
+
+.brand-text {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: var(--electric-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dashboard-card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--ultra-deep-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.dashboard-card-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.dashboard-card-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Course Card */
+.course-card {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.course-card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.course-card-content {
+    padding: 1.5rem;
+}
+
+.course-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.course-card-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.instructor-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.instructor-name {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.course-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.course-price {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.course-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #f59e0b;
+}
+
+/* Feature Card Mobile Optimization */
+@media (max-width: 768px) {
+    .feature-card {
+        min-height: auto !important;
+        padding: 1.5rem !important;
+        margin: 0 auto !important;
+        max-width: 400px !important;
+    }
+    
+    .feature-icon {
+        width: 65px !important;
+        height: 65px !important;
+        font-size: 1.6rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.75rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    .feature-card p {
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .feature-card {
+        min-height: auto !important;
+        padding: 1.375rem 1.25rem !important;
+        max-width: 350px !important;
+    }
+    
+    .feature-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+        margin-bottom: 0.875rem !important;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.2rem !important;
+        margin-bottom: 0.625rem !important;
+    }
+    
+    .feature-card p {
+        font-size: 0.875rem !important;
+        line-height: 1.4 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-card {
+        min-height: auto !important;
+        padding: 1.25rem 1.125rem !important;
+        max-width: 320px !important;
+    }
+    
+    .feature-icon {
+        width: 55px !important;
+        height: 55px !important;
+        font-size: 1.4rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.15rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.25 !important;
+    }
+    
+    .feature-card p {
+        font-size: 0.85rem !important;
+        line-height: 1.35 !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .feature-card {
+        min-height: auto !important;
+        padding: 1.125rem 1rem !important;
+        max-width: 300px !important;
+    }
+    
+    .feature-icon {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.3rem !important;
+        margin-bottom: 0.625rem !important;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .feature-card p {
+        font-size: 0.8rem !important;
+        line-height: 1.3 !important;
+    }
+}
+
+/* Responsive Cards */
+@media (max-width: 768px) {
+    .dashboard-card, .card-body, .card-header, .card-footer {
+        padding: 1.5rem;
+    }
+    
+    .welcome-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-card, .card-body, .card-header, .card-footer {
+        padding: 1.25rem;
+    }
+    
+    .welcome-card {
+        padding: 1.25rem;
+    }
+}
