@@ -183,7 +183,7 @@
 
     <!-- Profile Settings Modal (Desktop) -->
     <teleport to="body" v-if="showProfileSettingsModal">
-      <div class="add-user-modal-overlay" @click="closeProfileSettingsModal">
+      <div class="add-user-modal-overlay" @click="closeProfileSettingsModal" style="background: rgba(255, 0, 0, 0.5) !important;">
         <div class="add-user-modal-container" @click.stop>
           <div class="add-user-modal-header">
             <h3>Profile Settings</h3>
@@ -292,12 +292,18 @@ const handleOutsideClick = (event) => {
 
 // Profile settings handlers
 const openProfileSettings = () => {
+  console.log('🔍 Opening profile settings modal');
+
   // Load current user data into the form
   profileData.value.name = user.value.name;
   profileData.value.email = user.value.email || 'admin@example.com';
 
+  console.log('📝 Profile data loaded:', profileData.value);
+
   showProfileSettingsModal.value = true;
   profileMenuOpen.value = false;
+
+  console.log('✅ Modal state set to:', showProfileSettingsModal.value);
 };
 
 const closeProfileSettingsModal = () => {
@@ -963,5 +969,145 @@ onUnmounted(() => {
   .admin-layout {
     display: none;
   }
+}
+
+/* Add User Modal Styles - For Profile Settings */
+.add-user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.add-user-modal-container {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.add-user-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #001d3d, #0077b6);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.add-user-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.add-user-modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.add-user-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.add-user-modal-form {
+  padding: 24px;
+}
+
+.add-user-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.add-user-form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.add-user-form-group input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.add-user-form-group input:focus {
+  outline: none;
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+}
+
+.add-user-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.add-user-btn-primary {
+  background: linear-gradient(135deg, #0077b6, #001d3d);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-user-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #005577, #001122);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+}
+
+.add-user-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-user-btn-outline {
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-user-btn-outline:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
 }
 </style>
