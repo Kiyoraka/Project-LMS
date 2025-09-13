@@ -849,7 +849,7 @@
                 <p class="tagline">Your No.1 Learning Solution</p>
             </div>
             <div class="nav-menu">
-                <a href="#" class="nav-link">HOME</a>
+                <a href="#" class="nav-link" onclick="scrollToTop(); return false;">HOME</a>
                 <a href="#about" class="nav-link">ABOUT</a>
                 <a href="#features" class="nav-link">FEATURES</a>
                 <button class="login-btn nav-auth-btn" id="loginBtn">
@@ -932,14 +932,14 @@
             </div>
             
             <div class="hero-right">
-                <div class="course-showcase" style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 24px; padding: 32px; box-shadow: 0 25px 50px rgba(0, 119, 182, 0.4), 0 0 0 1px rgba(0, 180, 216, 0.2); border: 1px solid rgba(0, 180, 216, 0.4); backdrop-filter: blur(20px); min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+                <div class="course-showcase" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); border-radius: 24px; padding: 32px; box-shadow: 0 25px 50px rgba(59, 130, 246, 0.4), 0 0 0 1px rgba(96, 165, 250, 0.2); border: 1px solid rgba(96, 165, 250, 0.4); backdrop-filter: blur(20px); min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
                     <!-- Background Pattern -->
-                    <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(72, 202, 228, 0.1) 0%, transparent 70%); border-radius: 50%; transform: translate(50%, -50%);"></div>
+                    <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(147, 197, 253, 0.2) 0%, transparent 70%); border-radius: 50%; transform: translate(50%, -50%);"></div>
 
                     <div class="course-header" style="margin-bottom: 24px; position: relative; z-index: 2;">
                         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-                            <div style="width: 16px; height: 16px; background: #48cae4; border-radius: 50%; box-shadow: 0 0 20px rgba(72, 202, 228, 0.5); animation: pulse 2s infinite;"></div>
-                            <span style="color: #48cae4; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(72, 202, 228, 0.3);">Featured Course</span>
+                            <div style="width: 16px; height: 16px; background: #93c5fd; border-radius: 50%; box-shadow: 0 0 20px rgba(72, 202, 228, 0.5); animation: pulse 2s infinite;"></div>
+                            <span style="color: #dbeafe; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(72, 202, 228, 0.3);">Featured Course</span>
                         </div>
                         <h3 style="color: white; font-size: 1.8rem; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);">Advanced Web Development</h3>
                         <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin: 12px 0 0 0; line-height: 1.5; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);">Master modern frameworks and build scalable applications with industry best practices</p>
@@ -947,15 +947,15 @@
 
                     <div class="course-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; position: relative; z-index: 2;">
                         <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">4.9</div>
+                            <div style="color: #dbeafe; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">4.9</div>
                             <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Rating</div>
                         </div>
                         <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">2.4K</div>
+                            <div style="color: #dbeafe; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">2.4K</div>
                             <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Students</div>
                         </div>
                         <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">12h</div>
+                            <div style="color: #dbeafe; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">12h</div>
                             <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Duration</div>
                         </div>
                     </div>
@@ -1012,23 +1012,23 @@
                         <h4 style="color: white; font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Platform Advantages</h4>
                         <ul style="list-style: none; padding: 0; margin: 0;">
                             <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
-                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                <i class="fas fa-check-circle" style="color: #dbeafe; margin-right: 12px;"></i>
                                 Multi-role dashboard system
                             </li>
                             <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
-                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                <i class="fas fa-check-circle" style="color: #dbeafe; margin-right: 12px;"></i>
                                 Advanced progress tracking
                             </li>
                             <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
-                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                <i class="fas fa-check-circle" style="color: #dbeafe; margin-right: 12px;"></i>
                                 Two-way communication system
                             </li>
                             <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
-                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                <i class="fas fa-check-circle" style="color: #dbeafe; margin-right: 12px;"></i>
                                 Certificate generation
                             </li>
                             <li style="color: rgba(255,255,255,0.9); display: flex; align-items: center;">
-                                <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
+                                <i class="fas fa-check-circle" style="color: #dbeafe; margin-right: 12px;"></i>
                                 Modern, responsive design
                             </li>
                         </ul>
@@ -1338,6 +1338,15 @@
         </div>
     </div>
 
+    <script>
+        // Smooth scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
     <script type="module" src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 </html>
