@@ -42,9 +42,12 @@
           </select>
         </div>
       </div>
-      <div class="reset-btn-container">
+      <div class="action-buttons">
         <button @click="resetFilters" class="btn-outline btn-reset">
           <i class="fas fa-redo"></i> Reset
+        </button>
+        <button @click="openAddUserModal" class="btn-primary btn-add-user">
+          <i class="fas fa-user-plus"></i> Add User
         </button>
       </div>
     </div>
@@ -309,6 +312,98 @@
       <i class="fas fa-exclamation-circle"></i>
       <span>{{ error }}</span>
     </div>
+
+    <!-- Add User Modal -->
+    <div v-if="showAddUserModal" class="modal-overlay" @click="closeAddUserModal">
+      <div class="modal-content" @click.stop>
+        <div class="modal-header">
+          <h3>Add New User</h3>
+          <button @click="closeAddUserModal" class="modal-close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form @submit.prevent="submitAddUser" class="add-user-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userName">Full Name *</label>
+              <input
+                type="text"
+                id="userName"
+                v-model="newUser.name"
+                placeholder="Enter full name"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="userEmail">Email Address *</label>
+              <input
+                type="email"
+                id="userEmail"
+                v-model="newUser.email"
+                placeholder="Enter email address"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userRole">Role *</label>
+              <select id="userRole" v-model="newUser.role" required>
+                <option value="">Select Role</option>
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="userPhone">Phone Number</label>
+              <input
+                type="tel"
+                id="userPhone"
+                v-model="newUser.phone"
+                placeholder="Enter phone number"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userPassword">Password *</label>
+            <input
+              type="password"
+              id="userPassword"
+              v-model="newUser.password"
+              placeholder="Enter password (min 8 characters)"
+              required
+              minlength="8"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="userBio">Bio (Optional)</label>
+            <textarea
+              id="userBio"
+              v-model="newUser.bio"
+              placeholder="Enter brief bio or description"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" @click="closeAddUserModal" class="btn-outline">
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary" :disabled="isSubmitting">
+              <i v-if="isSubmitting" class="fas fa-spinner fa-spin"></i>
+              <i v-else class="fas fa-user-plus"></i>
+              {{ isSubmitting ? 'Adding...' : 'Add User' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -327,11 +422,15 @@ const selectedUser = ref(null);
 const newUser = ref({
   name: '',
   email: '',
-  role: 'student',
-  status: 'active',
+  role: '',
+  phone: '',
   password: '',
-  confirm_password: ''
+  bio: '',
+  is_active: true
 });
+
+// Form submission state
+const isSubmitting = ref(false);
 
 // Search and filters
 const searchQuery = ref('');
@@ -683,6 +782,81 @@ const fetchUsers = async () => {
     isLoading.value = false;
   }
 };
+// Modal functions
+const openAddUserModal = () => {
+  // Reset form
+  newUser.value = {
+    name: '',
+    email: '',
+    role: '',
+    phone: '',
+    password: '',
+    bio: '',
+    is_active: true
+  };
+  showAddUserModal.value = true;
+};
+
+const closeAddUserModal = () => {
+  showAddUserModal.value = false;
+  error.value = '';
+  successMessage.value = '';
+};
+
+// Form submission
+const submitAddUser = async () => {
+  try {
+    isSubmitting.value = true;
+    error.value = '';
+
+    // Basic validation
+    if (!newUser.value.name || !newUser.value.email || !newUser.value.role || !newUser.value.password) {
+      error.value = 'Please fill in all required fields';
+      return;
+    }
+
+    if (newUser.value.password.length < 8) {
+      error.value = 'Password must be at least 8 characters long';
+      return;
+    }
+
+    // Submit to API
+    const response = await fetch('/api/admin/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(newUser.value)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to create user');
+    }
+
+    // Success
+    successMessage.value = 'User created successfully!';
+    closeAddUserModal();
+
+    // Refresh users list
+    await fetchUsers();
+
+    // Clear success message after 3 seconds
+    setTimeout(() => {
+      successMessage.value = '';
+    }, 3000);
+
+  } catch (err) {
+    console.error('Error creating user:', err);
+    error.value = err.message || 'Failed to create user. Please try again.';
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
 // Lifecycle hooks
 onMounted(async () => {
   try {
@@ -1360,5 +1534,230 @@ onMounted(async () => {
   font-size: 0.95rem;
   border-radius: 6px;
   height: 32px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-add-user {
+  background: linear-gradient(135deg, #0077b6, #001d3d);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-add-user:hover {
+  background: linear-gradient(135deg, #005577, #001122);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #001d3d, #0077b6);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Form Styles */
+.add-user-form {
+  padding: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0077b6, #001d3d);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #005577, #001122);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-outline {
+  background: white;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 20px;
+    max-width: calc(100% - 40px);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 </style>
