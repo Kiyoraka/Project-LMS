@@ -183,7 +183,7 @@
 
     <!-- Profile Settings Modal (Desktop) -->
     <teleport to="body" v-if="showProfileSettingsModal">
-      <div class="add-user-modal-overlay" @click="closeProfileSettingsModal" style="background: rgba(255, 0, 0, 0.5) !important;">
+      <div class="add-user-modal-overlay" @click="closeProfileSettingsModal">
         <div class="add-user-modal-container" @click.stop>
           <div class="add-user-modal-header">
             <h3>Profile Settings</h3>
@@ -292,18 +292,12 @@ const handleOutsideClick = (event) => {
 
 // Profile settings handlers
 const openProfileSettings = () => {
-  console.log('🔍 Opening profile settings modal');
-
   // Load current user data into the form
   profileData.value.name = user.value.name;
   profileData.value.email = user.value.email || 'admin@example.com';
 
-  console.log('📝 Profile data loaded:', profileData.value);
-
   showProfileSettingsModal.value = true;
   profileMenuOpen.value = false;
-
-  console.log('✅ Modal state set to:', showProfileSettingsModal.value);
 };
 
 const closeProfileSettingsModal = () => {
