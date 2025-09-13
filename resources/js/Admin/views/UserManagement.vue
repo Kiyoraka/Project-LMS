@@ -1,12 +1,5 @@
 <template>
   <div class="user-management">
-    <!-- User Management Header -->
-    <div class="page-header">
-      <div class="header-title">
-        <h2>User Management</h2>
-      </div>
-    </div>
-    
     <!-- Filters and Search -->
     <div class="filters-container">
       <div class="search-box">
