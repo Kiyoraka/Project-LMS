@@ -740,4 +740,78 @@ class AdminApiController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get current admin profile data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'bio' => $user->bio,
+                'phone' => $user->phone,
+                'profile_picture' => $user->profile_picture,
+                'avatar' => $user->profile_picture ? url('/public-avatar/' . $user->id) : null,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ]
+        ]);
+    }
+
+    /**
+     * Update admin profile information.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'bio' => 'nullable|string|max:1000',
+            'phone' => 'nullable|string|max:20'
+        ]);
+
+        try {
+            // Update the user
+            $user->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'bio' => $user->bio,
+                    'phone' => $user->phone,
+                    'profile_picture' => $user->profile_picture,
+                    'avatar' => $user->profile_picture ? url('/public-avatar/' . $user->id) : null,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update profile',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

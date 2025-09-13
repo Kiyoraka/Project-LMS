@@ -126,7 +126,11 @@ Route::prefix('admin')->name('api.admin.')->middleware(['web', 'auth', 'super_ad
     // Settings
     Route::get('/settings', [AdminApiController::class, 'getSettings'])->name('settings.index');
     Route::post('/settings', [AdminApiController::class, 'updateSettings'])->name('settings.update');
-    
+
+    // Profile Management
+    Route::get('/profile', [AdminApiController::class, 'getProfile'])->name('profile.show');
+    Route::put('/profile', [AdminApiController::class, 'updateProfile'])->name('profile.update');
+
     // File Uploads
     Route::post('/upload-logo', [AdminApiController::class, 'uploadLogo'])->name('upload.logo');
     Route::post('/upload-favicon', [AdminApiController::class, 'uploadFavicon'])->name('upload.favicon');

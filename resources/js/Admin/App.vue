@@ -193,27 +193,36 @@
           </div>
 
           <form @submit.prevent="updateProfile" class="add-user-modal-form">
-            <div class="add-user-form-group">
-              <label for="profile_name">Full Name</label>
-              <input
-                type="text"
-                id="profile_name"
-                v-model="profileData.name"
-                placeholder="Enter your full name"
-                required
-              >
+            <div v-if="isLoadingUserData" class="loading-state">
+              <i class="fas fa-spinner fa-spin"></i>
+              <span>Loading profile data...</span>
             </div>
 
-            <div class="add-user-form-group">
-              <label for="profile_email">Email Address</label>
-              <input
-                type="email"
-                id="profile_email"
-                v-model="profileData.email"
-                placeholder="Enter your email address"
-                required
-              >
-            </div>
+            <template v-else>
+              <div class="add-user-form-group">
+                <label for="profile_name">Full Name</label>
+                <input
+                  type="text"
+                  id="profile_name"
+                  v-model="profileData.name"
+                  placeholder="Enter your full name"
+                  required
+                  :disabled="isUpdatingProfile"
+                >
+              </div>
+
+              <div class="add-user-form-group">
+                <label for="profile_email">Email Address</label>
+                <input
+                  type="email"
+                  id="profile_email"
+                  v-model="profileData.email"
+                  placeholder="Enter your email address"
+                  required
+                  :disabled="isUpdatingProfile"
+                >
+              </div>
+            </template>
 
             <div class="add-user-modal-actions">
               <button type="button" @click="closeProfileSettingsModal" class="add-user-btn-outline">
@@ -290,11 +299,36 @@ const handleOutsideClick = (event) => {
   }
 };
 
+// Fetch current user data from API
+const fetchUserData = async () => {
+  isLoadingUserData.value = true;
+  userDataError.value = '';
+
+  try {
+    const response = await axios.get('/api/admin/profile');
+
+    if (response.data && response.data.user) {
+      user.value = {
+        ...user.value,
+        ...response.data.user
+      };
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    userDataError.value = 'Failed to load user data';
+  } finally {
+    isLoadingUserData.value = false;
+  }
+};
+
 // Profile settings handlers
-const openProfileSettings = () => {
+const openProfileSettings = async () => {
+  // Fetch fresh user data before opening modal
+  await fetchUserData();
+
   // Load current user data into the form
   profileData.value.name = user.value.name;
-  profileData.value.email = user.value.email || 'admin@example.com';
+  profileData.value.email = user.value.email;
 
   showProfileSettingsModal.value = true;
   profileMenuOpen.value = false;
@@ -306,26 +340,46 @@ const closeProfileSettingsModal = () => {
 };
 
 const updateProfile = async () => {
+  // Validate form data
+  if (!profileData.value.name.trim() || !profileData.value.email.trim()) {
+    alert('Please fill in all required fields');
+    return;
+  }
+
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(profileData.value.email)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
   isUpdatingProfile.value = true;
 
   try {
-    // Simulate API call for profile update
+    // Send profile update to API
     const response = await axios.put('/api/admin/profile', {
-      name: profileData.value.name,
-      email: profileData.value.email
+      name: profileData.value.name.trim(),
+      email: profileData.value.email.trim()
     });
 
-    // Update local user data
-    user.value.name = profileData.value.name;
-    user.value.email = profileData.value.email;
+    if (response.data && response.data.success) {
+      // Update local user data with response from server
+      user.value.name = response.data.user.name || profileData.value.name;
+      user.value.email = response.data.user.email || profileData.value.email;
 
-    // Show success message (you can add a toast notification here)
-    alert('Profile updated successfully!');
+      // Show success message
+      alert('Profile updated successfully!');
 
-    closeProfileSettingsModal();
+      closeProfileSettingsModal();
+    } else {
+      throw new Error(response.data.message || 'Update failed');
+    }
   } catch (error) {
     console.error('Error updating profile:', error);
-    alert('Failed to update profile. Please try again.');
+
+    // Show specific error message from server if available
+    const errorMessage = error.response?.data?.message || 'Failed to update profile. Please try again.';
+    alert(errorMessage);
   } finally {
     isUpdatingProfile.value = false;
   }
@@ -337,13 +391,18 @@ const openChangePassword = () => {
   profileMenuOpen.value = false;
 };
 
-// Mock user data (would come from API in real app)
+// User data (loaded from API)
 const user = ref({
+  id: null,
   name: 'Admin User',
   email: 'admin@example.com',
   avatar: '/assets/images/avatar.jpg',
   role: 'super_admin'
 });
+
+// Loading states
+const isLoadingUserData = ref(false);
+const userDataError = ref('');
 
 // Compute page title based on current route
 const route = useRoute();
@@ -373,10 +432,13 @@ const handleLogout = async () => {
 onMounted(async () => {
   // Initialize any dashboard functionality on mount
   console.log('Admin dashboard mounted');
-  
+
   // Initialize site settings
   await initializeSettings();
-  
+
+  // Fetch current user data
+  await fetchUserData();
+
   // Add event listeners
   document.addEventListener('click', handleOutsideClick);
 });
@@ -1103,5 +1165,28 @@ onUnmounted(() => {
   background: #f9fafb;
   border-color: #9ca3af;
   color: #374151;
+}
+
+/* Loading state for profile modal */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.loading-state i {
+  font-size: 1.2rem;
+  color: #0077b6;
+}
+
+/* Disabled input states */
+.add-user-form-group input:disabled {
+  background-color: #f9fafb;
+  color: #9ca3af;
+  cursor: not-allowed;
 }
 </style>
