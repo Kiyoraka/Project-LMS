@@ -1346,6 +1346,60 @@
                 behavior: 'smooth'
             });
         }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                document.body.style.overflow = 'hidden'; // Prevent body scroll
+            }
+        }
+
+        function closeModal(event) {
+            if (event) {
+                // Only close if clicking on the overlay, not the modal content
+                if (event.target === event.currentTarget) {
+                    const modal = event.currentTarget;
+                    modal.classList.add('hidden');
+                    modal.style.display = 'none';
+                    modal.style.visibility = 'hidden';
+                    modal.style.opacity = '0';
+                    document.body.style.overflow = ''; // Restore body scroll
+                }
+            } else {
+                // Called directly (from close button)
+                const modal = document.getElementById('loginModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.style.display = 'none';
+                    modal.style.visibility = 'hidden';
+                    modal.style.opacity = '0';
+                    document.body.style.overflow = ''; // Restore body scroll
+                }
+            }
+        }
+
+        // Login button click handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openModal('loginModal');
+                });
+            }
+
+            // Escape key to close modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
     </script>
     <script type="module" src="{{ asset('assets/js/main.js') }}"></script>
 </body>
