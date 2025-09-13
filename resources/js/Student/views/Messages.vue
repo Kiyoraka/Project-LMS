@@ -912,19 +912,19 @@ export default {
 }
 
 .stat-card.bg-purple {
-  background: #0077b6;
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .stat-card.bg-green {
-  background: #10b981;
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .stat-card.bg-blue {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .stat-card.bg-orange {
-  background: #f59e0b;
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -1470,7 +1470,7 @@ export default {
 }
 
 .toast-notification.warning {
-  background-color: #f59e0b;
+  background-color: #0077b6;
 }
 
 .toast-content {
@@ -1638,7 +1638,7 @@ export default {
 }
 
 .important-badge {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;

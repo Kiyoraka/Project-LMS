@@ -474,6 +474,12 @@ export default {
   color: white;
 }
 
+.nav-item.logout {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .nav-item.logout:hover {
   background: rgba(220, 53, 69, 0.2);
 }
