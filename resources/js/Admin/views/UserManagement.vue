@@ -1475,10 +1475,22 @@ onMounted(async () => {
 }
 
 .btn-reset {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  border: 1px solid #9ca3af;
   padding: 6px 12px;
   font-size: 0.95rem;
   border-radius: 6px;
   height: 32px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(107, 114, 128, 0.2);
+}
+
+.btn-reset:hover {
+  background: linear-gradient(135deg, #4b5563, #374151);
+  border-color: #6b7280;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(107, 114, 128, 0.3);
 }
 
 /* Action Buttons */
