@@ -127,19 +127,19 @@ onMounted(() => {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #0077b6, #001d3d);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .stat-icon {
