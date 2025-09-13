@@ -83,7 +83,7 @@
 }
 
 .nav-link:hover {
-    color: #7c3aed;
+    color: #0077b6;
 }
 
 .nav-link::after {
@@ -93,7 +93,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--ultra-deep-purple);
+    background: var(--ultra-deep-blue);
     transition: var(--transition);
 }
 
