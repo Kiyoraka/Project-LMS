@@ -81,6 +81,7 @@
     <main class="mobile-content">
       <router-view></router-view>
     </main>
+
   </div>
 
   <!-- Desktop Layout -->
@@ -179,6 +180,55 @@
         <router-view></router-view>
       </div>
     </main>
+
+    <!-- Profile Settings Modal (Desktop) -->
+    <teleport to="body" v-if="showProfileSettingsModal">
+      <div class="add-user-modal-overlay" @click="closeProfileSettingsModal">
+        <div class="add-user-modal-container" @click.stop>
+          <div class="add-user-modal-header">
+            <h3>Profile Settings</h3>
+            <button @click="closeProfileSettingsModal" class="add-user-modal-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <form @submit.prevent="updateProfile" class="add-user-modal-form">
+            <div class="add-user-form-group">
+              <label for="profile_name">Full Name</label>
+              <input
+                type="text"
+                id="profile_name"
+                v-model="profileData.name"
+                placeholder="Enter your full name"
+                required
+              >
+            </div>
+
+            <div class="add-user-form-group">
+              <label for="profile_email">Email Address</label>
+              <input
+                type="email"
+                id="profile_email"
+                v-model="profileData.email"
+                placeholder="Enter your email address"
+                required
+              >
+            </div>
+
+            <div class="add-user-modal-actions">
+              <button type="button" @click="closeProfileSettingsModal" class="add-user-btn-outline">
+                Cancel
+              </button>
+              <button type="submit" class="add-user-btn-primary" :disabled="isUpdatingProfile">
+                <i v-if="isUpdatingProfile" class="fas fa-spinner fa-spin"></i>
+                <i v-else class="fas fa-save"></i>
+                {{ isUpdatingProfile ? 'Saving...' : 'Save Changes' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </teleport>
   </div>
 </template>
 
@@ -217,6 +267,14 @@ const toggleSidebar = () => {
 const profileMenuOpen = ref(false);
 const userMenuRef = ref(null);
 
+// Profile settings modal state
+const showProfileSettingsModal = ref(false);
+const isUpdatingProfile = ref(false);
+const profileData = ref({
+  name: '',
+  email: ''
+});
+
 const toggleProfileMenu = () => {
   profileMenuOpen.value = !profileMenuOpen.value;
 };
@@ -234,9 +292,43 @@ const handleOutsideClick = (event) => {
 
 // Profile settings handlers
 const openProfileSettings = () => {
-  // In a real app, this would open a profile settings modal
-  alert('Profile settings would open here');
+  // Load current user data into the form
+  profileData.value.name = user.value.name;
+  profileData.value.email = user.value.email || 'admin@example.com';
+
+  showProfileSettingsModal.value = true;
   profileMenuOpen.value = false;
+};
+
+const closeProfileSettingsModal = () => {
+  showProfileSettingsModal.value = false;
+  isUpdatingProfile.value = false;
+};
+
+const updateProfile = async () => {
+  isUpdatingProfile.value = true;
+
+  try {
+    // Simulate API call for profile update
+    const response = await axios.put('/api/admin/profile', {
+      name: profileData.value.name,
+      email: profileData.value.email
+    });
+
+    // Update local user data
+    user.value.name = profileData.value.name;
+    user.value.email = profileData.value.email;
+
+    // Show success message (you can add a toast notification here)
+    alert('Profile updated successfully!');
+
+    closeProfileSettingsModal();
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    alert('Failed to update profile. Please try again.');
+  } finally {
+    isUpdatingProfile.value = false;
+  }
 };
 
 const openChangePassword = () => {
@@ -248,6 +340,7 @@ const openChangePassword = () => {
 // Mock user data (would come from API in real app)
 const user = ref({
   name: 'Admin User',
+  email: 'admin@example.com',
   avatar: '/assets/images/avatar.jpg',
   role: 'super_admin'
 });
