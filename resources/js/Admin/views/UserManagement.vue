@@ -369,16 +369,11 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="userPassword">Password *</label>
-            <input
-              type="password"
-              id="userPassword"
-              v-model="newUser.password"
-              placeholder="Enter password (min 8 characters)"
-              required
-              minlength="8"
-            >
+          <div class="password-info">
+            <div class="info-box">
+              <i class="fas fa-info-circle"></i>
+              <span>Default password will be set to: <strong>admin123</strong></span>
+            </div>
           </div>
 
           <div class="form-group">
@@ -424,7 +419,7 @@ const newUser = ref({
   email: '',
   role: '',
   phone: '',
-  password: '',
+  password: 'admin123',
   bio: '',
   is_active: true
 });
@@ -790,7 +785,7 @@ const openAddUserModal = () => {
     email: '',
     role: '',
     phone: '',
-    password: '',
+    password: 'admin123',
     bio: '',
     is_active: true
   };
@@ -810,15 +805,13 @@ const submitAddUser = async () => {
     error.value = '';
 
     // Basic validation
-    if (!newUser.value.name || !newUser.value.email || !newUser.value.role || !newUser.value.password) {
+    if (!newUser.value.name || !newUser.value.email || !newUser.value.role) {
       error.value = 'Please fill in all required fields';
       return;
     }
 
-    if (newUser.value.password.length < 8) {
-      error.value = 'Password must be at least 8 characters long';
-      return;
-    }
+    // Ensure password is set to default
+    newUser.value.password = 'admin123';
 
     // Submit to API
     const response = await fetch('/api/admin/users', {
@@ -1737,6 +1730,33 @@ onMounted(async () => {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+/* Password Info */
+.password-info {
+  margin-bottom: 16px;
+}
+
+.info-box {
+  background: linear-gradient(135deg, #e0f2fe, #b3e5fc);
+  border: 1px solid #0077b6;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #01579b;
+  font-size: 0.9rem;
+}
+
+.info-box i {
+  color: #0077b6;
+  font-size: 1rem;
+}
+
+.info-box strong {
+  color: #004d40;
+  font-weight: 600;
 }
 
 /* Responsive */
