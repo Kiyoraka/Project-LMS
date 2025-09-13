@@ -1328,87 +1328,43 @@ onUnmounted(() => {
   color: white;
 }
 
-/* Success Theme */
-.notification-success {
-  background: linear-gradient(135deg, #10b981, #047857);
-  color: white;
-}
-
-.notification-success .notification-icon {
-  color: #10b981;
-}
-
-.notification-success .notification-modal-close {
-  color: white;
-}
-
-.notification-success .notification-modal-close:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.notification-btn-success {
-  background: linear-gradient(135deg, #10b981, #047857);
-}
-
-.notification-btn-success:hover {
-  background: linear-gradient(135deg, #059669, #065f46);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-/* Error Theme */
-.notification-error {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-}
-
-.notification-error .notification-icon {
-  color: #ef4444;
-}
-
-.notification-error .notification-modal-close {
-  color: white;
-}
-
-.notification-error .notification-modal-close:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.notification-btn-error {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-}
-
-.notification-btn-error:hover {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-/* Warning Theme */
+/* Consistent Blue Theme for All Notifications */
+.notification-success,
+.notification-error,
 .notification-warning {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
 }
 
+.notification-success .notification-icon,
+.notification-error .notification-icon,
 .notification-warning .notification-icon {
-  color: #f59e0b;
+  color: white;
 }
 
+.notification-success .notification-modal-close,
+.notification-error .notification-modal-close,
 .notification-warning .notification-modal-close {
   color: white;
 }
 
+.notification-success .notification-modal-close:hover,
+.notification-error .notification-modal-close:hover,
 .notification-warning .notification-modal-close:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.notification-btn-success,
+.notification-btn-error,
 .notification-btn-warning {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
+.notification-btn-success:hover,
+.notification-btn-error:hover,
 .notification-btn-warning:hover {
-  background: linear-gradient(135deg, #d97706, #b45309);
+  background: linear-gradient(135deg, #005577, #001122);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
 }
 </style>
