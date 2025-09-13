@@ -1126,34 +1126,98 @@
     <div id="loginModal" class="modal-overlay hidden" style="display: none; visibility: hidden;" onclick="closeModal(event)">
         <div class="modal-container" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3>Login to Your Account</h3>
+                <h3>Demo Login Access</h3>
                 <button class="modal-close" onclick="closeModal()" type="button">&times;</button>
             </div>
-            <form id="loginForm" method="POST" action="{{ route('login') }}">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="modal-email">Email</label>
-                        <input type="email" id="modal-email" name="email" placeholder="Enter your email" autocomplete="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="modal-password">Password</label>
-                        <input type="password" id="modal-password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <label for="remember-me">
-                            <input type="checkbox" id="remember-me" name="remember" value="1"> Remember me
-                        </label>
-                        <a href="#" class="forgot-link">Forgot password?</a>
-                    </div>
+            <div class="modal-body" style="padding: 2rem;">
+                <p style="text-align: center; color: #0077b6; margin-bottom: 2rem; font-size: 1rem; line-height: 1.6;">
+                    Quick login as any of our demo users to explore different dashboard experiences
+                </p>
+
+                <!-- Quick Login Buttons -->
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                    <button type="button" class="demo-login-btn" onclick="quickLogin('admin@gmail.com', 'admin123')" style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); color: white; border: none; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1rem; font-weight: 700; margin-bottom: 2px;">Super Admin</div>
+                                <div style="font-size: 0.85rem; opacity: 0.9;">admin@gmail.com</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right" style="opacity: 0.7;"></i>
+                    </button>
+
+                    <button type="button" class="demo-login-btn" onclick="quickLogin('teacher@gmail.com', 'admin123')" style="background: linear-gradient(135deg, #003566 0%, #0096c7 100%); color: white; border: none; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0, 150, 199, 0.3);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1rem; font-weight: 700; margin-bottom: 2px;">Test Teacher</div>
+                                <div style="font-size: 0.85rem; opacity: 0.9;">teacher@gmail.com</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right" style="opacity: 0.7;"></i>
+                    </button>
+
+                    <button type="button" class="demo-login-btn" onclick="quickLogin('student@gmail.com', 'admin123')" style="background: linear-gradient(135deg, #0077b6 0%, #48cae4 100%); color: white; border: none; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(72, 202, 228, 0.3);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 1rem; font-weight: 700; margin-bottom: 2px;">Test Student</div>
+                                <div style="font-size: 0.85rem; opacity: 0.9;">student@gmail.com</div>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right" style="opacity: 0.7;"></i>
+                    </button>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="login-submit-btn">Login</button>
-                    <p class="register-link">Don't have an account? <a href="#" id="showRegisterLink">Register</a></p>
+
+                <!-- Manual Login Form -->
+                <div style="border-top: 2px solid #e2e8f0; padding-top: 1.5rem;">
+                    <p style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 1rem;">
+                        Or login manually:
+                    </p>
+                    <form id="loginForm" method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="modal-email">Email</label>
+                            <input type="email" id="modal-email" name="email" placeholder="Enter your email" autocomplete="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-password">Password</label>
+                            <input type="password" id="modal-password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label for="remember-me">
+                                <input type="checkbox" id="remember-me" name="remember" value="1"> Remember me
+                            </label>
+                        </div>
+                        <button type="submit" class="login-submit-btn">Login</button>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
+    <style>
+        .demo-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 119, 182, 0.4) !important;
+        }
+
+        .demo-login-btn:active {
+            transform: translateY(0px);
+        }
+
+        .demo-login-btn:hover .fa-chevron-right {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+    </style>
 
     <!-- Marketplace Development Modal -->
     <div id="marketplaceModal" class="modal-overlay hidden" style="display: none; visibility: hidden;" onclick="closeMarketplaceModal(event)">
@@ -1381,6 +1445,16 @@
                     document.body.style.overflow = ''; // Restore body scroll
                 }
             }
+        }
+
+        // Quick login function for demo users
+        function quickLogin(email, password) {
+            document.getElementById('modal-email').value = email;
+            document.getElementById('modal-password').value = password;
+            document.getElementById('remember-me').checked = true;
+
+            // Submit the form automatically
+            document.getElementById('loginForm').submit();
         }
 
         // Login button click handler
