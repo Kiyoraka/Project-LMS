@@ -987,20 +987,6 @@
                         Built on enterprise-grade architecture with intuitive design principles, our platform empowers institutions to
                         scale their educational impact while maintaining quality and engagement across all learning modalities.
                     </p>
-                    <div style="display: flex; gap: 30px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">10K+</div>
-                            <div style="font-size: 0.9rem; color: #0077b6;">Active Users</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">500+</div>
-                            <div style="font-size: 0.9rem; color: #0077b6;">Courses Available</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: 700; color: #0077b6; margin-bottom: 8px;">98%</div>
-                            <div style="font-size: 0.9rem; color: #0077b6;">Satisfaction Rate</div>
-                        </div>
-                    </div>
                 </div>
 
                 <div style="position: relative;">
