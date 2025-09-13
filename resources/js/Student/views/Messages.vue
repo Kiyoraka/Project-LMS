@@ -849,7 +849,7 @@ export default {
 
 /* Header Section */
 .messages-page-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #0077b6, #4a90a4);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -912,7 +912,7 @@ export default {
 }
 
 .stat-card.bg-purple {
-  background: #6a5acd;
+  background: #0077b6;
 }
 
 .stat-card.bg-green {
@@ -1012,7 +1012,7 @@ export default {
 
 .search-input:focus {
   outline: none;
-  border-color: #6a5acd;
+  border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
 }
 
@@ -1049,13 +1049,13 @@ export default {
 }
 
 .tab-btn:hover {
-  color: #6a5acd;
+  color: #0077b6;
   background-color: rgba(106, 90, 205, 0.05);
 }
 
 .tab-btn.active {
-  color: #6a5acd;
-  border-bottom: 3px solid #6a5acd;
+  color: #0077b6;
+  border-bottom: 3px solid #0077b6;
   font-weight: 600;
 }
 
@@ -1109,7 +1109,7 @@ export default {
 
 .filter-select:focus {
   outline: none;
-  border-color: #6a5acd;
+  border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
 }
 
@@ -1151,7 +1151,7 @@ export default {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #0077b6, #4a90a4);
   color: white;
   display: flex;
   align-items: center;
@@ -1233,7 +1233,7 @@ export default {
 }
 
 .meta-item i {
-  color: #6a5acd;
+  color: #0077b6;
   margin-right: 5px;
 }
 
@@ -1276,7 +1276,7 @@ export default {
 }
 
 .btn-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   box-shadow: 0 2px 5px rgba(106, 90, 205, 0.3);
 }
@@ -1293,12 +1293,12 @@ export default {
 
 .btn-outline-primary {
   background-color: transparent;
-  color: #6a5acd;
-  border: 1px solid #6a5acd;
+  color: #0077b6;
+  border: 1px solid #0077b6;
 }
 
 .btn-outline-primary:hover {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
 }
 
@@ -1336,7 +1336,7 @@ export default {
   width: 32px;
   height: 32px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #6a5acd;
+  border-top: 3px solid #0077b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 12px;
@@ -1424,7 +1424,7 @@ export default {
 .form-control:focus,
 .form-select:focus {
   outline: none;
-  border-color: #6a5acd;
+  border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
 }
 
@@ -1572,7 +1572,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #0077b6, #4a90a4);
   color: white;
 }
 
@@ -1613,7 +1613,7 @@ export default {
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 20px;
-  border-left: 4px solid #6a5acd;
+  border-left: 4px solid #0077b6;
 }
 
 .info-row {

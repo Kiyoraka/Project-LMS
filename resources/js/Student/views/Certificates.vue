@@ -578,7 +578,7 @@ export default {
 
 /* Header Section */
 .certificates-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -622,19 +622,19 @@ export default {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -698,8 +698,8 @@ export default {
 
 .search-input:focus {
   outline: none;
-  border-color: #6a5acd;
-  box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-box i {
@@ -728,7 +728,7 @@ export default {
 
 .filter-select:focus {
   outline: none;
-  border-color: #6a5acd;
+  border-color: #0077b6;
 }
 
 /* Modern Certificates Grid */
@@ -757,7 +757,7 @@ export default {
 
 /* Card Header */
 .card-header {
-  background: linear-gradient(135deg, #6a5acd 0%, #8a6ccf 50%, #a084d6 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 50%, #4a90a4 100%);
   padding: 20px;
   color: white;
   position: relative;
@@ -862,13 +862,13 @@ export default {
 }
 
 .category-tag {
-  background: linear-gradient(135deg, #f8f9ff, #eef2ff);
-  color: #6a5acd;
+  background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+  color: #0077b6;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
-  border: 1px solid rgba(106, 90, 205, 0.2);
+  border: 1px solid rgba(0, 119, 182, 0.2);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -922,7 +922,7 @@ export default {
 }
 
 .detail-item i {
-  color: #6a5acd;
+  color: #0077b6;
   font-size: 1.1rem;
   width: 20px;
   text-align: center;
@@ -960,7 +960,7 @@ export default {
 .preview-icon {
   width: 40px;
   height: 40px;
-  background: #6a5acd;
+  background: #0077b6;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -1039,28 +1039,28 @@ export default {
 
 .btn-view {
   background: white;
-  color: #6a5acd;
-  border: 2px solid #6a5acd;
+  color: #0077b6;
+  border: 2px solid #0077b6;
 }
 
 .btn-view:hover:not(:disabled) {
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(106, 90, 205, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
 }
 
 .btn-download {
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
-  border: 2px solid #6a5acd;
+  border: 2px solid #0077b6;
 }
 
 .btn-download:hover:not(:disabled) {
-  background: #5a4ac7;
-  border-color: #5a4ac7;
+  background: #001d3d;
+  border-color: #001d3d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(106, 90, 205, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.4);
 }
 
 .btn-share {
@@ -1123,39 +1123,39 @@ export default {
 
 .btn-primary {
   color: #fff;
-  background-color: #6a5acd;
-  border-color: #6a5acd;
+  background-color: #0077b6;
+  border-color: #0077b6;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #5a4ac7;
-  border-color: #5a4ac7;
+  background-color: #001d3d;
+  border-color: #001d3d;
 }
 
 .btn-primary:focus {
   color: #fff;
-  background-color: #5a4ac7;
-  border-color: #5a4ac7;
-  box-shadow: 0 0 0 0.25rem rgba(106, 90, 205, 0.5);
+  background-color: #001d3d;
+  border-color: #001d3d;
+  box-shadow: 0 0 0 0.25rem rgba(0, 119, 182, 0.5);
 }
 
 .btn-outline-primary {
-  color: #6a5acd;
-  border-color: #6a5acd;
+  color: #0077b6;
+  border-color: #0077b6;
 }
 
 .btn-outline-primary:hover {
   color: #fff;
-  background-color: #6a5acd;
-  border-color: #6a5acd;
+  background-color: #0077b6;
+  border-color: #0077b6;
 }
 
 .btn-outline-primary:focus {
   color: #fff;
-  background-color: #6a5acd;
-  border-color: #6a5acd;
-  box-shadow: 0 0 0 0.25rem rgba(106, 90, 205, 0.25);
+  background-color: #0077b6;
+  border-color: #0077b6;
+  box-shadow: 0 0 0 0.25rem rgba(0, 119, 182, 0.25);
 }
 
 .btn-outline-secondary {
@@ -1253,14 +1253,14 @@ export default {
 }
 
 .certificate-border {
-  border: 8px solid #6a5acd;
+  border: 8px solid #0077b6;
   border-radius: 12px;
   padding: 8px;
   background: white;
 }
 
 .certificate-inner {
-  border: 2px solid #6a5acd;
+  border: 2px solid #0077b6;
   padding: 40px;
   text-align: center;
   background: linear-gradient(135deg, #fafafa, #ffffff);
@@ -1268,12 +1268,12 @@ export default {
 
 .certificate-logo {
   font-size: 3rem;
-  color: #6a5acd;
+  color: #0077b6;
   margin-bottom: 20px;
 }
 
 .certificate-inner h2 {
-  color: #6a5acd;
+  color: #0077b6;
   font-size: 2rem;
   margin-bottom: 20px;
   font-weight: 700;
@@ -1362,8 +1362,8 @@ export default {
 
 .pagination-btn:hover:not(:disabled) {
   background: #f9fafb;
-  border-color: #6a5acd;
-  color: #6a5acd;
+  border-color: #0077b6;
+  color: #0077b6;
 }
 
 .pagination-btn:disabled {
@@ -1392,13 +1392,13 @@ export default {
 
 .page-btn:hover {
   background: #f9fafb;
-  border-color: #6a5acd;
-  color: #6a5acd;
+  border-color: #0077b6;
+  color: #0077b6;
 }
 
 .page-btn.active {
-  background: #6a5acd;
-  border-color: #6a5acd;
+  background: #0077b6;
+  border-color: #0077b6;
   color: white;
 }
 

@@ -379,7 +379,7 @@ export default {
 
 /* Header Section */
 .courses-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -423,19 +423,19 @@ export default {
 }
 
 .bg-primary {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
 }
 
 .bg-success {
-  background: linear-gradient(135deg, #2cc069, #40d787);
+  background: linear-gradient(135deg, #0077b6, #003d5c);
 }
 
 .bg-warning {
-  background: linear-gradient(135deg, #f59f0b, #ffbc3e);
+  background: linear-gradient(135deg, #0099cc, #004d66);
 }
 
 .bg-info {
-  background: linear-gradient(135deg, #8a70d6, #9e86e8);
+  background: linear-gradient(135deg, #4a90a4, #001d3d);
 }
 
 .stat-icon {
@@ -508,8 +508,8 @@ export default {
 
 .search-input:focus {
   outline: none;
-  border-color: #6a5acd;
-  box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-box i {
@@ -545,13 +545,13 @@ export default {
 }
 
 .nav-link:hover {
-  color: #6a5acd;
-  background-color: rgba(106, 90, 205, 0.05);
+  color: #0077b6;
+  background-color: rgba(0, 119, 182, 0.05);
 }
 
 .nav-link.active {
-  color: #6a5acd;
-  border-bottom: 3px solid #6a5acd;
+  color: #0077b6;
+  border-bottom: 3px solid #0077b6;
   font-weight: 600;
 }
 
@@ -599,7 +599,7 @@ export default {
   position: absolute;
   top: 15px;
   left: 15px;
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   font-size: 0.75rem;
   font-weight: 500;
@@ -662,7 +662,7 @@ export default {
 }
 
 .meta-item i {
-  color: #6a5acd;
+  color: #0077b6;
   margin-right: 5px;
 }
 
@@ -678,7 +678,7 @@ export default {
 
 .progress-value {
   font-size: 0.85rem;
-  color: #6a5acd;
+  color: #0077b6;
   font-weight: 600;
 }
 
@@ -691,7 +691,7 @@ export default {
 
 .progress-fill {
   height: 100%;
-  background-color: #6a5acd;
+  background-color: #0077b6;
   border-radius: 3px;
 }
 
@@ -731,25 +731,25 @@ export default {
 }
 
 .btn-primary {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
   border: none;
-  box-shadow: 0 2px 5px rgba(106, 90, 205, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 119, 182, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #5a4ac7;
-  box-shadow: 0 4px 8px rgba(106, 90, 205, 0.4);
+  background-color: #001d3d;
+  box-shadow: 0 4px 8px rgba(0, 119, 182, 0.4);
 }
 
 .btn-outline-primary {
-  border: 1px solid #6a5acd;
-  color: #6a5acd;
+  border: 1px solid #0077b6;
+  color: #0077b6;
   background-color: transparent;
 }
 
 .btn-outline-primary:hover {
-  background-color: #6a5acd;
+  background-color: #0077b6;
   color: white;
 }
 
@@ -1066,7 +1066,7 @@ export default {
 }
 
 .text-primary {
-  color: #6a5acd;
+  color: #0077b6;
 }
 
 .flex-grow-1 {

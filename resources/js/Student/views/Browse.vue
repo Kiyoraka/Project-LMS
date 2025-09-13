@@ -556,7 +556,7 @@ export default {
 
 /* Header Section */
 .browse-header {
-  background: linear-gradient(135deg, #6a5acd, #8a6ccf);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -614,7 +614,7 @@ export default {
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: #6a5acd;
+  color: #0077b6;
   font-size: 1.1rem;
 }
 
@@ -643,7 +643,7 @@ export default {
 }
 
 .filter-select option {
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
 }
 
@@ -826,7 +826,7 @@ export default {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
   display: flex;
   align-items: center;
@@ -881,7 +881,7 @@ export default {
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: #6a5acd;
+  background: #0077b6;
   border: none;
   color: white;
   cursor: pointer;
@@ -889,7 +889,7 @@ export default {
 }
 
 .btn-enroll:hover:not(:disabled) {
-  background: #5a4ac7;
+  background: #001d3d;
   transform: translateY(-1px);
 }
 
@@ -923,8 +923,8 @@ export default {
 
 .pagination-btn:hover:not(:disabled) {
   background: #f9fafb;
-  border-color: #6a5acd;
-  color: #6a5acd;
+  border-color: #0077b6;
+  color: #0077b6;
 }
 
 .pagination-btn:disabled {
@@ -953,13 +953,13 @@ export default {
 
 .page-btn:hover {
   background: #f9fafb;
-  border-color: #6a5acd;
-  color: #6a5acd;
+  border-color: #0077b6;
+  color: #0077b6;
 }
 
 .page-btn.active {
-  background: #6a5acd;
-  border-color: #6a5acd;
+  background: #0077b6;
+  border-color: #0077b6;
   color: white;
 }
 
@@ -1211,7 +1211,7 @@ export default {
 }
 
 .enrollment-header.success {
-  background: linear-gradient(135deg, #6a5acd 0%, #8a6ccf 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%);
 }
 
 .enrollment-header.error {
@@ -1261,7 +1261,7 @@ export default {
 }
 
 .btn-success {
-  background: #6a5acd;
+  background: #0077b6;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -1275,9 +1275,9 @@ export default {
 }
 
 .btn-success:hover {
-  background: #5a4ac7;
+  background: #001d3d;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(106, 90, 205, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.4);
 }
 
 .btn-danger {

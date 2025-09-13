@@ -924,7 +924,7 @@ export default {
 
 /* Course Header */
 .course-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%);
   color: white;
   margin: -24px -24px 0 -24px;
   padding: 30px 24px;
@@ -1318,19 +1318,19 @@ export default {
 }
 
 .btn-mark-complete.enabled {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: linear-gradient(135deg, #0077b6 0%, #003d5c 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
 .btn-mark-complete.enabled:hover {
-  background: linear-gradient(135deg, #218838 0%, #1ea584 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
 }
 
 .btn-mark-complete.disabled {
-  background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+  background: linear-gradient(135deg, #4a90a4 0%, #001d3d 100%);
   color: #dee2e6;
   cursor: not-allowed;
   opacity: 0.7;
@@ -1701,7 +1701,7 @@ export default {
 }
 
 .progress-modal .modal-header {
-  background: linear-gradient(135deg, #fd7e14 0%, #e63946 100%);
+  background: linear-gradient(135deg, #0099cc 0%, #004d66 100%);
   color: white;
   padding: 24px;
   position: relative;
@@ -1777,7 +1777,7 @@ export default {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #fd7e14 0%, #e63946 100%);
+  background: linear-gradient(90deg, #001d3d 0%, #0077b6 100%);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
@@ -1803,7 +1803,7 @@ export default {
 }
 
 .btn-close {
-  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  background: linear-gradient(135deg, #4a90a4 0%, #001d3d 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -1817,7 +1817,7 @@ export default {
 }
 
 .btn-close:hover {
-  background: linear-gradient(135deg, #5a6268 0%, #3d4142 100%);
+  background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%);
   transform: translateY(-1px);
 }
 
