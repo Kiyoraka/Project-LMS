@@ -932,17 +932,35 @@
             </div>
             
             <div class="hero-right">
-                <div class="welcome-card">
-                    <div class="welcome-badge">
-                        <span class="welcome-text">WELCOME</span>
-                        <span class="to-text">TO</span>
-                        <span class="brand-text" id="welcome-card-site-name">LMS Prototype</span>
+                <div class="course-showcase" style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0, 119, 182, 0.3); border: 1px solid rgba(0, 180, 216, 0.3);">
+                    <div class="course-header" style="margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 12px; height: 12px; background: #48cae4; border-radius: 50%;"></div>
+                            <span style="color: #48cae4; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Featured Course</span>
+                        </div>
+                        <h3 style="color: white; font-size: 1.4rem; font-weight: 700; margin: 0; line-height: 1.3;">Advanced Web Development</h3>
+                        <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 8px 0 0 0;">Master modern frameworks and build scalable applications</p>
                     </div>
-                    <div class="instructor-image">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&crop=face" alt="Instructor" id="instructorImg">
-                        <div class="live-indicator">
-                            <span class="live-dot"></span>
-                            LIVE
+
+                    <div class="course-stats" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; text-align: center;">
+                            <div style="color: #48cae4; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">4.9</div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Rating</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; text-align: center;">
+                            <div style="color: #48cae4; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">2.4K</div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Students</div>
+                        </div>
+                    </div>
+
+                    <div class="course-instructor" style="display: flex; align-items: center; gap: 12px;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Instructor" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(72, 202, 228, 0.5);">
+                        <div>
+                            <div style="color: white; font-size: 0.9rem; font-weight: 600;">Dr. Alex Chen</div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Senior Developer</div>
+                        </div>
+                        <div style="margin-left: auto; background: rgba(72, 202, 228, 0.2); color: #48cae4; padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600;">
+                            LIVE NOW
                         </div>
                     </div>
                 </div>
@@ -1033,7 +1051,7 @@
                     <p style="color: rgba(255, 255, 255, 0.9) !important; line-height: 1.45 !important; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important; font-size: 0.875rem !important; margin: 0 !important;">Comprehensive dashboards for Super Admins, Teachers, and Students with role-based access control and user management.</p>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100" style="background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100" style="background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important; border: 1px solid rgba(0, 180, 216, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
                     <div class="feature-icon" style="background: rgba(255, 255, 255, 0.2) !important; color: white !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.6rem !important; margin-bottom: 0.875rem !important; border: 2px solid rgba(255, 255, 255, 0.3) !important; backdrop-filter: blur(10px) !important;">
                         <i class="fas fa-book-open"></i>
                     </div>
@@ -1041,7 +1059,7 @@
                     <p style="color: rgba(255, 255, 255, 0.9) !important; line-height: 1.45 !important; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important; font-size: 0.875rem !important; margin: 0 !important;">Create and organize courses with modules and lessons. Teachers can upload video content and manage course materials easily.</p>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200" style="background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200" style="background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important; border: 1px solid rgba(0, 180, 216, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
                     <div class="feature-icon" style="background: rgba(255, 255, 255, 0.2) !important; color: white !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.6rem !important; margin-bottom: 0.875rem !important; border: 2px solid rgba(255, 255, 255, 0.3) !important; backdrop-filter: blur(10px) !important;">
                         <i class="fas fa-comments"></i>
                     </div>
@@ -1049,7 +1067,7 @@
                     <p style="color: rgba(255, 255, 255, 0.9) !important; line-height: 1.45 !important; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important; font-size: 0.875rem !important; margin: 0 !important;">Built-in messaging system enabling seamless communication between teachers and students for better learning support.</p>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="300" style="background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300" style="background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important; border: 1px solid rgba(0, 180, 216, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
                     <div class="feature-icon" style="background: rgba(255, 255, 255, 0.2) !important; color: white !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.6rem !important; margin-bottom: 0.875rem !important; border: 2px solid rgba(255, 255, 255, 0.3) !important; backdrop-filter: blur(10px) !important;">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -1057,7 +1075,7 @@
                     <p style="color: rgba(255, 255, 255, 0.9) !important; line-height: 1.45 !important; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important; font-size: 0.875rem !important; margin: 0 !important;">Track student progress through lessons and courses with detailed completion status and learning metrics.</p>
                 </div>
                 
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="400" style="background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400" style="background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important; color: white !important; padding: 1.5rem !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important; border: 1px solid rgba(0, 180, 216, 0.3) !important; min-height: auto !important; display: flex !important; flex-direction: column !important; align-items: center !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
                     <div class="feature-icon" style="background: rgba(255, 255, 255, 0.2) !important; color: white !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.6rem !important; margin-bottom: 0.875rem !important; border: 2px solid rgba(255, 255, 255, 0.3) !important; backdrop-filter: blur(10px) !important;">
                         <i class="fas fa-trophy"></i>
                     </div>
