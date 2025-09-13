@@ -370,8 +370,8 @@ const initUserChart = async () => {
         datasets: [{
           label: 'New Users',
           data: data,
-          borderColor: '#7c3aed',
-          backgroundColor: 'rgba(124, 58, 237, 0.1)',
+          borderColor: '#0077b6',
+          backgroundColor: 'rgba(0, 119, 182, 0.1)',
           tension: 0.3,
           fill: true
         }]
@@ -557,7 +557,7 @@ onUnmounted(() => {
 }
 
 .stats-icon.users {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
 .stats-icon.courses {
@@ -647,8 +647,8 @@ onUnmounted(() => {
 }
 
 .chart-actions select:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.1);
 }
 
 .chart-body {
@@ -685,12 +685,12 @@ onUnmounted(() => {
   align-items: center;
   gap: 12px;
   padding: 16px 24px;
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
   color: white;
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.95rem;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
   animation: pulse 2s infinite;
 }
 
@@ -744,7 +744,7 @@ onUnmounted(() => {
 }
 
 .view-all {
-  color: #7c3aed;
+  color: #0077b6;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -752,7 +752,7 @@ onUnmounted(() => {
 }
 
 .view-all:hover {
-  color: #5b21b6;
+  color: #001d3d;
 }
 
 .card-body {
@@ -800,7 +800,7 @@ onUnmounted(() => {
 }
 
 .activity-icon.enrollment {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #0077b6, #001d3d);
 }
 
 .activity-content {

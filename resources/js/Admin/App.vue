@@ -5,7 +5,7 @@
     <header class="mobile-header">
       <div class="mobile-header-content">
         <div class="mobile-logo">
-          <img :src="logoUrl" alt="Aidel LMS" class="mobile-logo-img">
+          <img :src="logoUrl" alt="LMS Prototype" class="mobile-logo-img">
           <span class="mobile-title">Admin</span>
         </div>
         <div class="mobile-header-actions">
@@ -92,7 +92,7 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="vue-sidebar">
       <div class="sidebar-header">
-        <img :src="logoUrl" alt="Aidel LMS" class="logo">
+        <img :src="logoUrl" alt="LMS Prototype" class="logo">
         <h1>Admin Dashboard</h1>
       </div>
       
@@ -313,7 +313,7 @@ onUnmounted(() => {
 }
 
 .mobile-header {
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   padding: 12px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -430,11 +430,11 @@ onUnmounted(() => {
 }
 
 .mobile-nav-item:active {
-  color: #7c3aed;
+  color: #0077b6;
 }
 
 .mobile-nav-item.router-link-active {
-  color: #7c3aed;
+  color: #0077b6;
   font-weight: 600;
 }
 
@@ -476,7 +476,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   border-radius: 20px 20px 0 0;
 }
@@ -536,7 +536,7 @@ onUnmounted(() => {
 }
 
 .mobile-profile-action:active {
-  color: #7c3aed;
+  color: #0077b6;
 }
 
 .mobile-profile-action.logout {
@@ -568,7 +568,7 @@ onUnmounted(() => {
 /* Sidebar Styles */
 .sidebar {
   width: 280px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   color: white;
   transition: all 0.3s ease;
   display: flex;
@@ -687,8 +687,8 @@ onUnmounted(() => {
 }
 
 .search-box input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.1);
 }
 
 .search-box i {
@@ -727,7 +727,7 @@ onUnmounted(() => {
   height: 32px;
   border-radius: 50%;
   margin-right: 8px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  background: linear-gradient(135deg, #001d3d, #0077b6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -774,7 +774,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(to right, #7c3aed, #4f46e5);
+  background: linear-gradient(to right, #001d3d, #0077b6);
   color: white;
 }
 
@@ -830,8 +830,8 @@ onUnmounted(() => {
 
 .dropdown-item:hover {
   background-color: #f3f4f6;
-  border-left-color: #7c3aed;
-  color: #7c3aed;
+  border-left-color: #0077b6;
+  color: #0077b6;
 }
 
 .dropdown-item i {

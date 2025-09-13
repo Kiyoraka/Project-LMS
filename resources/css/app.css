@@ -10,15 +10,15 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-/* Purple Feature Cards - Vite Build */
+/* Blue Corporate Feature Cards - Vite Build */
 .feature-card {
-    background: linear-gradient(120deg, #0f0519 0%, #1a0b2e 25%, #2d1b4e 50%, #4c1d95 75%, #7c3aed 100%) !important;
+    background: linear-gradient(120deg, #001d3d 0%, #003566 25%, #034f84 50%, #0077b6 75%, #00b4d8 100%) !important;
     padding: 2rem !important;
     border-radius: 12px !important;
     text-align: center !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 10px 30px rgba(15, 5, 25, 0.4) !important;
-    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    box-shadow: 0 10px 30px rgba(0, 29, 61, 0.4) !important;
+    border: 1px solid rgba(0, 180, 216, 0.3) !important;
     min-height: 220px !important;
     display: block !important;
     visibility: visible !important;
@@ -28,7 +28,7 @@
 
 .feature-card:hover {
     transform: translateY(-10px) !important;
-    box-shadow: 0 20px 40px rgba(15, 5, 25, 0.6) !important;
+    box-shadow: 0 20px 40px rgba(0, 29, 61, 0.6) !important;
 }
 
 .feature-icon {
@@ -107,9 +107,9 @@
     color: #6b7280 !important;
 }
 
-/* Section Header Styles with Dark Purple Gradient */
+/* Section Header Styles with Blue Corporate Gradient */
 .section-header h2 {
-    background: linear-gradient(135deg, #2d1b4e 0%, #4c1d95 30%, #5b21b6 70%, #6d28d9 100%) !important;
+    background: linear-gradient(135deg, #001d3d 0%, #003566 30%, #0077b6 70%, #00b4d8 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
@@ -117,7 +117,7 @@
 }
 
 .section-header p {
-    background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 40%, #6d28d9 80%, #7c3aed 100%) !important;
+    background: linear-gradient(135deg, #003566 0%, #0077b6 40%, #00b4d8 80%, #48cae4 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
