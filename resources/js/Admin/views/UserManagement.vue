@@ -4,7 +4,6 @@
     <div class="page-header">
       <div class="header-title">
         <h2>User Management</h2>
-        <p>Manage all system users, including teachers and students</p>
       </div>
     </div>
     
