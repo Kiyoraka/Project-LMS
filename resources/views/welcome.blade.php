@@ -932,38 +932,56 @@
             </div>
             
             <div class="hero-right">
-                <div class="course-showcase" style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 20px; padding: 24px; box-shadow: 0 20px 40px rgba(0, 119, 182, 0.3); border: 1px solid rgba(0, 180, 216, 0.3);">
-                    <div class="course-header" style="margin-bottom: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                            <div style="width: 12px; height: 12px; background: #48cae4; border-radius: 50%;"></div>
-                            <span style="color: #48cae4; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Featured Course</span>
+                <div class="course-showcase" style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 24px; padding: 32px; box-shadow: 0 25px 50px rgba(0, 119, 182, 0.4), 0 0 0 1px rgba(0, 180, 216, 0.2); border: 1px solid rgba(0, 180, 216, 0.4); backdrop-filter: blur(20px); min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+                    <!-- Background Pattern -->
+                    <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(72, 202, 228, 0.1) 0%, transparent 70%); border-radius: 50%; transform: translate(50%, -50%);"></div>
+
+                    <div class="course-header" style="margin-bottom: 24px; position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                            <div style="width: 16px; height: 16px; background: #48cae4; border-radius: 50%; box-shadow: 0 0 20px rgba(72, 202, 228, 0.5); animation: pulse 2s infinite;"></div>
+                            <span style="color: #48cae4; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(72, 202, 228, 0.3);">Featured Course</span>
                         </div>
-                        <h3 style="color: white; font-size: 1.4rem; font-weight: 700; margin: 0; line-height: 1.3;">Advanced Web Development</h3>
-                        <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin: 8px 0 0 0;">Master modern frameworks and build scalable applications</p>
+                        <h3 style="color: white; font-size: 1.8rem; font-weight: 800; margin: 0; line-height: 1.2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);">Advanced Web Development</h3>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin: 12px 0 0 0; line-height: 1.5; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);">Master modern frameworks and build scalable applications with industry best practices</p>
                     </div>
 
-                    <div class="course-stats" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
-                        <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; text-align: center;">
-                            <div style="color: #48cae4; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">4.9</div>
-                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Rating</div>
+                    <div class="course-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; position: relative; z-index: 2;">
+                        <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">4.9</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Rating</div>
                         </div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; text-align: center;">
-                            <div style="color: #48cae4; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">2.4K</div>
-                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Students</div>
+                        <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">2.4K</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Students</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); padding: 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="color: #48cae4; font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; text-shadow: 0 0 15px rgba(72, 202, 228, 0.4);">12h</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.85rem; font-weight: 500;">Duration</div>
                         </div>
                     </div>
 
-                    <div class="course-instructor" style="display: flex; align-items: center; gap: 12px;">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Instructor" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgba(72, 202, 228, 0.5);">
-                        <div>
-                            <div style="color: white; font-size: 0.9rem; font-weight: 600;">Dr. Alex Chen</div>
-                            <div style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">Senior Developer</div>
+                    <div class="course-instructor" style="display: flex; align-items: center; gap: 16px; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: 16px; backdrop-filter: blur(10px); position: relative; z-index: 2;">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="Instructor" style="width: 50px; height: 50px; border-radius: 50%; border: 3px solid rgba(72, 202, 228, 0.6); box-shadow: 0 0 20px rgba(72, 202, 228, 0.3);">
+                        <div style="flex: 1;">
+                            <div style="color: white; font-size: 1.1rem; font-weight: 700; margin-bottom: 2px;">Dr. Alex Chen</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Senior Full Stack Developer</div>
                         </div>
-                        <div style="margin-left: auto; background: rgba(72, 202, 228, 0.2); color: #48cae4; padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600;">
+                        <div style="background: linear-gradient(135deg, #48cae4 0%, #00b4d8 100%); color: #001d3d; padding: 8px 16px; border-radius: 25px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(72, 202, 228, 0.4); animation: glow 2s ease-in-out infinite alternate;">
                             LIVE NOW
                         </div>
                     </div>
                 </div>
+
+                <style>
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.7; transform: scale(1.1); }
+                }
+                @keyframes glow {
+                    0% { box-shadow: 0 4px 15px rgba(72, 202, 228, 0.4); }
+                    100% { box-shadow: 0 6px 25px rgba(72, 202, 228, 0.6); }
+                }
+                </style>
             </div>
         </div>
     </section>
