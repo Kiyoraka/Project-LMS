@@ -2,7 +2,7 @@
 
 /* Footer Container */
 .footer {
-    background: var(--ultra-deep-purple);
+    background: var(--ultra-deep-blue);
     color: white;
     padding: 2rem 0 1rem;
     position: relative;
@@ -19,8 +19,8 @@
     height: 100%;
     background: 
         radial-gradient(ellipse at 10% 50%, rgba(0, 0, 0, 0.4) 0%, transparent 60%),
-        radial-gradient(ellipse at 90% 30%, rgba(139, 92, 246, 0.3) 0%, transparent 70%),
-        linear-gradient(120deg, rgba(0, 0, 0, 0.2) 0%, transparent 75%, rgba(139, 92, 246, 0.15) 100%);
+        radial-gradient(ellipse at 90% 30%, rgba(0, 180, 216, 0.3) 0%, transparent 70%),
+        linear-gradient(120deg, rgba(0, 0, 0, 0.2) 0%, transparent 75%, rgba(72, 202, 228, 0.15) 100%);
     pointer-events: none;
 }
 

@@ -900,15 +900,15 @@
             <div class="hero-left">
                 <div class="hero-badge">Learning</div>
                 <h1 class="hero-title">
-                    Advanced Learning 
-                    Management Expert 
-                    Start with 
+                    Next-Generation
+                    Digital Learning
+                    Powered by
                     <span class="highlight" id="hero-site-name">LMS Prototype</span>
                 </h1>
                 <p class="hero-description">
-                    Transform your educational journey with our comprehensive Learning Management System. 
-                    Create, manage, and deliver engaging online courses with powerful tools designed for 
-                    modern education.
+                    Revolutionize education with our cutting-edge platform that seamlessly connects educators and learners.
+                    Build dynamic courses, track progress in real-time, and foster collaborative learning environments
+                    that adapt to the needs of today's digital-first world.
                 </p>
                 <button class="cta-button" id="getStartedBtn">
                     Get Started
@@ -954,18 +954,20 @@
     <section id="about" class="about" style="padding: 80px 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
         <div class="container">
             <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-                <h2 style="font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 20px;">About Our Platform</h2>
-                <p style="font-size: 1.1rem; color: #64748b; max-width: 600px; margin: 0 auto;">Empowering education through innovative technology and comprehensive learning management solutions</p>
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 20px;">Redefining Digital Education</h2>
+                <p style="font-size: 1.1rem; color: #64748b; max-width: 600px; margin: 0 auto;">Where innovation meets education - creating immersive learning experiences that drive real results</p>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto;">
                 <div>
-                    <h3 style="font-size: 2rem; font-weight: 600; color: #0f172a; margin-bottom: 24px;">Transform Your Learning Experience</h3>
+                    <h3 style="font-size: 2rem; font-weight: 600; color: #0f172a; margin-bottom: 24px;">Education Reimagined for the Digital Age</h3>
                     <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 20px;">
-                        Our Learning Management System prototype represents the future of digital education. Built with cutting-edge technology and designed with user experience at its core, we provide a comprehensive platform for educators and learners alike.
+                        Our advanced LMS prototype breaks traditional boundaries by delivering personalized, interactive learning experiences.
+                        With intelligent content delivery and adaptive learning paths, we ensure every student reaches their full potential.
                     </p>
                     <p style="font-size: 1rem; line-height: 1.8; color: #475569; margin-bottom: 30px;">
-                        From course creation and management to progress tracking and certification, our platform streamlines the entire educational workflow while maintaining the highest standards of user engagement and learning effectiveness.
+                        Built on enterprise-grade architecture with intuitive design principles, our platform empowers institutions to
+                        scale their educational impact while maintaining quality and engagement across all learning modalities.
                     </p>
                     <div style="display: flex; gap: 30px;">
                         <div style="text-align: center;">
@@ -985,7 +987,7 @@
 
                 <div style="position: relative;">
                     <div style="background: linear-gradient(135deg, #001d3d 0%, #0077b6 100%); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 119, 182, 0.2);">
-                        <h4 style="color: white; font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Why Choose Our Platform?</h4>
+                        <h4 style="color: white; font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Platform Advantages</h4>
                         <ul style="list-style: none; padding: 0; margin: 0;">
                             <li style="color: rgba(255,255,255,0.9); margin-bottom: 12px; display: flex; align-items: center;">
                                 <i class="fas fa-check-circle" style="color: #48cae4; margin-right: 12px;"></i>
@@ -1018,8 +1020,8 @@
     <section id="features" class="features">
         <div class="container">
             <div class="section-header">
-                <h2>Powerful Features for Modern Learning</h2>
-                <p>Everything you need to create, manage, and deliver exceptional educational experiences</p>
+                <h2>Advanced Learning Technologies</h2>
+                <p>Comprehensive tools designed to elevate educational excellence and drive student success</p>
             </div>
             
             <div class="features-grid">
