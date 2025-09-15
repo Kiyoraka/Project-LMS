@@ -211,16 +211,34 @@ const embedUrl = computed(() => {
 
 function onVideoLoad() {
   videoReady.value = true;
-  emit('ready');
 
   // Set total duration if video element exists
   if (videoPlayer.value) {
     totalDuration.value = videoPlayer.value.duration || props.duration;
+
+    // Emit ready with actual video duration
+    emit('ready', {
+      duration: totalDuration.value,
+      lessonId: props.lessonId || props.lesson?.id
+    });
+
+    // Also emit an initial progress update with duration
+    emit('progress-update', {
+      lessonId: props.lessonId || props.lesson?.id,
+      currentTime: 0,
+      duration: totalDuration.value,
+      progressPercentage: 0,
+      actualWatchedPercentage: 0,
+      rawProgressPercentage: 0,
+      isCompleted: false
+    });
+
     // Start progress tracking for local videos
     startProgressTracking();
   } else if (!isLocalVideo.value) {
     // For YouTube videos, use time-based tracking
     totalDuration.value = props.duration;
+    emit('ready');
     startYouTubeProgressTracking();
   }
 }

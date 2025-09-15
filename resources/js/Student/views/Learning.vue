@@ -165,7 +165,6 @@
                           <div class="lesson-title">{{ lesson.title }}</div>
                           <div class="lesson-meta">
                             <span class="lesson-type">{{ getLessonTypeLabel(lesson) }}</span>
-                            <span class="lesson-duration">{{ lesson.duration_minutes || 15 }} min</span>
                           </div>
                         </div>
                       </div>
@@ -189,10 +188,6 @@
                       <span class="lesson-type-badge" :class="getLessonTypeBadgeClass(currentLesson)">
                         <i :class="getLessonTypeIcon(currentLesson)"></i>
                         {{ getLessonTypeLabel(currentLesson) }}
-                      </span>
-                      <span class="lesson-duration-badge">
-                        <i class="fas fa-clock"></i>
-                        {{ currentLesson.duration_minutes || 15 }} min
                       </span>
                     </div>
                   </div>
@@ -235,6 +230,7 @@
                       :video-url="currentLesson.video_url || getDemoVideoUrl()"
                       :lesson-id="currentLesson.id"
                       :duration="currentLesson.duration_minutes * 60 || 600"
+                      @ready="onVideoReady"
                       @lesson-completed="onLessonCompleted"
                       @progress-update="onProgressUpdate"
                       @show-toast="showToastMessage"
@@ -400,7 +396,8 @@ export default {
       // Progress tracking
       currentLessonProgress: 0,
       currentLessonCompleted: false,
-      
+      actualVideoDuration: null, // Store actual video duration
+
       // Custom modal for progress requirement
       showProgressModal: false,
       
@@ -619,11 +616,37 @@ export default {
       }
     },
     
+    // Video Ready Handler
+    onVideoReady(data) {
+      if (data && data.duration) {
+        const minutes = Math.floor(data.duration / 60);
+        const seconds = Math.floor(data.duration % 60);
+        // Format as "X min" for whole minutes or "X:YY" for minutes and seconds
+        if (seconds === 0) {
+          this.actualVideoDuration = `${minutes} min`;
+        } else {
+          this.actualVideoDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+      }
+    },
+
     // Progress Update Handler
     onProgressUpdate(progressData) {
       if (progressData.lessonId === this.currentLesson?.id) {
         this.currentLessonProgress = progressData.progressPercentage;
         this.currentLessonCompleted = progressData.isCompleted || false;
+
+        // Update actual video duration if available (as backup)
+        if (progressData.duration && !this.actualVideoDuration) {
+          const minutes = Math.floor(progressData.duration / 60);
+          const seconds = Math.floor(progressData.duration % 60);
+          // Format as "X min" for whole minutes or "X:YY" for minutes and seconds
+          if (seconds === 0) {
+            this.actualVideoDuration = `${minutes} min`;
+          } else {
+            this.actualVideoDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+          }
+        }
       }
     },
     
@@ -638,10 +661,11 @@ export default {
       this.quizSubmitted = false;
       this.quizAnswers = {};
       this.assignmentAnswer = '';
-      
+
       // Reset progress tracking for new lesson
       this.currentLessonProgress = 0;
       this.currentLessonCompleted = lesson.completed || false;
+      this.actualVideoDuration = null; // Reset actual duration for new lesson
     },
     getCompletedLessonsCount(module) {
       return module.lessons.filter(lesson => lesson.completed).length;
