@@ -684,49 +684,4 @@ watch(() => props.videoUrl, () => {
   border-radius: 8px;
 }
 
-/* Video Progress Overlay - Only for YouTube videos */
-.video-progress-overlay {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 8px 12px;
-  border-radius: 6px;
-  z-index: 5;
-  pointer-events: none;
-  display: none; /* Hidden by default, shown only for YouTube videos */
-}
-
-.progress-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.progress-text {
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.progress-bar-mini {
-  width: 120px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-fill-mini {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.progress-note {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.75rem;
-  margin-top: 2px;
-}
 </style> 
