@@ -61,16 +61,6 @@
       >
         Your browser does not support the video tag.
       </video>
-
-      <!-- Progress Bar Overlay -->
-      <div v-if="progressPercentage > 0" class="video-progress-overlay">
-        <div class="progress-info">
-          <span class="progress-text">{{ progressPercentage }}% watched</span>
-          <div class="progress-bar-mini">
-            <div class="progress-fill-mini" :style="{ width: progressPercentage + '%' }"></div>
-          </div>
-        </div>
-      </div>
     </div>
     
     <!-- Video Information -->
@@ -694,7 +684,7 @@ watch(() => props.videoUrl, () => {
   border-radius: 8px;
 }
 
-/* Video Progress Overlay */
+/* Video Progress Overlay - Only for YouTube videos */
 .video-progress-overlay {
   position: absolute;
   top: 10px;
@@ -704,6 +694,7 @@ watch(() => props.videoUrl, () => {
   border-radius: 6px;
   z-index: 5;
   pointer-events: none;
+  display: none; /* Hidden by default, shown only for YouTube videos */
 }
 
 .progress-info {
