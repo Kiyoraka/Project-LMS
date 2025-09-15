@@ -17,14 +17,14 @@ export function useSiteSettings() {
   const siteName = computed(() => siteSettings.value.general?.siteName || 'LMS Prototype');
   const logoUrl = computed(() => {
     const path = siteSettings.value.general?.logoPath;
-    if (!path) return '/assets/images/logo.svg'; // fallback
+    if (!path) return '/logo.png'; // Use new logo as fallback
     if (path.startsWith('data:')) return path; // Base64
     if (path.startsWith('http')) return path; // Full URL (including our public-logo endpoint)
     return window.location.origin + path; // Relative path
   });
   const faviconUrl = computed(() => {
     const path = siteSettings.value.general?.faviconPath;
-    if (!path) return '/favicon.ico'; // fallback
+    if (!path) return '/favicon.png'; // Use new favicon as fallback
     if (path.startsWith('data:')) return path; // Base64
     if (path.startsWith('http')) return path; // Full URL
     return window.location.origin + path; // Relative path
