@@ -68,7 +68,7 @@
                   :key="enrollment.id"
                   class="course-card"
                 >
-                  <div class="course-thumbnail" :style="{ backgroundImage: enrollment.course.thumbnail ? `url(${enrollment.course.thumbnail})` : `url(/assets/images/course-placeholder.svg)` }">
+                  <div class="course-thumbnail" :style="{ backgroundImage: getCourseImageUrl(enrollment.course) }">
                     <i v-if="!enrollment.course.thumbnail" class="bi bi-book"></i>
                   </div>
                   <div class="course-content">
@@ -274,6 +274,16 @@ export default {
     }
   },
   methods: {
+    getCourseImageUrl(course) {
+      if (!course.thumbnail) {
+        return 'url(/assets/images/course-placeholder.svg)';
+      }
+      // If thumbnail doesn't start with http or /, prepend /storage/
+      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
+        return `url(/storage/${course.thumbnail})`;
+      }
+      return `url(${course.thumbnail})`;
+    },
     formatDate(dateString) {
       if (!dateString) return '';
       const date = new Date(dateString);
@@ -755,7 +765,7 @@ export default {
 }
 
 .course-thumbnail {
-  height: 120px;
+  height: 180px;
   background-size: cover;
   background-position: center;
   background-color: #f8f9fa;

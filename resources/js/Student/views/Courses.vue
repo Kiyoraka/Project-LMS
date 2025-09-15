@@ -124,9 +124,9 @@
           class="course-card"
         >
           <div class="course-header">
-            <img 
-              :src="enrollment.course.thumbnail || '/assets/images/course-placeholder.jpg'" 
-              class="course-thumbnail" 
+            <img
+              :src="getCourseImageUrl(enrollment.course)"
+              class="course-thumbnail"
               alt="Course"
             >
             <span class="badge level-badge">{{ enrollment.course.level }}</span>
@@ -194,9 +194,9 @@
             <i class="bi bi-check-circle-fill"></i>
           </div>
           <div class="course-header">
-            <img 
-              :src="enrollment.course.thumbnail || '/assets/images/course-placeholder.jpg'" 
-              class="course-thumbnail" 
+            <img
+              :src="getCourseImageUrl(enrollment.course)"
+              class="course-thumbnail"
               alt="Course"
             >
             <span class="badge level-badge">{{ enrollment.course.level }}</span>
@@ -307,6 +307,16 @@ export default {
     await this.fetchEnrollments();
   },
   methods: {
+    getCourseImageUrl(course) {
+      if (!course.thumbnail) {
+        return '/assets/images/course-placeholder.jpg';
+      }
+      // If thumbnail doesn't start with http or /, prepend /storage/
+      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
+        return `/storage/${course.thumbnail}`;
+      }
+      return course.thumbnail;
+    },
     async fetchEnrollments() {
       this.loading = true;
       this.error = null;
