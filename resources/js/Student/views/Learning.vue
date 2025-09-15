@@ -306,13 +306,19 @@
                     Previous Lesson
                   </button>
                   
-                  <button 
+                  <button
                     class="nav-button next"
-                    :disabled="!hasNextLesson" 
-                    @click="navigateToNextLesson"
+                    :disabled="false"
+                    @click="hasNextLesson ? navigateToNextLesson() : markCourseComplete()"
                   >
-                    Next Lesson
-                    <i class="fas fa-chevron-right"></i>
+                    <span v-if="hasNextLesson">
+                      Next Lesson
+                      <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span v-else>
+                      <i class="fas fa-check-circle"></i>
+                      Complete Course
+                    </span>
                   </button>
                 </div>
               </div>
@@ -808,10 +814,10 @@ export default {
     },
     navigateToNextLesson() {
       if (!this.hasNextLesson) return;
-      
+
       let nextLesson = null;
       let foundCurrent = false;
-      
+
       // Find the next lesson by traversing modules and lessons
       outerLoop: for (const module of this.course.modules) {
         for (const lesson of module.lessons) {
@@ -824,10 +830,20 @@ export default {
           }
         }
       }
-      
+
       if (nextLesson) {
         this.setCurrentLesson(nextLesson);
       }
+    },
+
+    markCourseComplete() {
+      // Show completion message
+      this.showToastMessage('Congratulations! You have completed all lessons in this course.', 'Course Completed', 'success');
+
+      // Redirect to courses page after a delay
+      setTimeout(() => {
+        this.$router.push('/student/courses');
+      }, 2000);
     },
     submitQuiz() {
       if (!this.currentLesson || this.currentLesson.type !== 'quiz') return;
@@ -1372,11 +1388,11 @@ export default {
 
 .lesson-body {
   flex: 1;
-  padding: 24px;
+  padding: 20px;
 }
 
 .video-lesson {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .article-lesson {
@@ -1482,7 +1498,7 @@ export default {
 }
 
 .nav-button {
-  background: #667eea;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -1493,11 +1509,13 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-button:hover:not(:disabled) {
-  background: #5a67d8;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .nav-button:disabled {
@@ -1505,14 +1523,16 @@ export default {
   color: #6c757d;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .nav-button.prev {
-  background: #6c757d;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
 }
 
 .nav-button.prev:hover:not(:disabled) {
-  background: #5a6268;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
 }
 
 /* No Lesson Selected */
