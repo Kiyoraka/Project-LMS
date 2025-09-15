@@ -1,263 +1,488 @@
 <template>
-  <div class="simple-video-container">
-    <!-- Clean video player -->
-    <div class="video-wrapper">
-      <!-- YouTube iframe -->
-      <div v-if="videoUrl" class="video-iframe-container">
-        <iframe 
-          ref="videoIframe"
-          :src="videoUrl"
-          title="Lesson Video"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          @load="onVideoLoaded"
-        ></iframe>
+  <div class="secure-video-player">
+    <div v-if="!videoReady && !isLocalVideo" class="video-loading">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
       </div>
+      <p>Loading secure video...</p>
+    </div>
+
+    <div v-if="error" class="video-error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>Unable to load video. Please try again later.</p>
+    </div>
+
+    <!-- YouTube iframe for external videos -->
+    <div
+      v-if="!isLocalVideo && embedUrl && !error"
+      class="video-container"
+      :class="{ 'video-loading': !videoReady }"
+    >
+      <iframe
+        ref="videoFrame"
+        :src="embedUrl"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        @load="onVideoLoad"
+        @error="onVideoError"
+        class="video-iframe"
+      ></iframe>
       
-      <!-- Simple loading -->
-      <div v-else class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading video...</span>
+      <!-- Video overlay for additional protection -->
+      <div v-if="showOverlay" class="video-overlay" @click="hideOverlay">
+        <div class="overlay-content">
+          <div class="play-button">
+            <i class="fas fa-play"></i>
+          </div>
+          <p class="overlay-text">Click to play video</p>
+          <div class="security-notice">
+            <i class="fas fa-shield-alt"></i>
+            Secure Learning Content
+          </div>
         </div>
-        <p class="mt-2">Loading video...</p>
       </div>
+    </div>
+
+    <!-- HTML5 video player for local videos -->
+    <div
+      v-if="isLocalVideo && localVideoUrl && !error"
+      class="video-container"
+    >
+      <video
+        ref="videoPlayer"
+        :src="localVideoUrl"
+        controls
+        controlsList="nodownload"
+        @loadedmetadata="onVideoLoad"
+        @error="onVideoError"
+        class="video-player"
+      >
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    
+    <!-- Video Information -->
+    <div v-if="lesson" class="video-info">
+      <h4 class="video-title">{{ lesson.title }}</h4>
+      <div class="video-meta">
+        <span v-if="lesson.duration_minutes" class="duration">
+          <i class="fas fa-clock"></i>
+          {{ lesson.duration_minutes }} minutes
+        </span>
+        <span class="security-badge">
+          <i class="fas fa-lock"></i>
+          Protected Content
+        </span>
+      </div>
+      <p v-if="lesson.description" class="video-description">{{ lesson.description }}</p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SecureVideoPlayer',
-  props: {
-    encryptedUrl: {
-      type: String,
-      required: true
-    },
-    lessonId: {
-      type: Number,
-      required: true
-    },
-    duration: {
-      type: Number,
-      default: 300
-    }
+<script setup>
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+
+const props = defineProps({
+  videoUrl: {
+    type: String,
+    required: true
   },
-  data() {
-    return {
-      videoUrl: null,
-      progressInterval: null,
-      watchedSeconds: 0,
-      isCompleted: false
-    };
+  lesson: {
+    type: Object,
+    default: null
   },
-  watch: {
-    lessonId(newLessonId, oldLessonId) {
-      if (newLessonId !== oldLessonId) {
-        // Reset component state for new lesson
-        this.cleanup();
-        this.watchedSeconds = 0;
-        this.isCompleted = false;
-        this.videoUrl = null;
-        
-        // Reinitialize for new lesson
-        this.setupVideo();
-        this.loadExistingProgress();
-      }
-    }
+  autoplay: {
+    type: Boolean,
+    default: false
   },
-  mounted() {
-    this.setupVideo();
-    this.loadExistingProgress();
-  },
-  beforeUnmount() {
-    this.cleanup();
-  },
-  methods: {
-    setupVideo() {
-      // Simple URL processing
-      setTimeout(() => {
-        let url = this.encryptedUrl;
-        
-        // Handle encrypted URLs
-        if (url && url.startsWith('enc:')) {
-          try {
-            const base64Url = url.substring(4);
-            url = atob(base64Url);
-          } catch (error) {
-            // Fallback to original if decryption fails
-          }
-        }
-        
-        // Convert to YouTube embed format if needed
-        this.videoUrl = this.convertToEmbedUrl(url);
-      }, 100);
-    },
-    
-    convertToEmbedUrl(url) {
-      if (!url) return null;
-      
-      let videoId = null;
-      
-      // Extract video ID from various YouTube URL formats
-      if (url.includes('youtu.be/')) {
-        videoId = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
-      } else if (url.includes('youtube.com/watch?v=')) {
-        videoId = url.split('v=')[1].split('&')[0];
-      } else if (url.includes('youtube.com/embed/')) {
-        return url; // Already embed format
-      }
-      
-      // Convert to embed format
-      if (videoId) {
-        return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0`;
-      }
-      
-      return url; // Return as-is if not YouTube
-    },
-    
-    onVideoLoaded() {
-      // Start background progress tracking after 3 seconds
-      setTimeout(() => {
-        this.startBackgroundTracking();
-      }, 3000);
-    },
-    
-    startBackgroundTracking() {
-      if (this.progressInterval || this.isCompleted) {
-        return;
-      }
-      
-      // Save progress every 30 seconds
-      this.progressInterval = setInterval(() => {
-        this.watchedSeconds += 30;
-        this.saveProgress();
-        
-        // Emit progress update to parent component
-        const progressPercentage = Math.min(100, Math.round((this.watchedSeconds / this.duration) * 100));
-        this.$emit('progress-update', {
-          lessonId: this.lessonId,
-          progressPercentage: progressPercentage,
-          watchedSeconds: this.watchedSeconds
-        });
-      }, 30000); // 30 seconds
-    },
-    
-    async saveProgress() {
-      if (this.isCompleted) return;
-      
-      try {
-        const response = await axios.post(`/api/student/lessons/${this.lessonId}/progress`, {
-          time_spent_seconds: this.watchedSeconds,
-          progress_percentage: Math.min(100, Math.round((this.watchedSeconds / this.duration) * 100))
-        });
-      } catch (error) {
-        // Silent error handling for progress saves
-      }
-    },
-    
-    async loadExistingProgress() {
-      try {
-        const response = await axios.get(`/api/student/lessons/${this.lessonId}/progress`);
-        
-        if (response.data) {
-          this.watchedSeconds = response.data.time_spent_seconds || 0;
-          this.isCompleted = response.data.is_completed || false;
-          
-          // Emit initial progress to parent component
-          const progressPercentage = Math.min(100, Math.round((this.watchedSeconds / this.duration) * 100));
-          this.$emit('progress-update', {
-            lessonId: this.lessonId,
-            progressPercentage: progressPercentage,
-            watchedSeconds: this.watchedSeconds,
-            isCompleted: this.isCompleted
-          });
-        }
-      } catch (error) {
-        // Silent error handling
-      }
-    },
-    
-    async markLessonCompleted() {
-      if (this.isCompleted) return;
-      
-      try {
-        const response = await axios.post(`/api/student/lessons/${this.lessonId}/complete`, {
-          time_spent_seconds: this.watchedSeconds,
-          completed: true
-        });
-        
-        this.isCompleted = true;
-        this.cleanup();
-        this.$emit('lesson-completed', this.lessonId);
-      } catch (error) {
-        let errorMessage = 'Failed to mark lesson as complete. Please try again.';
-        
-        if (error.response?.status === 403) {
-          errorMessage = 'You are not enrolled in this course.';
-        } else if (error.response?.status === 404) {
-          errorMessage = 'Lesson not found.';
-        } else if (error.response?.status === 422) {
-          errorMessage = 'Invalid data. Please try again.';
-        } else if (error.response?.data?.message) {
-          errorMessage = error.response.data.message;
-        }
-        
-        this.$emit('show-toast', errorMessage, 'Error', 'error');
-      }
-    },
-    
-    cleanup() {
-      if (this.progressInterval) {
-        clearInterval(this.progressInterval);
-        this.progressInterval = null;
-      }
-      // Final progress save
-      this.saveProgress();
-    }
+  showOverlay: {
+    type: Boolean,
+    default: true
   }
-};
+});
+
+const emit = defineEmits(['ready', 'error', 'play', 'pause']);
+
+const videoFrame = ref(null);
+const videoPlayer = ref(null);
+const videoReady = ref(false);
+const error = ref(false);
+const showOverlay = ref(props.showOverlay);
+
+// Check if it's a local video or YouTube URL
+const isLocalVideo = computed(() => {
+  if (!props.videoUrl) return false;
+
+  // Check if it's a relative path or storage path
+  if (!props.videoUrl.startsWith('http://') && !props.videoUrl.startsWith('https://')) {
+    return true;
+  }
+
+  // Check if it's a local storage URL
+  try {
+    const url = new URL(props.videoUrl, window.location.origin);
+    return url.pathname.includes('/storage/');
+  } catch {
+    return true; // If URL parsing fails, assume it's a local path
+  }
+});
+
+// Get the proper URL for local videos
+const localVideoUrl = computed(() => {
+  if (!isLocalVideo.value || !props.videoUrl) return null;
+
+  // If it's already a full URL, use it
+  if (props.videoUrl.startsWith('http://') || props.videoUrl.startsWith('https://')) {
+    return props.videoUrl;
+  }
+
+  // If it's a storage path without /storage/ prefix, add it
+  if (!props.videoUrl.startsWith('/storage/')) {
+    return `/storage/${props.videoUrl}`;
+  }
+
+  // Otherwise, use as is
+  return props.videoUrl;
+});
+
+// Convert YouTube URL to secure embed URL
+const embedUrl = computed(() => {
+  if (!props.videoUrl || isLocalVideo.value) return null;
+
+  try {
+    const url = new URL(props.videoUrl);
+    let videoId = null;
+
+    // Extract video ID from different YouTube URL formats
+    if (url.hostname === 'www.youtube.com' || url.hostname === 'youtube.com') {
+      videoId = url.searchParams.get('v');
+    } else if (url.hostname === 'youtu.be') {
+      videoId = url.pathname.slice(1);
+    } else if (url.hostname === 'www.youtube-nocookie.com') {
+      // Already an embed URL
+      return props.videoUrl;
+    }
+
+    if (!videoId) {
+      throw new Error('Invalid YouTube URL');
+    }
+
+    // Use youtube-nocookie.com for better privacy
+    const embedParams = new URLSearchParams({
+      rel: '0',           // Don't show related videos
+      modestbranding: '1', // Minimal YouTube branding
+      controls: '1',       // Show player controls
+      disablekb: '1',     // Disable keyboard controls
+      fs: '1',            // Allow fullscreen
+      iv_load_policy: '3', // Hide video annotations
+      start: '0'          // Start from beginning
+    });
+
+    if (props.autoplay) {
+      embedParams.set('autoplay', '1');
+    }
+
+    return `https://www.youtube-nocookie.com/embed/${videoId}?${embedParams.toString()}`;
+
+  } catch (err) {
+    console.error('Error processing video URL:', err);
+    error.value = true;
+    return null;
+  }
+});
+
+function onVideoLoad() {
+  videoReady.value = true;
+  emit('ready');
+}
+
+function onVideoError() {
+  error.value = true;
+  emit('error');
+}
+
+function hideOverlay() {
+  showOverlay.value = false;
+  emit('play');
+}
+
+// Prevent right-click on video
+function preventContextMenu(event) {
+  event.preventDefault();
+  return false;
+}
+
+// Prevent video download attempts
+function preventVideoSave(event) {
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    return false;
+  }
+}
+
+// Security measures
+onMounted(() => {
+  // Add event listeners for security
+  document.addEventListener('contextmenu', preventContextMenu);
+  document.addEventListener('keydown', preventVideoSave);
+  
+  // Prevent iframe manipulation
+  if (videoFrame.value) {
+    videoFrame.value.addEventListener('load', () => {
+      try {
+        // Additional security could be implemented here
+        // Note: Due to CORS, we can't access iframe content directly
+      } catch (err) {
+        // Expected for cross-origin iframes
+      }
+    });
+  }
+});
+
+onUnmounted(() => {
+  // Clean up event listeners
+  document.removeEventListener('contextmenu', preventContextMenu);
+  document.removeEventListener('keydown', preventVideoSave);
+});
+
+// Watch for URL changes
+watch(() => props.videoUrl, () => {
+  videoReady.value = false;
+  error.value = false;
+  showOverlay.value = props.showOverlay;
+});
 </script>
 
 <style scoped>
-.simple-video-container {
+.secure-video-player {
+  width: 100%;
+  background: #000;
   border-radius: 8px;
   overflow: hidden;
-  background: #000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.video-wrapper {
   position: relative;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-  background-color: #000;
 }
 
-.video-iframe-container {
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  background: #000;
+}
+
+.video-iframe {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.video-iframe-container iframe {
   width: 100%;
   height: 100%;
   border: none;
+  transition: opacity 0.3s ease;
 }
 
-.loading-state {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.video-container.video-loading .video-iframe {
+  opacity: 0;
+}
+
+.video-loading,
+.video-error {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background: #1a1a1a;
   color: white;
   text-align: center;
 }
-</style>
+
+.loading-spinner {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.video-error {
+  color: #ef4444;
+}
+
+.video-error i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.video-overlay:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.play-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.video-overlay:hover .play-button {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.overlay-text {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.video-info {
+  padding: 1.5rem;
+  background: white;
+}
+
+.video-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.video-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.video-description {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .play-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .overlay-text {
+    font-size: 1rem;
+  }
+  
+  .video-info {
+    padding: 1rem;
+  }
+  
+  .video-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Prevent text selection on video overlay */
+.video-overlay {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Disable drag on video */
+.video-iframe {
+  pointer-events: auto;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* HTML5 Video Player Styles */
+.video-player {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  background-color: #000;
+  border-radius: 8px;
+}
+</style> 

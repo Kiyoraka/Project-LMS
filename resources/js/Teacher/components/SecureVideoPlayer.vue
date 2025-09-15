@@ -1,19 +1,20 @@
 <template>
   <div class="secure-video-player">
-    <div v-if="!videoReady" class="video-loading">
+    <div v-if="!videoReady && !isLocalVideo" class="video-loading">
       <div class="loading-spinner">
         <i class="fas fa-spinner fa-spin"></i>
       </div>
       <p>Loading secure video...</p>
     </div>
-    
+
     <div v-if="error" class="video-error">
       <i class="fas fa-exclamation-triangle"></i>
       <p>Unable to load video. Please try again later.</p>
     </div>
-    
-    <div 
-      v-show="embedUrl && !error" 
+
+    <!-- YouTube iframe for external videos -->
+    <div
+      v-if="!isLocalVideo && embedUrl && !error"
       class="video-container"
       :class="{ 'video-loading': !videoReady }"
     >
@@ -41,6 +42,24 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- HTML5 video player for local videos -->
+    <div
+      v-if="isLocalVideo && localVideoUrl && !error"
+      class="video-container"
+    >
+      <video
+        ref="videoPlayer"
+        :src="localVideoUrl"
+        controls
+        controlsList="nodownload"
+        @loadedmetadata="onVideoLoad"
+        @error="onVideoError"
+        class="video-player"
+      >
+        Your browser does not support the video tag.
+      </video>
     </div>
     
     <!-- Video Information -->
@@ -86,18 +105,55 @@ const props = defineProps({
 const emit = defineEmits(['ready', 'error', 'play', 'pause']);
 
 const videoFrame = ref(null);
+const videoPlayer = ref(null);
 const videoReady = ref(false);
 const error = ref(false);
 const showOverlay = ref(props.showOverlay);
 
+// Check if it's a local video or YouTube URL
+const isLocalVideo = computed(() => {
+  if (!props.videoUrl) return false;
+
+  // Check if it's a relative path or storage path
+  if (!props.videoUrl.startsWith('http://') && !props.videoUrl.startsWith('https://')) {
+    return true;
+  }
+
+  // Check if it's a local storage URL
+  try {
+    const url = new URL(props.videoUrl, window.location.origin);
+    return url.pathname.includes('/storage/');
+  } catch {
+    return true; // If URL parsing fails, assume it's a local path
+  }
+});
+
+// Get the proper URL for local videos
+const localVideoUrl = computed(() => {
+  if (!isLocalVideo.value || !props.videoUrl) return null;
+
+  // If it's already a full URL, use it
+  if (props.videoUrl.startsWith('http://') || props.videoUrl.startsWith('https://')) {
+    return props.videoUrl;
+  }
+
+  // If it's a storage path without /storage/ prefix, add it
+  if (!props.videoUrl.startsWith('/storage/')) {
+    return `/storage/${props.videoUrl}`;
+  }
+
+  // Otherwise, use as is
+  return props.videoUrl;
+});
+
 // Convert YouTube URL to secure embed URL
 const embedUrl = computed(() => {
-  if (!props.videoUrl) return null;
-  
+  if (!props.videoUrl || isLocalVideo.value) return null;
+
   try {
     const url = new URL(props.videoUrl);
     let videoId = null;
-    
+
     // Extract video ID from different YouTube URL formats
     if (url.hostname === 'www.youtube.com' || url.hostname === 'youtube.com') {
       videoId = url.searchParams.get('v');
@@ -107,11 +163,11 @@ const embedUrl = computed(() => {
       // Already an embed URL
       return props.videoUrl;
     }
-    
+
     if (!videoId) {
       throw new Error('Invalid YouTube URL');
     }
-    
+
     // Use youtube-nocookie.com for better privacy
     const embedParams = new URLSearchParams({
       rel: '0',           // Don't show related videos
@@ -122,13 +178,13 @@ const embedUrl = computed(() => {
       iv_load_policy: '3', // Hide video annotations
       start: '0'          // Start from beginning
     });
-    
+
     if (props.autoplay) {
       embedParams.set('autoplay', '1');
     }
-    
+
     return `https://www.youtube-nocookie.com/embed/${videoId}?${embedParams.toString()}`;
-    
+
   } catch (err) {
     console.error('Error processing video URL:', err);
     error.value = true;
@@ -419,5 +475,14 @@ watch(() => props.videoUrl, () => {
   -moz-user-drag: none;
   -o-user-drag: none;
   user-drag: none;
+}
+
+/* HTML5 Video Player Styles */
+.video-player {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  background-color: #000;
+  border-radius: 8px;
 }
 </style> 
