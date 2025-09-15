@@ -232,7 +232,7 @@
                     <secure-video-player
                       ref="videoPlayer"
                       :key="'video-player-' + currentLesson.id"
-                      :encrypted-url="currentLesson.video_url || getDemoVideoUrl()"
+                      :video-url="currentLesson.video_url || getDemoVideoUrl()"
                       :lesson-id="currentLesson.id"
                       :duration="currentLesson.duration_minutes * 60 || 600"
                       @lesson-completed="onLessonCompleted"

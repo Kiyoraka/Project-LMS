@@ -61,8 +61,8 @@
             </router-link>
           </div>
           <div class="card-body">
-            <div v-if="enrollments.length > 0">
-              <div class="course-grid">
+            <div v-if="enrollments.length > 0" class="courses-carousel-container">
+              <div class="courses-carousel">
                 <div
                   v-for="enrollment in enrolledCoursesPreview"
                   :key="enrollment.id"
@@ -72,6 +72,7 @@
                     <img
                       :src="getCourseImageSrc(enrollment.course)"
                       :alt="enrollment.course.title"
+                      onerror="this.src='/assets/images/course-placeholder.jpg'"
                     >
                     <span class="level-badge" :class="getLevelClass(enrollment.course.level)">
                       {{ enrollment.course.level }}
@@ -278,8 +279,8 @@ export default {
   },
   computed: {
     enrolledCoursesPreview() {
-      // Show only first 4 courses in preview
-      return this.enrollments.slice(0, 4);
+      // Show first 5 courses in preview
+      return this.enrollments.slice(0, 5);
     },
     recentActivityPreview() {
       // Show only first 3 recent activities
@@ -784,14 +785,41 @@ export default {
   padding: 12px 20px;
 }
 
-/* Course Grid */
-.course-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+/* My Courses Carousel */
+.courses-carousel-container {
+  position: relative;
+  overflow: hidden;
+  padding: 0 4px;
 }
 
-.course-card {
+.courses-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.courses-carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.courses-carousel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.courses-carousel::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+.courses-carousel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b4299 100%);
+}
+
+.courses-carousel .course-card {
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -799,22 +827,26 @@ export default {
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 0 0 280px;
+  min-width: 280px;
+  max-width: 280px;
+  height: 420px;
 }
 
-.course-card:hover {
+.courses-carousel .course-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.course-image {
+.courses-carousel .course-image {
   position: relative;
   height: 160px;
   overflow: hidden;
   background: #f8f9fa;
+  flex-shrink: 0;
 }
 
-.course-image img {
+.courses-carousel .course-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -859,11 +891,12 @@ export default {
   color: #0077b6;
 }
 
-.course-content {
+.courses-carousel .course-content {
   padding: 16px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 
 .course-title {
@@ -1139,10 +1172,11 @@ export default {
   transition: width 0.3s ease;
 }
 
-.course-footer {
+.courses-carousel .course-footer {
   display: flex;
   gap: 8px;
   align-items: center;
+  margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid #e5e7eb;
 }
@@ -1180,8 +1214,14 @@ export default {
     grid-template-columns: 1fr;
   }
   
-  .course-grid {
-    grid-template-columns: 1fr;
+  .courses-carousel {
+    gap: 12px;
+  }
+
+  .courses-carousel .course-card {
+    flex: 0 0 260px;
+    min-width: 260px;
+    max-width: 260px;
   }
 }
 
