@@ -244,12 +244,12 @@ function startProgressTracking() {
     clearInterval(progressCheckInterval.value);
   }
 
-  // Track progress every second
+  // Track progress more frequently for smooth counting (every 500ms)
   progressCheckInterval.value = setInterval(() => {
     if (videoPlayer.value && !videoPlayer.value.paused) {
       updateProgress();
     }
-  }, 1000);
+  }, 500);
 
   // Add event listeners for better tracking
   videoPlayer.value.addEventListener('timeupdate', updateProgress);
@@ -265,31 +265,37 @@ function updateProgress() {
   const duration = videoPlayer.value.duration || totalDuration.value || props.duration;
 
   if (duration > 0) {
-    // Calculate percentage based on actual time watched
-    const rawPercentage = (currentTime.value / duration) * 100;
-    progressPercentage.value = Math.min(100, Math.floor(rawPercentage));
+    // Calculate smooth percentage based on actual time watched (1% increments)
+    const smoothPercentage = (currentTime.value / duration) * 100;
+    progressPercentage.value = Math.min(100, Math.floor(smoothPercentage));
 
-    // Track watched segments (divide video into 10-second segments)
-    const segmentSize = 10; // seconds
+    // Track watched segments for anti-cheat (1-second segments for smoother tracking)
+    const segmentSize = 1; // 1-second segments for smoother updates
     const currentSegment = Math.floor(currentTime.value / segmentSize);
     watchedSegments.value.add(currentSegment);
 
-    // Calculate actual watched percentage based on segments
+    // Calculate actual watched percentage based on segments watched
     const totalSegments = Math.ceil(duration / segmentSize);
-    const watchedPercentage = (watchedSegments.value.size / totalSegments) * 100;
+    const actualWatchedPercentage = (watchedSegments.value.size / totalSegments) * 100;
 
-    // Emit progress update
+    // Use the smooth percentage for display (counts 1-100%)
+    // But use actual watched percentage for completion checking (anti-skip)
+    const displayPercentage = Math.floor(smoothPercentage);
+    const completionPercentage = Math.floor(actualWatchedPercentage);
+
+    // Emit progress update with smooth display percentage
     emit('progress-update', {
       lessonId: props.lessonId || props.lesson?.id,
       currentTime: currentTime.value,
       duration: duration,
-      progressPercentage: Math.floor(watchedPercentage),
-      rawProgressPercentage: progressPercentage.value,
-      isCompleted: watchedPercentage >= 90
+      progressPercentage: displayPercentage, // Smooth 1-100% for display
+      actualWatchedPercentage: completionPercentage, // Actual watched for completion
+      rawProgressPercentage: smoothPercentage,
+      isCompleted: completionPercentage >= 90 // Based on actual watched segments
     });
 
-    // Check for completion (90% watched)
-    if (watchedPercentage >= 90 && !hasCompleted.value) {
+    // Check for completion (90% actually watched, not just seeked to)
+    if (completionPercentage >= 90 && !hasCompleted.value) {
       hasCompleted.value = true;
       emit('lesson-completed', {
         lessonId: props.lessonId || props.lesson?.id,
