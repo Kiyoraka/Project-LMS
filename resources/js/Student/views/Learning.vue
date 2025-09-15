@@ -235,6 +235,41 @@
                       @progress-update="onProgressUpdate"
                       @show-toast="showToastMessage"
                     />
+
+                    <!-- Lesson Description -->
+                    <div class="lesson-description-section">
+                      <div class="description-header">
+                        <h3>About this lesson</h3>
+                      </div>
+                      <div class="description-content">
+                        <p v-if="currentLesson.description">
+                          {{ currentLesson.description }}
+                        </p>
+                        <p v-else class="no-description">
+                          This lesson focuses on key concepts and practical applications. Watch the video carefully and take notes as needed.
+                        </p>
+
+                        <!-- Learning Objectives if available -->
+                        <div v-if="currentLesson.objectives" class="learning-objectives">
+                          <h4>Learning Objectives</h4>
+                          <ul>
+                            <li v-for="(objective, index) in currentLesson.objectives" :key="index">
+                              {{ objective }}
+                            </li>
+                          </ul>
+                        </div>
+
+                        <!-- Key Points if available -->
+                        <div v-if="currentLesson.key_points" class="key-points">
+                          <h4>Key Points</h4>
+                          <ul>
+                            <li v-for="(point, index) in currentLesson.key_points" :key="index">
+                              {{ point }}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Article Lesson -->
@@ -1417,6 +1452,68 @@ export default {
 
 .video-lesson {
   margin-bottom: 0;
+}
+
+/* Lesson Description Section */
+.lesson-description-section {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.description-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.description-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.description-content {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.description-content p {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+}
+
+.no-description {
+  font-style: italic;
+  color: #6b7280;
+}
+
+.learning-objectives,
+.key-points {
+  margin-top: 24px;
+}
+
+.learning-objectives h4,
+.key-points h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+}
+
+.learning-objectives ul,
+.key-points ul {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.learning-objectives li,
+.key-points li {
+  margin-bottom: 8px;
+  color: #4b5563;
 }
 
 .article-lesson {
