@@ -209,33 +209,35 @@
                     ></textarea>
                   </div>
                   
-                  <div class="form-row">
-                    <div class="form-group flex-2">
-                      <label :for="`chapter-video-${index}`">YouTube Video URL *</label>
-                      <input 
-                        type="url" 
+                  <div class="form-group">
+                    <label :for="`chapter-video-${index}`">Chapter Video</label>
+                    <div class="video-upload-container">
+                      <div v-if="chapter.video_url" class="current-video-info">
+                        <i class="fas fa-video"></i>
+                        <span>Current video: {{ getVideoFileName(chapter.video_url) }}</span>
+                      </div>
+                      <input
+                        type="file"
                         :id="`chapter-video-${index}`"
-                        v-model="chapter.video_url"
-                        placeholder="https://www.youtube.com/watch?v=..."
-                        required
-                        class="form-input"
+                        :ref="`chapterVideoInput${index}`"
+                        @change="handleVideoUpload($event, index)"
+                        accept="video/*"
+                        class="file-input"
                       >
-                      <small class="form-help">
-                        <i class="fas fa-shield-alt"></i>
-                        Use unlisted YouTube videos for better security
-                      </small>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label :for="`chapter-duration-${index}`">Duration (minutes)</label>
-                      <input 
-                        type="number" 
-                        :id="`chapter-duration-${index}`"
-                        v-model="chapter.duration_minutes"
-                        placeholder="0"
-                        min="0"
-                        class="form-input"
-                      >
+                      <div class="video-preview" v-if="chapter.videoPreview">
+                        <div class="video-info">
+                          <i class="fas fa-cloud-upload-alt"></i>
+                          <span>New video: {{ chapter.videoName || 'Video selected' }}</span>
+                        </div>
+                        <button type="button" @click="removeVideo(index)" class="remove-video-btn">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                      <div v-else class="upload-placeholder" @click="$refs[`chapterVideoInput${index}`][0].click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload new video (optional)</p>
+                        <small>Supported formats: MP4, AVI, MOV, WebM (max 500MB)</small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -348,11 +350,45 @@ const courseForm = reactive({
 });
 
 // Computed properties
-const getTotalDuration = computed(() => {
-  return courseForm.chapters.reduce((total, chapter) => {
-    return total + (parseInt(chapter.duration_minutes) || 0);
-  }, 0);
-});
+// Video upload functions
+function handleVideoUpload(event, index) {
+  const file = event.target.files[0];
+  if (file) {
+    // Validate file size (500MB max)
+    if (file.size > 500 * 1024 * 1024) {
+      showToast('error', 'File Too Large', 'Video file size must be less than 500MB');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('video/')) {
+      showToast('error', 'Invalid File Type', 'Please select a video file');
+      return;
+    }
+
+    courseForm.chapters[index].videoFile = file;
+    courseForm.chapters[index].videoPreview = true;
+    courseForm.chapters[index].videoName = file.name;
+  }
+}
+
+function removeVideo(index) {
+  courseForm.chapters[index].videoFile = null;
+  courseForm.chapters[index].videoPreview = false;
+  courseForm.chapters[index].videoName = '';
+
+  // Reset the file input
+  const input = document.getElementById(`chapter-video-${index}`);
+  if (input) {
+    input.value = '';
+  }
+}
+
+function getVideoFileName(url) {
+  if (!url) return 'No video';
+  const parts = url.split('/');
+  return parts[parts.length - 1] || 'Uploaded video';
+}
 
 async function fetchCourse() {
   try {
@@ -376,7 +412,9 @@ async function fetchCourse() {
               title: lesson.title,
               description: lesson.description || '',
               video_url: lesson.video_url || '',
-              duration_minutes: lesson.duration_minutes || 0
+              videoFile: null,
+              videoPreview: false,
+              videoName: ''
             });
           });
         }
@@ -389,7 +427,9 @@ async function fetchCourse() {
         title: '',
         description: '',
         video_url: '',
-        duration_minutes: 0
+        videoFile: null,
+        videoPreview: false,
+        videoName: ''
       });
     }
   } catch (error) {
@@ -403,31 +443,45 @@ async function fetchCourse() {
 async function saveCourse() {
   if (saving.value) return;
   
-  // Validate chapters
-  const validChapters = courseForm.chapters.filter(chapter => 
-    chapter.title.trim() && chapter.video_url.trim()
+  // Validate chapters - video is now optional
+  const validChapters = courseForm.chapters.filter(chapter =>
+    chapter.title.trim()
   );
   
   if (validChapters.length === 0) {
-    showToast('warning', 'Validation Error', 'Please add at least one chapter with a title and video URL.');
+    showToast('warning', 'Validation Error', 'Please add at least one chapter with a title.');
     return;
   }
-  
+
   saving.value = true;
-  
+
   try {
     // Create FormData for file upload
     const formData = new FormData();
-    
+
     // Add course data
     formData.append('title', courseForm.title);
     formData.append('short_description', courseForm.short_description);
     formData.append('description', courseForm.description || '');
     formData.append('level', courseForm.level);
     formData.append('status', courseForm.status);
-    
-    // Add chapters data
-    formData.append('chapters', JSON.stringify(validChapters));
+
+    // Prepare chapters data and add video files
+    const chaptersData = [];
+    validChapters.forEach((chapter, index) => {
+      chaptersData.push({
+        title: chapter.title,
+        description: chapter.description || '',
+        video_url: chapter.video_url || '' // Keep existing URL if no new upload
+      });
+
+      // Add new video file if selected
+      if (chapter.videoFile) {
+        formData.append(`chapter_videos[${index}]`, chapter.videoFile);
+      }
+    });
+
+    formData.append('chapters', JSON.stringify(chaptersData));
     
     // Handle image
     if (selectedImage.value) {
@@ -471,7 +525,9 @@ function addChapter() {
     title: '',
     description: '',
     video_url: '',
-    duration_minutes: 0
+    videoFile: null,
+    videoPreview: false,
+    videoName: ''
   });
 }
 
@@ -1107,6 +1163,109 @@ onMounted(() => {
   margin: 0;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* Video Upload Styles */
+.video-upload-container {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background-color: #f9fafb;
+}
+
+.current-video-info {
+  padding: 12px 16px;
+  background-color: #e0f2fe;
+  border-bottom: 1px solid #bae6fd;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0369a1;
+  font-size: 0.9rem;
+}
+
+.current-video-info i {
+  color: #0284c7;
+}
+
+.video-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f0f9ff;
+  border-top: 2px solid #0ea5e9;
+}
+
+.video-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #0369a1;
+}
+
+.video-info i {
+  font-size: 1.5rem;
+  color: #0284c7;
+}
+
+.video-info span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.remove-video-btn {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.remove-video-btn:hover {
+  background-color: #fecaca;
+}
+
+.file-input {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.upload-placeholder {
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upload-placeholder:hover {
+  background-color: #f3f4f6;
+}
+
+.upload-placeholder i {
+  font-size: 2rem;
+  color: #9ca3af;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.upload-placeholder p {
+  margin: 0 0 5px 0;
+  color: #374151;
+  font-weight: 500;
+}
+
+.upload-placeholder small {
+  color: #6b7280;
+  font-size: 0.8rem;
 }
 
 /* Responsive Design */

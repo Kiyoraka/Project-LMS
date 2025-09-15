@@ -408,7 +408,7 @@ class TeacherApiController extends Controller
                 'thumbnail' => $thumbnailPath,
                 'level' => $request->level,
                 'status' => $request->status,
-                'duration_hours' => collect($request->chapters)->sum('duration_minutes') / 60,
+                'duration_hours' => 0, // Duration removed
                 'published_at' => $request->status === 'published' ? now() : null,
             ];
             
@@ -530,8 +530,8 @@ class TeacherApiController extends Controller
             'chapters' => 'required|array|min:1',
             'chapters.*.title' => 'required|string|max:255',
             'chapters.*.description' => 'nullable|string',
-            'chapters.*.video_url' => 'required|url',
-            'chapters.*.duration_minutes' => 'nullable|integer|min:0',
+            'chapters.*.video_url' => 'nullable|string', // Optional existing URL
+            'chapter_videos.*' => 'nullable|mimes:mp4,avi,mov,webm|max:512000', // 500MB max - Optional new upload
         ]);
 
         if ($validator->fails()) {
@@ -552,7 +552,7 @@ class TeacherApiController extends Controller
                 'description' => $request->description,
                 'level' => $request->level,
                 'status' => $request->status,
-                'duration_hours' => collect($request->chapters)->sum('duration_minutes') / 60,
+                'duration_hours' => 0, // Duration removed
             ];
             
             // Handle thumbnail changes
@@ -597,14 +597,24 @@ class TeacherApiController extends Controller
             
             // Create new lessons from chapters
             foreach ($request->chapters as $index => $chapter) {
+                // Handle video upload for this chapter
+                $videoUrl = $chapter['video_url'] ?? null; // Keep existing URL if provided
+
+                // Check for new video upload
+                if ($request->hasFile("chapter_videos.{$index}")) {
+                    $videoFile = $request->file("chapter_videos.{$index}");
+                    $videoPath = $videoFile->store('course-videos', 'public');
+                    $videoUrl = $videoPath; // Override with new upload path
+                }
+
                 Lesson::create([
                     'module_id' => $module->id,
                     'title' => $chapter['title'],
                     'description' => $chapter['description'] ?? null,
                     'content_type' => 'video',
-                    'video_url' => $chapter['video_url'],
+                    'video_url' => $videoUrl,
                     'video_protected' => true,
-                    'duration_minutes' => $chapter['duration_minutes'] ?? 0,
+                    'duration_minutes' => 0, // Duration removed
                     'position' => $index + 1,
                     'is_published' => true,
                     'is_free_preview' => false
