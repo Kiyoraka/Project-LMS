@@ -63,40 +63,61 @@
           <div class="card-body">
             <div v-if="enrollments.length > 0">
               <div class="course-grid">
-                <div 
-                  v-for="enrollment in enrolledCoursesPreview" 
+                <div
+                  v-for="enrollment in enrolledCoursesPreview"
                   :key="enrollment.id"
                   class="course-card"
                 >
-                  <div class="course-thumbnail" :style="{ backgroundImage: getCourseImageUrl(enrollment.course) }">
-                    <i v-if="!enrollment.course.thumbnail" class="bi bi-book"></i>
+                  <div class="course-image">
+                    <img
+                      :src="getCourseImageSrc(enrollment.course)"
+                      :alt="enrollment.course.title"
+                    >
+                    <span class="level-badge" :class="getLevelClass(enrollment.course.level)">
+                      {{ enrollment.course.level }}
+                    </span>
                   </div>
                   <div class="course-content">
                     <h6 class="course-title">{{ enrollment.course.title }}</h6>
-                    <div class="course-meta">
-                      <span class="badge bg-primary">{{ enrollment.course.level }}</span>
-                      <small class="text-muted">
-                        {{ enrollment.status === 'completed' ? 'Completed' : `${enrollment.progress_percentage}% Complete` }}
-                      </small>
-                    </div>
-                    <div class="progress-wrapper">
-                      <div class="progress-bar">
-                        <div class="progress-fill" :class="enrollment.status === 'completed' ? 'bg-success' : 'bg-primary'" :style="{ width: enrollment.progress_percentage + '%' }"></div>
+                    <p class="course-description">{{ enrollment.course.short_description || 'Continue your learning journey' }}</p>
+
+                    <div class="course-stats">
+                      <div class="stat-item">
+                        <i class="bi bi-book"></i>
+                        <span>{{ enrollment.course.modules_count || 0 }} modules</span>
                       </div>
-                      <span class="progress-text">{{ enrollment.progress_percentage }}%</span>
+                      <div class="stat-item" v-if="enrollment.status === 'completed'">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <span>Completed</span>
+                      </div>
                     </div>
-                    <div class="course-actions">
-                      <router-link 
-                        :to="`/student/learning/${enrollment.course.id}`" 
-                        class="btn btn-primary btn-sm flex-fill"
+
+                    <div class="progress-container">
+                      <div class="d-flex justify-content-between mb-1">
+                        <span class="progress-label">Progress</span>
+                        <span class="progress-value">{{ enrollment.progress_percentage }}%</span>
+                      </div>
+                      <div class="progress">
+                        <div
+                          class="progress-bar"
+                          :class="enrollment.status === 'completed' ? 'bg-success' : 'bg-primary'"
+                          :style="{ width: enrollment.progress_percentage + '%' }"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div class="course-footer">
+                      <router-link
+                        :to="`/student/learning/${enrollment.course.id}`"
+                        class="btn btn-primary btn-continue"
                       >
-                        {{ enrollment.status === 'completed' ? 'Review Course' : 'Continue Learning' }}
+                        {{ enrollment.status === 'completed' ? 'Review' : 'Continue' }}
                       </router-link>
-                      <button 
+                      <button
                         v-if="enrollment.status === 'completed'"
                         @click="viewCertificate(enrollment.id)"
-                        class="btn btn-outline-warning btn-sm ms-2"
-                        title="View Certificate"
+                        class="btn btn-outline-warning btn-sm"
+                        title="Certificate"
                       >
                         <i class="bi bi-award"></i>
                       </button>
@@ -283,6 +304,24 @@ export default {
         return `url(/storage/${course.thumbnail})`;
       }
       return `url(${course.thumbnail})`;
+    },
+    getCourseImageSrc(course) {
+      if (!course.thumbnail) {
+        return '/assets/images/course-placeholder.jpg';
+      }
+      // If thumbnail doesn't start with http or /, prepend /storage/
+      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
+        return `/storage/${course.thumbnail}`;
+      }
+      return course.thumbnail;
+    },
+    getLevelClass(level) {
+      const levelClasses = {
+        'beginner': 'level-beginner',
+        'intermediate': 'level-intermediate',
+        'advanced': 'level-advanced'
+      };
+      return levelClasses[level?.toLowerCase()] || 'level-beginner';
     },
     formatDate(dateString) {
       if (!dateString) return '';
@@ -754,14 +793,58 @@ export default {
 
 .course-card {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .course-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.course-image {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.level-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.level-beginner {
+  color: #28a745;
+  border: 1px solid #28a745;
+}
+
+.level-intermediate {
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.level-advanced {
+  color: #dc3545;
+  border: 1px solid #dc3545;
 }
 
 .course-thumbnail {
@@ -778,13 +861,50 @@ export default {
 
 .course-content {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .course-title {
-  font-size: 14px;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #333;
+  color: #1f2937;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.course-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.course-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-item i {
+  font-size: 0.875rem;
 }
 
 .course-meta {
@@ -989,6 +1109,50 @@ export default {
 
 .badge.bg-primary {
   background-color: #0077b6 !important;
+}
+
+.progress-container {
+  margin-top: auto;
+  margin-bottom: 12px;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.progress-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.progress {
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.course-footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn-continue {
+  flex: 1;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
 }
 
 /* Responsive Design */
