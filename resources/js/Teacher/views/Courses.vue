@@ -359,28 +359,32 @@
                 ></textarea>
               </div>
               
-              <div class="form-row">
-                <div class="form-group flex-2">
-                  <label :for="`chapter-video-${index}`">YouTube Video URL *</label>
-                  <input 
-                    type="url" 
+              <div class="form-group">
+                <label :for="`chapter-video-${index}`">Chapter Video *</label>
+                <div class="video-upload-container">
+                  <input
+                    type="file"
                     :id="`chapter-video-${index}`"
-                    v-model="chapter.video_url"
-                    placeholder="https://www.youtube.com/watch?v=..."
+                    :ref="`chapterVideoInput${index}`"
+                    @change="handleVideoUpload($event, index)"
+                    accept="video/*"
+                    class="file-input"
                     required
                   >
-                  <small class="form-help">Use unlisted YouTube videos for better security</small>
-                </div>
-                
-                <div class="form-group">
-                  <label :for="`chapter-duration-${index}`">Duration (minutes)</label>
-                  <input 
-                    type="number" 
-                    :id="`chapter-duration-${index}`"
-                    v-model="chapter.duration_minutes"
-                    placeholder="0"
-                    min="0"
-                  >
+                  <div class="video-preview" v-if="chapter.videoPreview">
+                    <div class="video-info">
+                      <i class="fas fa-video"></i>
+                      <span>{{ chapter.videoName || 'Video selected' }}</span>
+                    </div>
+                    <button type="button" @click="removeVideo(index)" class="remove-video-btn">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  <div v-else class="upload-placeholder" @click="$refs[`chapterVideoInput${index}`][0].click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to upload chapter video</p>
+                    <small>Supported formats: MP4, AVI, MOV, WebM (max 500MB)</small>
+                  </div>
                 </div>
               </div>
             </div>
@@ -513,7 +517,9 @@ const courseForm = ref({
       title: '',
       description: '',
       video_url: '',
-      duration_minutes: 0
+      videoFile: null,
+      videoPreview: false,
+      videoName: ''
     }
   ]
 });
@@ -625,7 +631,9 @@ function resetForm() {
         title: '',
         description: '',
         video_url: '',
-        duration_minutes: 0
+        videoFile: null,
+        videoPreview: false,
+        videoName: ''
       }
     ]
   };
@@ -639,7 +647,9 @@ function addChapter() {
     title: '',
     description: '',
     video_url: '',
-    duration_minutes: 0
+    videoFile: null,
+    videoPreview: false,
+    videoName: ''
   });
 }
 
@@ -684,28 +694,75 @@ function removeImage() {
   }
 }
 
+// Video upload functions
+function handleVideoUpload(event, index) {
+  const file = event.target.files[0];
+  if (file) {
+    // Validate file size (500MB max)
+    if (file.size > 500 * 1024 * 1024) {
+      showToast('error', 'File Too Large', 'Video file size must be less than 500MB');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('video/')) {
+      showToast('error', 'Invalid File Type', 'Please select a video file');
+      return;
+    }
+
+    courseForm.value.chapters[index].videoFile = file;
+    courseForm.value.chapters[index].videoPreview = true;
+    courseForm.value.chapters[index].videoName = file.name;
+  }
+}
+
+function removeVideo(index) {
+  courseForm.value.chapters[index].videoFile = null;
+  courseForm.value.chapters[index].videoPreview = false;
+  courseForm.value.chapters[index].videoName = '';
+
+  // Reset the file input
+  const input = document.getElementById(`chapter-video-${index}`);
+  if (input) {
+    input.value = '';
+  }
+}
+
 // Form submission
 async function submitCourse() {
   isSubmitting.value = true;
-  
+
   try {
     const formData = new FormData();
-    
+
     // Add basic course data
     formData.append('title', courseForm.value.title);
     formData.append('short_description', courseForm.value.short_description);
     formData.append('description', courseForm.value.description || '');
     formData.append('level', courseForm.value.level);
     formData.append('status', courseForm.value.status);
-    
+
     // Add image if selected
     if (selectedImage.value) {
       formData.append('thumbnail', selectedImage.value);
     }
-    
-    // Add chapters
-    formData.append('chapters', JSON.stringify(courseForm.value.chapters));
-    
+
+    // Add chapter data and video files
+    const chaptersData = [];
+    courseForm.value.chapters.forEach((chapter, index) => {
+      chaptersData.push({
+        title: chapter.title,
+        description: chapter.description || ''
+      });
+
+      // Add video file if selected
+      if (chapter.videoFile) {
+        formData.append(`chapter_videos[${index}]`, chapter.videoFile);
+      }
+    });
+
+    formData.append('chapters', JSON.stringify(chaptersData));
+
     const response = await axios.post('/api/teacher/courses', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -1739,6 +1796,57 @@ onMounted(() => {
 
 .remove-image-btn:hover {
   background: rgba(0, 0, 0, 0.8);
+}
+
+/* Video Upload Styles */
+.video-upload-container {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.video-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f9fafb;
+}
+
+.video-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #374151;
+}
+
+.video-info i {
+  font-size: 1.5rem;
+  color: #0077b6;
+}
+
+.video-info span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.remove-video-btn {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.remove-video-btn:hover {
+  background-color: #fecaca;
 }
 
 /* Delete Modal Styles */

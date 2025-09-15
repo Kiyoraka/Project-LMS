@@ -379,8 +379,7 @@ class TeacherApiController extends Controller
             'chapters' => 'required|array|min:1',
             'chapters.*.title' => 'required|string|max:255',
             'chapters.*.description' => 'nullable|string',
-            'chapters.*.video_url' => 'required|url',
-            'chapters.*.duration_minutes' => 'nullable|integer|min:0',
+            'chapter_videos.*' => 'required|mimes:mp4,avi,mov,webm|max:512000', // 500MB max
         ]);
 
         if ($validator->fails()) {
@@ -426,14 +425,22 @@ class TeacherApiController extends Controller
 
             // Create lessons for each chapter
             foreach ($request->chapters as $index => $chapter) {
+                // Handle video upload for this chapter
+                $videoUrl = null;
+                if ($request->hasFile("chapter_videos.{$index}")) {
+                    $videoFile = $request->file("chapter_videos.{$index}");
+                    $videoPath = $videoFile->store('course-videos', 'public');
+                    $videoUrl = Storage::url($videoPath);
+                }
+
                 $lesson = Lesson::create([
                     'module_id' => $module->id,
                     'title' => $chapter['title'],
                     'description' => $chapter['description'] ?? null,
                     'content_type' => 'video',
-                    'video_url' => $chapter['video_url'],
+                    'video_url' => $videoUrl,
                     'video_protected' => true, // Always protect video URLs
-                    'duration_minutes' => $chapter['duration_minutes'] ?? 0,
+                    'duration_minutes' => 0, // Duration removed as requested
                     'position' => $index + 1,
                     'is_published' => true,
                     'is_free_preview' => false
