@@ -379,7 +379,7 @@ class TeacherApiController extends Controller
             'chapters' => 'required|array|min:1',
             'chapters.*.title' => 'required|string|max:255',
             'chapters.*.description' => 'nullable|string',
-            'chapter_videos.*' => 'required|mimes:mp4,avi,mov,webm|max:512000', // 500MB max
+            'chapter_videos.*' => 'nullable|mimes:mp4,avi,mov,webm|max:512000', // 500MB max - Made optional
         ]);
 
         if ($validator->fails()) {
@@ -430,7 +430,8 @@ class TeacherApiController extends Controller
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
                     $videoPath = $videoFile->store('course-videos', 'public');
-                    $videoUrl = Storage::url($videoPath);
+                    // Store the relative path, will be accessed via /storage/
+                    $videoUrl = $videoPath;
                 }
 
                 $lesson = Lesson::create([

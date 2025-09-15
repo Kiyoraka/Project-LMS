@@ -360,7 +360,7 @@
               </div>
               
               <div class="form-group">
-                <label :for="`chapter-video-${index}`">Chapter Video *</label>
+                <label :for="`chapter-video-${index}`">Chapter Video (Optional)</label>
                 <div class="video-upload-container">
                   <input
                     type="file"
@@ -369,7 +369,6 @@
                     @change="handleVideoUpload($event, index)"
                     accept="video/*"
                     class="file-input"
-                    required
                   >
                   <div class="video-preview" v-if="chapter.videoPreview">
                     <div class="video-info">
