@@ -57,9 +57,20 @@
         @loadedmetadata="onVideoLoad"
         @error="onVideoError"
         class="video-player"
+        :data-lesson-id="lessonId || lesson?.id"
       >
         Your browser does not support the video tag.
       </video>
+
+      <!-- Progress Bar Overlay -->
+      <div v-if="progressPercentage > 0" class="video-progress-overlay">
+        <div class="progress-info">
+          <span class="progress-text">{{ progressPercentage }}% watched</span>
+          <div class="progress-bar-mini">
+            <div class="progress-fill-mini" :style="{ width: progressPercentage + '%' }"></div>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- Video Information -->
@@ -92,6 +103,14 @@ const props = defineProps({
     type: Object,
     default: null
   },
+  lessonId: {
+    type: Number,
+    default: null
+  },
+  duration: {
+    type: Number,
+    default: 600 // Default 10 minutes in seconds
+  },
   autoplay: {
     type: Boolean,
     default: false
@@ -102,13 +121,21 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['ready', 'error', 'play', 'pause']);
+const emit = defineEmits(['ready', 'error', 'play', 'pause', 'progress-update', 'lesson-completed']);
 
 const videoFrame = ref(null);
 const videoPlayer = ref(null);
 const videoReady = ref(false);
 const error = ref(false);
 const showOverlay = ref(props.showOverlay);
+
+// Progress tracking variables
+const currentTime = ref(0);
+const totalDuration = ref(0);
+const progressPercentage = ref(0);
+const watchedSegments = ref(new Set());
+const hasCompleted = ref(false);
+const progressCheckInterval = ref(null);
 
 // Check if it's a local video or YouTube URL
 const isLocalVideo = computed(() => {
@@ -195,6 +222,17 @@ const embedUrl = computed(() => {
 function onVideoLoad() {
   videoReady.value = true;
   emit('ready');
+
+  // Set total duration if video element exists
+  if (videoPlayer.value) {
+    totalDuration.value = videoPlayer.value.duration || props.duration;
+    // Start progress tracking for local videos
+    startProgressTracking();
+  } else if (!isLocalVideo.value) {
+    // For YouTube videos, use time-based tracking
+    totalDuration.value = props.duration;
+    startYouTubeProgressTracking();
+  }
 }
 
 function onVideoError() {
@@ -205,6 +243,165 @@ function onVideoError() {
 function hideOverlay() {
   showOverlay.value = false;
   emit('play');
+}
+
+// Track video progress
+function startProgressTracking() {
+  if (!videoPlayer.value) return;
+
+  // Clear any existing interval
+  if (progressCheckInterval.value) {
+    clearInterval(progressCheckInterval.value);
+  }
+
+  // Track progress every second
+  progressCheckInterval.value = setInterval(() => {
+    if (videoPlayer.value && !videoPlayer.value.paused) {
+      updateProgress();
+    }
+  }, 1000);
+
+  // Add event listeners for better tracking
+  videoPlayer.value.addEventListener('timeupdate', updateProgress);
+  videoPlayer.value.addEventListener('ended', onVideoEnded);
+  videoPlayer.value.addEventListener('play', () => emit('play'));
+  videoPlayer.value.addEventListener('pause', () => emit('pause'));
+}
+
+function updateProgress() {
+  if (!videoPlayer.value) return;
+
+  currentTime.value = videoPlayer.value.currentTime;
+  const duration = videoPlayer.value.duration || totalDuration.value || props.duration;
+
+  if (duration > 0) {
+    // Calculate percentage based on actual time watched
+    const rawPercentage = (currentTime.value / duration) * 100;
+    progressPercentage.value = Math.min(100, Math.floor(rawPercentage));
+
+    // Track watched segments (divide video into 10-second segments)
+    const segmentSize = 10; // seconds
+    const currentSegment = Math.floor(currentTime.value / segmentSize);
+    watchedSegments.value.add(currentSegment);
+
+    // Calculate actual watched percentage based on segments
+    const totalSegments = Math.ceil(duration / segmentSize);
+    const watchedPercentage = (watchedSegments.value.size / totalSegments) * 100;
+
+    // Emit progress update
+    emit('progress-update', {
+      lessonId: props.lessonId || props.lesson?.id,
+      currentTime: currentTime.value,
+      duration: duration,
+      progressPercentage: Math.floor(watchedPercentage),
+      rawProgressPercentage: progressPercentage.value,
+      isCompleted: watchedPercentage >= 90
+    });
+
+    // Check for completion (90% watched)
+    if (watchedPercentage >= 90 && !hasCompleted.value) {
+      hasCompleted.value = true;
+      emit('lesson-completed', {
+        lessonId: props.lessonId || props.lesson?.id,
+        completedAt: new Date().toISOString()
+      });
+    }
+  }
+}
+
+function onVideoEnded() {
+  // Mark as 100% when video ends naturally
+  progressPercentage.value = 100;
+
+  emit('progress-update', {
+    lessonId: props.lessonId || props.lesson?.id,
+    currentTime: totalDuration.value,
+    duration: totalDuration.value,
+    progressPercentage: 100,
+    rawProgressPercentage: 100,
+    isCompleted: true
+  });
+
+  if (!hasCompleted.value) {
+    hasCompleted.value = true;
+    emit('lesson-completed', {
+      lessonId: props.lessonId || props.lesson?.id,
+      completedAt: new Date().toISOString()
+    });
+  }
+}
+
+// Time-based progress tracking for YouTube videos
+let youtubeStartTime = null;
+let youtubeWatchedTime = 0;
+let youtubePausedTime = 0;
+let isYouTubePlaying = false;
+
+function startYouTubeProgressTracking() {
+  // Clear any existing interval
+  if (progressCheckInterval.value) {
+    clearInterval(progressCheckInterval.value);
+  }
+
+  // Start tracking when overlay is hidden (video starts playing)
+  youtubeStartTime = Date.now();
+  isYouTubePlaying = false;
+
+  // Track progress every second
+  progressCheckInterval.value = setInterval(() => {
+    updateYouTubeProgress();
+  }, 1000);
+}
+
+function updateYouTubeProgress() {
+  if (!isLocalVideo.value && !showOverlay.value) {
+    // Calculate time watched (assuming video is playing when overlay is hidden)
+    if (!isYouTubePlaying) {
+      isYouTubePlaying = true;
+      youtubeStartTime = Date.now();
+    }
+
+    const currentWatchTime = (Date.now() - youtubeStartTime) / 1000; // Convert to seconds
+    youtubeWatchedTime = Math.min(currentWatchTime, totalDuration.value);
+
+    // Calculate percentage based on time watched vs total duration
+    const watchPercentage = Math.min(100, Math.floor((youtubeWatchedTime / totalDuration.value) * 100));
+    progressPercentage.value = watchPercentage;
+
+    // Emit progress update
+    emit('progress-update', {
+      lessonId: props.lessonId || props.lesson?.id,
+      currentTime: youtubeWatchedTime,
+      duration: totalDuration.value,
+      progressPercentage: watchPercentage,
+      rawProgressPercentage: watchPercentage,
+      isCompleted: watchPercentage >= 90
+    });
+
+    // Check for completion (90% watched)
+    if (watchPercentage >= 90 && !hasCompleted.value) {
+      hasCompleted.value = true;
+      emit('lesson-completed', {
+        lessonId: props.lessonId || props.lesson?.id,
+        completedAt: new Date().toISOString()
+      });
+    }
+
+    // Auto-complete at 100% duration time
+    if (youtubeWatchedTime >= totalDuration.value && !hasCompleted.value) {
+      progressPercentage.value = 100;
+      hasCompleted.value = true;
+      emit('lesson-completed', {
+        lessonId: props.lessonId || props.lesson?.id,
+        completedAt: new Date().toISOString()
+      });
+
+      // Stop tracking
+      if (progressCheckInterval.value) {
+        clearInterval(progressCheckInterval.value);
+      }
+    }
+  }
 }
 
 // Prevent right-click on video
@@ -244,6 +441,17 @@ onUnmounted(() => {
   // Clean up event listeners
   document.removeEventListener('contextmenu', preventContextMenu);
   document.removeEventListener('keydown', preventVideoSave);
+
+  // Clear progress tracking interval
+  if (progressCheckInterval.value) {
+    clearInterval(progressCheckInterval.value);
+  }
+
+  // Remove video event listeners if video element exists
+  if (videoPlayer.value) {
+    videoPlayer.value.removeEventListener('timeupdate', updateProgress);
+    videoPlayer.value.removeEventListener('ended', onVideoEnded);
+  }
 });
 
 // Watch for URL changes
@@ -484,5 +692,50 @@ watch(() => props.videoUrl, () => {
   max-height: 500px;
   background-color: #000;
   border-radius: 8px;
+}
+
+/* Video Progress Overlay */
+.video-progress-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 8px 12px;
+  border-radius: 6px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-text {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.progress-bar-mini {
+  width: 120px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill-mini {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-note {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  margin-top: 2px;
 }
 </style> 
