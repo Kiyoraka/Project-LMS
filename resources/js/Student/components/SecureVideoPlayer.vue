@@ -53,7 +53,6 @@
         ref="videoPlayer"
         :src="localVideoUrl"
         controls
-        controlsList="nodownload"
         @loadedmetadata="onVideoLoad"
         @error="onVideoError"
         class="video-player"
@@ -426,43 +425,13 @@ function updateYouTubeProgress() {
   }
 }
 
-// Prevent right-click on video
-function preventContextMenu(event) {
-  event.preventDefault();
-  return false;
-}
-
-// Prevent video download attempts
-function preventVideoSave(event) {
-  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
-    event.preventDefault();
-    return false;
-  }
-}
-
-// Security measures
+// Removed security measures - videos are now downloadable and right-clickable
 onMounted(() => {
-  // Add event listeners for security
-  document.addEventListener('contextmenu', preventContextMenu);
-  document.addEventListener('keydown', preventVideoSave);
-  
-  // Prevent iframe manipulation
-  if (videoFrame.value) {
-    videoFrame.value.addEventListener('load', () => {
-      try {
-        // Additional security could be implemented here
-        // Note: Due to CORS, we can't access iframe content directly
-      } catch (err) {
-        // Expected for cross-origin iframes
-      }
-    });
-  }
+  // No security measures - videos can be downloaded
 });
 
 onUnmounted(() => {
-  // Clean up event listeners
-  document.removeEventListener('contextmenu', preventContextMenu);
-  document.removeEventListener('keydown', preventVideoSave);
+  // No cleanup needed
 
   // Clear progress tracking interval
   if (progressCheckInterval.value) {
@@ -691,20 +660,13 @@ watch(() => props.videoUrl, () => {
 
 /* Prevent text selection on video overlay */
 .video-overlay {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  /* Removed user-select restrictions - content is selectable */
 }
 
 /* Disable drag on video */
 .video-iframe {
   pointer-events: auto;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+  /* Removed drag restrictions - videos can be dragged */
 }
 
 /* HTML5 Video Player Styles */
