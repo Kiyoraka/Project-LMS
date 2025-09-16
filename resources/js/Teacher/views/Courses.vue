@@ -139,9 +139,9 @@
           class="course-card"
         >
         <div class="course-header">
-            <img 
-              :src="course.thumbnail ? `/storage/${course.thumbnail}` : '/assets/images/course-placeholder.jpg'" 
-              class="course-thumbnail" 
+            <img
+              :src="course.thumbnail || '/assets/images/course-placeholder.jpg'"
+              class="course-thumbnail"
               alt="Course"
             >
             <span class="badge level-badge">{{ course.level || 'All Levels' }}</span>

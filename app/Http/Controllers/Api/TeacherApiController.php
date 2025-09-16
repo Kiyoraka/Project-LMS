@@ -147,8 +147,7 @@ class TeacherApiController extends Controller
                     'id' => $course->id,
                     'title' => $course->title,
                     'status' => $course->status,
-                    'thumbnail' => $course->thumbnail,
-                    'thumbnail_url' => \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail),
+                    'thumbnail' => $course->thumbnail,  // This is now the full URL
                     'enrollments_count' => $course->enrollments_count,
                     'modules_count' => $course->modules_count,
                     'lessons_count' => $course->lessons_count,
@@ -261,10 +260,7 @@ class TeacherApiController extends Controller
 
             $course->created_at_formatted = $course->created_at->toISOString();
 
-            // Format thumbnail URL
-            if ($course->thumbnail) {
-                $course->thumbnail_url = \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail);
-            }
+            // Thumbnail is already a full URL in the database, no formatting needed
 
             return $course;
         });
@@ -482,14 +478,21 @@ class TeacherApiController extends Controller
 
                     $thumbnailPath = $file->store('course-thumbnails', $disk);
 
-                    // Generate the full URL
-                    $fullUrl = \App\Helpers\StorageHelper::getPublicUrl($thumbnailPath);
+                    // Generate the full URL for database storage
+                    if ($disk === 'spaces') {
+                        // For Spaces, save the full CDN URL
+                        $spacesUrl = rtrim(config('filesystems.disks.spaces.url', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com'), '/');
+                        $thumbnailUrl = $spacesUrl . '/' . $thumbnailPath;
+                    } else {
+                        // For local, use the storage path
+                        $thumbnailUrl = '/storage/' . $thumbnailPath;
+                    }
 
                     \Log::info('✅ THUMBNAIL UPLOAD SUCCESS', [
                         '🎯 STORAGE_LOCATION' => $storageLocation,
                         'disk' => $disk,
                         'path' => $thumbnailPath,
-                        'full_url' => $fullUrl,
+                        'full_url' => $thumbnailUrl,
                         'will_persist' => $disk === 'spaces' ? 'YES - Stored in Spaces' : 'NO - Local only',
                         'env' => config('app.env')
                     ]);
@@ -511,7 +514,7 @@ class TeacherApiController extends Controller
                 'slug' => Str::slug($request->title),
                 'short_description' => $request->short_description,
                 'description' => $request->description,
-                'thumbnail' => $thumbnailPath,
+                'thumbnail' => $thumbnailUrl ?? null,  // Save full URL instead of path
                 'level' => $request->level,
                 'status' => $request->status,
                 'duration_hours' => 0, // Duration removed
@@ -570,18 +573,23 @@ class TeacherApiController extends Controller
                         ]);
 
                         $videoPath = $videoFile->store('course-videos', $disk);
-                        // Store the relative path, will be accessed via /storage/ or Spaces URL
-                        $videoUrl = $videoPath;
 
-                        // Generate the full URL
-                        $fullUrl = \App\Helpers\StorageHelper::getPublicUrl($videoPath);
+                        // Generate and save the full URL for database storage
+                        if ($disk === 'spaces') {
+                            // For Spaces, save the full CDN URL
+                            $spacesUrl = rtrim(config('filesystems.disks.spaces.url', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com'), '/');
+                            $videoUrl = $spacesUrl . '/' . $videoPath;
+                        } else {
+                            // For local, use the storage path
+                            $videoUrl = '/storage/' . $videoPath;
+                        }
 
                         \Log::info('✅ VIDEO UPLOAD SUCCESS - Chapter ' . ($index + 1), [
                             '🎯 STORAGE_LOCATION' => $storageLocation,
                             'chapter_title' => $chapter['title'],
                             'disk' => $disk,
                             'path' => $videoPath,
-                            'full_url' => $fullUrl,
+                            'saved_url' => $videoUrl,
                             'will_persist' => $disk === 'spaces' ? 'YES - Stored in Spaces' : 'NO - Local only'
                         ]);
                     } catch (\Exception $e) {
@@ -614,10 +622,7 @@ class TeacherApiController extends Controller
             // Reload course with relationships and format the response
             $course->load('modules.lessons');
 
-            // Format thumbnail URL for response
-            if ($course->thumbnail) {
-                $course->thumbnail_url = \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail);
-            }
+            // No need to generate thumbnail_url anymore - it's already a full URL in the database
 
             return response()->json([
                 'success' => true,
