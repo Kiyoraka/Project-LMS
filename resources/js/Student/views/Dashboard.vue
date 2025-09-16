@@ -300,20 +300,14 @@ export default {
       if (!course.thumbnail) {
         return 'url(/assets/images/course-placeholder.svg)';
       }
-      // If thumbnail doesn't start with http or /, prepend /storage/
-      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
-        return `url(/storage/${course.thumbnail})`;
-      }
+      // Thumbnail is now a full URL in the database
       return `url(${course.thumbnail})`;
     },
     getCourseImageSrc(course) {
       if (!course.thumbnail) {
         return '/assets/images/course-placeholder.jpg';
       }
-      // If thumbnail doesn't start with http or /, prepend /storage/
-      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
-        return `/storage/${course.thumbnail}`;
-      }
+      // Thumbnail is now a full URL in the database
       return course.thumbnail;
     },
     getLevelClass(level) {

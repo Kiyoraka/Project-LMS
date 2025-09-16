@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\StorageHelper;
+// use App\Helpers\StorageHelper; // No longer needed - URLs are stored directly in database
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
@@ -56,15 +56,13 @@ class StudentApiController extends Controller
         
         // Get recent course enrollments for "My Courses" section
         $recentEnrollments = $enrollments->take(3)->map(function ($enrollment) {
-            // Use StorageHelper for proper URL generation on DigitalOcean
-            $thumbnailUrl = StorageHelper::getPublicUrl($enrollment->course->thumbnail);
-
+            // Thumbnail is now a full URL in the database
             return [
                 'id' => $enrollment->id,
                 'course' => [
                     'id' => $enrollment->course->id,
                     'title' => $enrollment->course->title,
-                    'thumbnail' => $thumbnailUrl,
+                    'thumbnail' => $enrollment->course->thumbnail,
                     'level' => $enrollment->course->level ?? 'Beginner'
                 ],
                 'status' => $enrollment->status,
@@ -128,7 +126,7 @@ class StudentApiController extends Controller
                     'course' => [
                         'id' => $enrollment->course->id,
                         'title' => $enrollment->course->title,
-                        'thumbnail' => StorageHelper::getPublicUrl($enrollment->course->thumbnail),
+                        'thumbnail' => $enrollment->course->thumbnail,  // Direct URL from database
                         'level' => $enrollment->course->level ?? 'Beginner',
                         'short_description' => $enrollment->course->short_description,
                         'duration_hours' => $enrollment->course->duration_hours ?? 0
@@ -215,9 +213,8 @@ class StudentApiController extends Controller
         
         // Format the courses data
         $courses->getCollection()->transform(function ($course) use ($enrolledCourseIds) {
-            $thumbnailUrl = StorageHelper::getPublicUrl($course->thumbnail);
-
-            // Log thumbnail URL generation for debugging
+            // Thumbnail is now a full URL in the database
+            // Log thumbnail URL for debugging
             if ($course->thumbnail) {
                 \Log::debug('🖼️ Thumbnail URL Generated', [
                     'course_id' => $course->id,
@@ -241,7 +238,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $thumbnailUrl,
+                'thumbnail' => $enrollment->course->thumbnail,
                 'is_featured' => $course->featured ?? false,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()
@@ -284,7 +281,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => StorageHelper::getPublicUrl($course->thumbnail),
+                'thumbnail' => $course->thumbnail,  // Direct URL from database
                 'is_featured' => true,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()

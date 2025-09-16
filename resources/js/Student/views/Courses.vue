@@ -311,10 +311,7 @@ export default {
       if (!course.thumbnail) {
         return '/assets/images/course-placeholder.jpg';
       }
-      // If thumbnail doesn't start with http or /, prepend /storage/
-      if (!course.thumbnail.startsWith('http') && !course.thumbnail.startsWith('/')) {
-        return `/storage/${course.thumbnail}`;
-      }
+      // Thumbnail is now a full URL in the database
       return course.thumbnail;
     },
     async fetchEnrollments() {
