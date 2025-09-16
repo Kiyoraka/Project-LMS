@@ -229,6 +229,7 @@
                       :key="'video-player-' + currentLesson.id"
                       :video-url="currentLesson.video_url || getDemoVideoUrl()"
                       :lesson-id="currentLesson.id"
+                      :lesson="currentLesson"
                       :duration="currentLesson.duration_minutes * 60 || 600"
                       @ready="onVideoReady"
                       @lesson-completed="onLessonCompleted"
@@ -577,6 +578,59 @@ export default {
     }
   },
   methods: {
+    // Save video progress to backend
+    async saveVideoProgress(progressData) {
+      try {
+        await axios.post(`/api/student/lessons/${progressData.lessonId}/progress`, {
+          time_spent_seconds: Math.floor(progressData.currentTime),
+          progress_percentage: progressData.progressPercentage
+        });
+
+        console.log(`Progress saved: ${progressData.progressPercentage}%`);
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+      }
+    },
+
+    // Update overall course progress based on all lessons
+    updateOverallProgress() {
+      if (!this.course.modules || this.course.modules.length === 0) return;
+
+      let totalLessons = 0;
+      let completedLessons = 0;
+      let totalProgress = 0;
+
+      this.course.modules.forEach(module => {
+        if (module.lessons && module.lessons.length > 0) {
+          module.lessons.forEach(lesson => {
+            totalLessons++;
+
+            // Check if this is the current lesson being watched
+            if (lesson.id === this.currentLesson?.id) {
+              // Use the live progress for current lesson
+              totalProgress += this.currentLessonProgress;
+              if (this.currentLessonCompleted) {
+                completedLessons++;
+              }
+            } else if (lesson.completed) {
+              // For other lessons, use their completed status
+              completedLessons++;
+              totalProgress += 100;
+            } else if (lesson.progress_percentage) {
+              // Use stored progress if available
+              totalProgress += lesson.progress_percentage;
+            }
+          });
+        }
+      });
+
+      // Calculate overall progress
+      if (totalLessons > 0) {
+        this.overallProgress = Math.floor(totalProgress / totalLessons);
+      } else {
+        this.overallProgress = 0;
+      }
+    },
     async fetchCourseData() {
       if (!this.courseId) {
         this.error = 'No course ID provided';
@@ -595,12 +649,15 @@ export default {
           // Initialize the first module as expanded
           if (this.course.modules && this.course.modules.length > 0) {
             this.expandedModules = { 0: true };
-            
+
             // Set the first lesson as current if none is selected
             if (!this.currentLesson && this.course.modules[0].lessons && this.course.modules[0].lessons.length > 0) {
-              this.currentLesson = this.course.modules[0].lessons[0];
+              await this.setCurrentLesson(this.course.modules[0].lessons[0]);
             }
           }
+
+          // Calculate initial overall progress
+          this.updateOverallProgress();
         } else {
           this.error = 'Invalid course data received';
         }
@@ -668,6 +725,7 @@ export default {
     // Progress Update Handler
     onProgressUpdate(progressData) {
       if (progressData.lessonId === this.currentLesson?.id) {
+        const previousProgress = this.currentLessonProgress;
         this.currentLessonProgress = progressData.progressPercentage;
         this.currentLessonCompleted = progressData.isCompleted || false;
 
@@ -682,6 +740,17 @@ export default {
             this.actualVideoDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
           }
         }
+
+        // Save progress every 10% increment
+        const previousTens = Math.floor(previousProgress / 10);
+        const currentTens = Math.floor(progressData.progressPercentage / 10);
+
+        if (currentTens > previousTens) {
+          this.saveVideoProgress(progressData);
+        }
+
+        // Update overall course progress immediately
+        this.updateOverallProgress();
       }
     },
     
@@ -691,16 +760,35 @@ export default {
         [moduleIndex]: !this.expandedModules[moduleIndex]
       };
     },
-    setCurrentLesson(lesson) {
+    async setCurrentLesson(lesson) {
       this.currentLesson = lesson;
       this.quizSubmitted = false;
       this.quizAnswers = {};
       this.assignmentAnswer = '';
 
-      // Reset progress tracking for new lesson
-      this.currentLessonProgress = 0;
-      this.currentLessonCompleted = lesson.completed || false;
+      // Load saved progress for this lesson
+      try {
+        const response = await axios.get(`/api/student/lessons/${lesson.id}/progress`);
+        if (response.data && response.data.progress) {
+          this.currentLessonProgress = response.data.progress.progress_percentage || 0;
+          this.currentLessonCompleted = response.data.progress.is_completed || false;
+
+          // Store the saved progress for video player to use
+          lesson.saved_progress = response.data.progress;
+        } else {
+          this.currentLessonProgress = 0;
+          this.currentLessonCompleted = lesson.completed || false;
+        }
+      } catch (error) {
+        // If no saved progress, start from 0
+        this.currentLessonProgress = 0;
+        this.currentLessonCompleted = lesson.completed || false;
+      }
+
       this.actualVideoDuration = null; // Reset actual duration for new lesson
+
+      // Update overall progress when switching lessons
+      this.updateOverallProgress();
     },
     getCompletedLessonsCount(module) {
       return module.lessons.filter(lesson => lesson.completed).length;

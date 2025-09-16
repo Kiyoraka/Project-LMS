@@ -94,6 +94,10 @@ const props = defineProps({
   showOverlay: {
     type: Boolean,
     default: true
+  },
+  savedProgress: {
+    type: Object,
+    default: null
   }
 });
 
@@ -242,6 +246,24 @@ function hideOverlay() {
 // Track video progress
 function startProgressTracking() {
   if (!videoPlayer.value) return;
+
+  // Resume from saved progress if available
+  if (props.savedProgress || props.lesson?.saved_progress) {
+    const savedData = props.savedProgress || props.lesson.saved_progress;
+    if (savedData.time_spent_seconds > 0) {
+      // Set the video to the saved position
+      videoPlayer.value.currentTime = savedData.time_spent_seconds;
+      currentTime.value = savedData.time_spent_seconds;
+      progressPercentage.value = savedData.progress_percentage || 0;
+
+      // Restore watched segments (estimate based on saved time)
+      const segmentSize = 1;
+      const savedSegments = Math.floor(savedData.time_spent_seconds / segmentSize);
+      for (let i = 0; i <= savedSegments; i++) {
+        watchedSegments.value.add(i);
+      }
+    }
+  }
 
   // Clear any existing interval
   if (progressCheckInterval.value) {
