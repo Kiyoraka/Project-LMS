@@ -379,10 +379,19 @@ class TeacherApiController extends Controller
             'chapters' => 'required|array|min:1',
             'chapters.*.title' => 'required|string|max:255',
             'chapters.*.description' => 'nullable|string',
-            'chapter_videos.*' => 'nullable|mimes:mp4,avi,mov,webm|max:512000', // 500MB max - Made optional
+            'chapter_videos.*' => 'nullable|file|mimes:mp4,avi,mov,webm,mkv|max:512000', // 500MB max - Made optional
         ]);
 
         if ($validator->fails()) {
+            \Log::error('Course creation validation failed', [
+                'errors' => $validator->errors()->toArray(),
+                'request_data' => $request->except(['chapter_videos', 'thumbnail']),
+                'file_sizes' => [
+                    'thumbnail' => $request->hasFile('thumbnail') ? $request->file('thumbnail')->getSize() : null,
+                    'videos' => collect($request->file('chapter_videos', []))->map(fn($file) => $file ? $file->getSize() : null)->toArray()
+                ]
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
@@ -535,6 +544,15 @@ class TeacherApiController extends Controller
         ]);
 
         if ($validator->fails()) {
+            \Log::error('Course creation validation failed', [
+                'errors' => $validator->errors()->toArray(),
+                'request_data' => $request->except(['chapter_videos', 'thumbnail']),
+                'file_sizes' => [
+                    'thumbnail' => $request->hasFile('thumbnail') ? $request->file('thumbnail')->getSize() : null,
+                    'videos' => collect($request->file('chapter_videos', []))->map(fn($file) => $file ? $file->getSize() : null)->toArray()
+                ]
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
