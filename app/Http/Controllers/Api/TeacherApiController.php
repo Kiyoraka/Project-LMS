@@ -70,14 +70,14 @@ class TeacherApiController extends Controller
     public function getEnrollmentChart(Request $request)
     {
         $teacher = Auth::user();
-        $period = $request->get('period', 'month'); // Default to month view
+        $period = $request->get('period', 'week'); // Default to week view
 
         $chartLabels = [];
         $chartData = [];
 
-        if ($period == 'month' || $period == '3' || $period == '6') {
-            // Show daily data for month view (last 30 days)
-            $days = 30;
+        if ($period == 'week') {
+            // Show daily data for week view (last 7 days)
+            $days = 7;
 
             for ($i = $days - 1; $i >= 0; $i--) {
                 $date = now()->subDays($i);
@@ -87,6 +87,21 @@ class TeacherApiController extends Controller
                     $query->where('user_id', $teacher->id);
                 })
                 ->whereDate('enrolled_at', $date->toDateString())
+                ->count();
+
+                $chartData[] = $count;
+            }
+        } elseif ($period == 'month') {
+            // Show weekly data for month view (last 4 weeks)
+            for ($i = 3; $i >= 0; $i--) {
+                $weekStart = now()->subWeeks($i)->startOfWeek();
+                $weekEnd = now()->subWeeks($i)->endOfWeek();
+                $chartLabels[] = 'Week of ' . $weekStart->format('M d');
+
+                $count = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {
+                    $query->where('user_id', $teacher->id);
+                })
+                ->whereBetween('enrolled_at', [$weekStart->toDateString(), $weekEnd->toDateString()])
                 ->count();
 
                 $chartData[] = $count;

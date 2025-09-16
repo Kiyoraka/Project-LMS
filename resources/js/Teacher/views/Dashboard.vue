@@ -55,6 +55,7 @@
             <h5>Enrollment Trends</h5>
             <div class="chart-period-selector">
               <select v-model="chartPeriod" @change="updateChart">
+                <option value="week">Week</option>
                 <option value="month">Month</option>
                 <option value="year">Year</option>
               </select>
@@ -201,7 +202,7 @@ const enrollmentChartRef = ref(null);
 let enrollmentChart = null;
 
 // Dashboard data
-const chartPeriod = ref('month');
+const chartPeriod = ref('week');
 const chartLoading = ref(false);
 const stats = ref({
   totalCourses: 0,
