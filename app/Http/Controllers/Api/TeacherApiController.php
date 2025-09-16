@@ -148,6 +148,7 @@ class TeacherApiController extends Controller
                     'title' => $course->title,
                     'status' => $course->status,
                     'thumbnail' => $course->thumbnail,
+                    'thumbnail_url' => \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail),
                     'enrollments_count' => $course->enrollments_count,
                     'modules_count' => $course->modules_count,
                     'lessons_count' => $course->lessons_count,
@@ -249,7 +250,7 @@ class TeacherApiController extends Controller
             $course->enrollments_count = $course->enrollments()->count();
             $course->modules_count = $course->modules()->count();
             $course->lessons_count = $course->lessons()->count();
-            
+
             // Calculate completion rate based on student progress
             if ($course->enrollments_count > 0) {
                 $totalProgress = $course->enrollments()->sum('progress_percentage');
@@ -257,9 +258,14 @@ class TeacherApiController extends Controller
             } else {
                 $course->completion_rate = 0;
             }
-            
+
             $course->created_at_formatted = $course->created_at->toISOString();
-            
+
+            // Format thumbnail URL
+            if ($course->thumbnail) {
+                $course->thumbnail_url = \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail);
+            }
+
             return $course;
         });
         
@@ -435,8 +441,24 @@ class TeacherApiController extends Controller
             $thumbnailPath = null;
             if ($request->hasFile('thumbnail')) {
                 // Use Spaces in production, public disk in local
-                $disk = config('app.env') === 'production' ? 'spaces' : 'public';
-                $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', $disk);
+                $disk = config('app.env') === 'production' && config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+
+                try {
+                    $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', $disk);
+                    \Log::info('Thumbnail uploaded successfully', [
+                        'disk' => $disk,
+                        'path' => $thumbnailPath,
+                        'env' => config('app.env'),
+                        'filesystem_default' => config('filesystems.default')
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error('Failed to upload thumbnail', [
+                        'error' => $e->getMessage(),
+                        'disk' => $disk,
+                        'env' => config('app.env')
+                    ]);
+                    throw new \Exception('Failed to upload thumbnail: ' . $e->getMessage());
+                }
             }
             
             // Create course
@@ -471,10 +493,26 @@ class TeacherApiController extends Controller
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
                     // Use Spaces in production, public disk in local
-                    $disk = config('app.env') === 'production' ? 'spaces' : 'public';
-                    $videoPath = $videoFile->store('course-videos', $disk);
-                    // Store the relative path, will be accessed via /storage/ or Spaces URL
-                    $videoUrl = $videoPath;
+                    $disk = config('app.env') === 'production' && config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+
+                    try {
+                        $videoPath = $videoFile->store('course-videos', $disk);
+                        // Store the relative path, will be accessed via /storage/ or Spaces URL
+                        $videoUrl = $videoPath;
+
+                        \Log::info('Video uploaded successfully for chapter', [
+                            'chapter_index' => $index,
+                            'disk' => $disk,
+                            'path' => $videoPath
+                        ]);
+                    } catch (\Exception $e) {
+                        \Log::error('Failed to upload video for chapter', [
+                            'chapter_index' => $index,
+                            'error' => $e->getMessage(),
+                            'disk' => $disk
+                        ]);
+                        throw new \Exception('Failed to upload video for chapter ' . ($index + 1) . ': ' . $e->getMessage());
+                    }
                 }
 
                 $lesson = Lesson::create([
@@ -492,6 +530,14 @@ class TeacherApiController extends Controller
             }
 
             DB::commit();
+
+            // Reload course with relationships and format the response
+            $course->load('modules.lessons');
+
+            // Format thumbnail URL for response
+            if ($course->thumbnail) {
+                $course->thumbnail_url = \App\Helpers\StorageHelper::getPublicUrl($course->thumbnail);
+            }
 
             return response()->json([
                 'success' => true,
