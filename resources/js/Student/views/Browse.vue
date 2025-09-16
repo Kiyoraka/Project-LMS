@@ -68,10 +68,14 @@
         >
           <div class="course-image">
             <img
-              :src="course.thumbnail || 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(course.title)"
+              v-if="course.thumbnail"
+              :src="course.thumbnail"
               :alt="course.title"
-              @error="handleImageError($event, course.title)"
+              @error="handleImageError($event, course)"
             >
+            <div v-else class="no-image-placeholder">
+              <i class="bi bi-image"></i>
+            </div>
             <div class="course-badge featured-badge">
               <i class="bi bi-fire"></i>
               Most Popular
@@ -163,10 +167,14 @@
           >
             <div class="course-image">
               <img
-                :src="course.thumbnail || 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(course.title)"
+                v-if="course.thumbnail"
+                :src="course.thumbnail"
                 :alt="course.title"
-                @error="handleImageError($event, course.title)"
+                @error="handleImageError($event, course)"
               >
+              <div v-else class="no-image-placeholder">
+                <i class="bi bi-image"></i>
+              </div>
               <div v-if="course.is_new" class="course-badge new-badge">
                 <i class="bi bi-lightning-fill"></i>
                 New
@@ -513,9 +521,14 @@ export default {
       this.enrollmentType = 'success';
     },
 
-    handleImageError(event, title) {
-      // If image fails to load, use a placeholder
-      event.target.src = 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(title);
+    handleImageError(event, course) {
+      // If image fails to load, hide it
+      event.target.style.display = 'none';
+      // Add a simple icon placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'no-image-placeholder';
+      placeholder.innerHTML = '<i class="bi bi-image"></i>';
+      event.target.parentElement.appendChild(placeholder);
     }
   },
 
@@ -1310,5 +1323,35 @@ export default {
   background: #b91c1c;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+/* No image placeholder */
+.no-image-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.no-image-placeholder i {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.course-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.course-image .no-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>
