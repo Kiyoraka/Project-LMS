@@ -27,15 +27,7 @@ The Admin Dashboard is the control center where administrators manage the entire
 - Activate or deactivate user accounts
 - Reset passwords when needed
 
-#### 3. **System Settings**
-- Configure site name and branding
-- Upload system logo and favicon
-- Set maintenance mode when needed
-- Manage email settings
-- Configure security options
-- Set file storage preferences
-
-#### 4. **Additional Features**
+#### 3. **Additional Features**
 - Update admin profile and password
 - View recent system activity
 - Monitor new registrations and enrollments
@@ -174,14 +166,6 @@ php artisan migrate # Setup database
 composer run dev    # Start development server
 ```
 
-### Future Enhancements
-Planned features for future versions:
-- Live streaming classes
-- Discussion forums
-- Quiz and assessment tools
-- Mobile applications
-- Payment integration
-- Advanced analytics
 
 ---
 
@@ -193,14 +177,6 @@ Planned features for future versions:
 - 20 database tables for storing information
 - 3 user roles (Admin, Teacher, Student)
 - Developed in September 2025
-
-### System Capabilities
-- Supports many users at the same time
-- Unlimited video and file storage
-- Unlimited courses and lessons
-- Internal messaging between users
-- Detailed analytics and reports
-- Works on all devices
 
 ---
 
@@ -218,9 +194,6 @@ Planned features for future versions:
 ## 📝 **About This Document**
 
 This synopsis provides an overview of the Learning Management System Prototype, explaining the main features of each dashboard and the system's capabilities. The platform is ready for use by educational institutions and online learning providers.
-
-**System Value**: Professional educational platform worth RM15,000+
-**Last Updated**: September 2025
 
 ---
 
