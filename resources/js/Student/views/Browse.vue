@@ -695,6 +695,7 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   margin-bottom: 32px;
+  align-items: stretch;
 }
 
 .course-card {
@@ -703,6 +704,9 @@ export default {
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .course-card:hover {
@@ -748,6 +752,9 @@ export default {
 
 .course-content {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .course-meta-top {
@@ -851,6 +858,7 @@ export default {
   align-items: center;
   padding-top: 16px;
   border-top: 1px solid #f0f0f0;
+  margin-top: auto;
 }
 
 .free-tag {
