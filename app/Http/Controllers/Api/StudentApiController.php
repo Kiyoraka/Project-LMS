@@ -1170,7 +1170,10 @@ class StudentApiController extends Controller
             // Update existing progress
             $existingProgress->update([
                 'time_spent_seconds' => $validated['time_spent_seconds'],
-                'progress_percentage' => $validated['progress_percentage']
+                'progress_percentage' => $validated['progress_percentage'],
+                // Mark as completed if progress is 100%
+                'is_completed' => $validated['progress_percentage'] >= 100,
+                'completed_at' => $validated['progress_percentage'] >= 100 && !$existingProgress->completed_at ? now() : $existingProgress->completed_at
             ]);
             $progress = $existingProgress;
         } else {
@@ -1181,9 +1184,14 @@ class StudentApiController extends Controller
                 'course_enrollment_id' => $enrollment->id,
                 'time_spent_seconds' => $validated['time_spent_seconds'],
                 'progress_percentage' => $validated['progress_percentage'],
+                'is_completed' => $validated['progress_percentage'] >= 100,
+                'completed_at' => $validated['progress_percentage'] >= 100 ? now() : null,
                 'started_at' => now()
             ]);
         }
+
+        // Update overall course progress when lesson progress changes
+        $this->updateCourseProgress($enrollment);
 
         return response()->json([
             'success' => true,
@@ -1279,10 +1287,20 @@ class StudentApiController extends Controller
         $overallProgress = round(($completedLessons / $totalLessons) * 100);
 
         // Update enrollment progress
-        $enrollment->update([
+        // Important: Don't overwrite completed_at if it's already set
+        $updateData = [
             'progress_percentage' => $overallProgress,
-            'status' => $overallProgress >= 100 ? 'completed' : 'active',
-            'completed_at' => $overallProgress >= 100 ? now() : null
-        ]);
+            'status' => $overallProgress >= 100 ? 'completed' : 'active'
+        ];
+
+        // Only set completed_at if it's not already set and we're reaching 100%
+        if ($overallProgress >= 100 && !$enrollment->completed_at) {
+            $updateData['completed_at'] = now();
+        } elseif ($overallProgress < 100) {
+            // Only clear completed_at if progress drops below 100%
+            $updateData['completed_at'] = null;
+        }
+
+        $enrollment->update($updateData);
     }
 } 
