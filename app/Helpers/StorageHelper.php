@@ -24,10 +24,24 @@ class StorageHelper
         Log::debug('StorageHelper::getPublicUrl', [
             'input_path' => $path,
             'app_env' => config('app.env'),
-            'app_url' => config('app.url')
+            'app_url' => config('app.url'),
+            'filesystem_disk' => config('filesystems.default')
         ]);
 
-        // For production on DigitalOcean
+        // For production with DigitalOcean Spaces
+        if (config('app.env') === 'production' && config('filesystems.default') === 'spaces') {
+            // Use Spaces URL directly
+            $url = Storage::disk('spaces')->url($path);
+
+            Log::debug('Generated Spaces URL', [
+                'url' => $url,
+                'method' => 'spaces_disk'
+            ]);
+
+            return $url;
+        }
+
+        // For production on DigitalOcean without Spaces
         if (config('app.env') === 'production') {
             // Check if the file exists
             if (!Storage::disk('public')->exists($path)) {
@@ -70,6 +84,11 @@ class StorageHelper
     {
         if (empty($path)) {
             return false;
+        }
+
+        // Check in Spaces if in production
+        if (config('app.env') === 'production' && config('filesystems.default') === 'spaces') {
+            return Storage::disk('spaces')->exists($path);
         }
 
         return Storage::disk('public')->exists($path);

@@ -434,7 +434,9 @@ class TeacherApiController extends Controller
             // Handle thumbnail upload
             $thumbnailPath = null;
             if ($request->hasFile('thumbnail')) {
-                $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', 'public');
+                // Use Spaces in production, public disk in local
+                $disk = config('app.env') === 'production' ? 'spaces' : 'public';
+                $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', $disk);
             }
             
             // Create course
@@ -468,8 +470,10 @@ class TeacherApiController extends Controller
                 $videoUrl = null;
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
-                    $videoPath = $videoFile->store('course-videos', 'public');
-                    // Store the relative path, will be accessed via /storage/
+                    // Use Spaces in production, public disk in local
+                    $disk = config('app.env') === 'production' ? 'spaces' : 'public';
+                    $videoPath = $videoFile->store('course-videos', $disk);
+                    // Store the relative path, will be accessed via /storage/ or Spaces URL
                     $videoUrl = $videoPath;
                 }
 
