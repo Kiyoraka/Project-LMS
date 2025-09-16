@@ -119,10 +119,6 @@
                 </p>
               </div>
             </div>
-            <div class="score-badge">
-              <span class="score-value">{{ certificate.final_score }}%</span>
-              <span class="score-label">Score</span>
-            </div>
           </div>
 
           <!-- Card Body -->
@@ -291,10 +287,6 @@
                     <div class="detail-row">
                       <span>Duration:</span>
                       <span>{{ selectedCertificate.course.duration_hours }} hours</span>
-                    </div>
-                    <div class="detail-row">
-                      <span>Final Score:</span>
-                      <span>{{ selectedCertificate.final_score }}%</span>
                     </div>
                     <div class="detail-row">
                       <span>Completion Date:</span>
@@ -493,23 +485,69 @@ export default {
       if (this.downloading === certificate.id) {
         return;
       }
-      
+
       try {
         this.downloading = certificate.id;
-        
-        const response = await fetch(`/api/student/certificates/${certificate.id}/download`);
-        
-        if (response.ok) {
-          const data = await response.json();
-          
-          // Open certificate in new window for PDF generation
-          const certificateWindow = window.open(data.certificate_url, '_blank');
-          
-          if (!certificateWindow) {
-            alert('Please allow pop-ups to view and download certificates.');
-          }
-        } else {
-          alert('Failed to download certificate. Please try again.');
+
+        // Create a hidden iframe to load the certificate
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.width = '1200px';
+        iframe.style.height = '850px';
+        iframe.style.left = '-9999px';
+        iframe.style.top = '-9999px';
+        document.body.appendChild(iframe);
+
+        // Load the certificate URL
+        iframe.src = `/api/student/certificates/${certificate.id}/view`;
+
+        // Wait for iframe to load
+        iframe.onload = async () => {
+          setTimeout(async () => {
+            try {
+              // Import html2canvas dynamically
+              const { default: html2canvas } = await import('html2canvas');
+
+              // Get the certificate element from iframe
+              const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+              const certificateElement = iframeDoc.querySelector('.certificate-container') || iframeDoc.body;
+
+              // Convert to canvas
+              const canvas = await html2canvas(certificateElement, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+              });
+
+              // Convert canvas to blob
+              canvas.toBlob((blob) => {
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `certificate_${certificate.course.title.replace(/\s+/g, '_')}_${new Date().getTime()}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                // Clean up
+                document.body.removeChild(iframe);
+                this.downloading = null;
+              }, 'image/png');
+            } catch (error) {
+              console.error('Error generating certificate image:', error);
+
+              // Fallback: Download as PDF by opening in new window
+              window.open(`/api/student/certificates/${certificate.id}/view`, '_blank');
+              document.body.removeChild(iframe);
+              this.downloading = null;
+            }
+          }, 1000); // Wait for certificate to render
+        };
+
+        iframe.onerror = () => {
+          alert('Failed to load certificate. Please try again.');
         }
       } catch (error) {
         alert('Failed to download certificate. Please try again.');
@@ -523,12 +561,12 @@ export default {
       if (navigator.share) {
         navigator.share({
           title: `${certificate.course.title} - Certificate of Completion`,
-          text: `I've completed the "${certificate.course.title}" course with a score of ${certificate.final_score}%!`,
+          text: `I've completed the "${certificate.course.title}" course!`,
           url: window.location.href
         });
       } else {
         // Fallback: copy to clipboard
-        const shareText = `I've completed the "${certificate.course.title}" course with a score of ${certificate.final_score}%!`;
+        const shareText = `I've completed the "${certificate.course.title}" course!`;
         navigator.clipboard.writeText(shareText).then(() => {
           alert('Certificate details copied to clipboard!');
         });
