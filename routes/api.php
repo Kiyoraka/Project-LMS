@@ -280,4 +280,6 @@ Route::prefix('diagnostics')->group(function () {
 Route::prefix('debug')->group(function () {
     Route::get('/environment', [DebugController::class, 'checkEnvironment']);
     Route::get('/test-spaces', [DebugController::class, 'testSpacesUpload']);
+    Route::post('/refresh-config', [DebugController::class, 'refreshConfig']);
+    Route::get('/check-upload-disk', [DebugController::class, 'checkUploadDisk']);
 });
