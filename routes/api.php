@@ -53,7 +53,7 @@ Route::get('/site-settings', function () {
     // Use isset and null checks instead of empty() for string values
     $siteName = (isset($general['siteName']) && $general['siteName'] !== null && $general['siteName'] !== '') 
         ? $general['siteName'] 
-        : 'Aidel LMS';
+        : 'LMS Prototype';
     
     // For logo and favicon, use public routes instead of direct storage paths
     $logoPath = '';

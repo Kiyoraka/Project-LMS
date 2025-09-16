@@ -301,7 +301,7 @@ class AdminController extends Controller
     {
         // In a real app, these would come from the database
         $settings = [
-            'site_name' => 'Aidel LMS',
+            'site_name' => 'LMS Prototype',
             'site_description' => 'Advanced Learning Management System',
             'contact_email' => 'admin@aidel.com',
             'timezone' => 'UTC',

@@ -318,7 +318,7 @@
                     🎓
                 </div>
                 <h1 class="certificate-title">Certificate of Completion</h1>
-                <p class="certificate-subtitle">{{ config('app.name', 'Aidel LMS') }}</p>
+                <p class="certificate-subtitle">{{ config('app.name', 'LMS Prototype') }}</p>
             </div>
 
             <div class="certificate-content">

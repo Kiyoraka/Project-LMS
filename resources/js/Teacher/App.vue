@@ -30,7 +30,7 @@
     <header class="mobile-header">
       <div class="mobile-header-content">
         <div class="mobile-logo">
-          <img :src="logoUrl" alt="Aidel LMS" class="mobile-logo-img">
+          <img :src="logoUrl" alt="LMS Prototype" class="mobile-logo-img">
           <span class="mobile-title">Teacher</span>
         </div>
         <div class="mobile-header-actions">
@@ -123,7 +123,7 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="vue-sidebar">
       <div class="sidebar-header">
-        <img :src="logoUrl" alt="Aidel LMS" class="logo">
+        <img :src="logoUrl" alt="LMS Prototype" class="logo">
         <h1>Teacher Dashboard</h1>
       </div>
       

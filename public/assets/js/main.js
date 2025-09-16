@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize page load animation
     initPageLoadAnimation();
     
-    console.log('Aidel LMS - Landing page initialized successfully! 🚀');
+    console.log('LMS Prototype - Landing page initialized successfully! 🚀');
 });
 
 // Optional: Add global error handling (logging only)

@@ -19,7 +19,7 @@ Route::get('/api/site-settings', function () {
         $generalSettings = App\Models\Setting::getGroup('general');
         $appearanceSettings = App\Models\Setting::getGroup('appearance');
         
-        $siteName = ($generalSettings['siteName'] ?? '') ?: 'Aidel LMS';
+        $siteName = ($generalSettings['siteName'] ?? '') ?: 'LMS Prototype';
         
         // Use public routes for logo and favicon to avoid 403 errors
         $logoPath = '';
@@ -60,7 +60,7 @@ Route::get('/api/site-settings', function () {
         
         return response()->json([
             'general' => [
-                'siteName' => 'Aidel LMS',
+                'siteName' => 'LMS Prototype',
                 'logoPath' => '/assets/images/logo.svg',
                 'faviconPath' => '/favicon.ico'
             ]

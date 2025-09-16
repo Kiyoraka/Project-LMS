@@ -14,7 +14,7 @@ services:
   http_port: 80
   envs:
   - key: APP_NAME
-    value: "Aidel LMS"
+    value: "LMS Prototype"
   - key: APP_ENV
     value: production
   - key: APP_KEY
