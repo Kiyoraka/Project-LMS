@@ -149,7 +149,22 @@ class StudentApiController extends Controller
     public function getBrowseCourses(Request $request)
     {
         $student = Auth::user();
-        
+
+        // Log where files will be loaded from
+        $storageSource = config('filesystems.default') === 'spaces'
+            ? 'DigitalOcean Spaces (kiyoraka-world)'
+            : 'Local Storage';
+
+        \Log::info('📥 LOADING BROWSE COURSES', [
+            '🎯 LOADING_FROM' => $storageSource,
+            'student_id' => $student->id,
+            'student_name' => $student->name,
+            'filesystem_default' => config('filesystems.default'),
+            'spaces_configured' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
+            'spaces_bucket' => config('filesystems.disks.spaces.bucket') ?: 'NOT SET',
+            'env' => config('app.env')
+        ]);
+
         // Get all published courses with their details
         $query = Course::where('status', 'published')
             ->withCount(['enrollments', 'modules', 'lessons'])
@@ -200,6 +215,19 @@ class StudentApiController extends Controller
         
         // Format the courses data
         $courses->getCollection()->transform(function ($course) use ($enrolledCourseIds) {
+            $thumbnailUrl = StorageHelper::getPublicUrl($course->thumbnail);
+
+            // Log thumbnail URL generation for debugging
+            if ($course->thumbnail) {
+                \Log::debug('🖼️ Thumbnail URL Generated', [
+                    'course_id' => $course->id,
+                    'course_title' => $course->title,
+                    'thumbnail_path' => $course->thumbnail,
+                    'generated_url' => $thumbnailUrl,
+                    'using_spaces' => strpos($thumbnailUrl, 'digitaloceanspaces.com') !== false ? 'YES' : 'NO'
+                ]);
+            }
+
             return [
                 'id' => $course->id,
                 'title' => $course->title,
@@ -213,7 +241,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => StorageHelper::getPublicUrl($course->thumbnail),
+                'thumbnail' => $thumbnailUrl,
                 'is_featured' => $course->featured ?? false,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()

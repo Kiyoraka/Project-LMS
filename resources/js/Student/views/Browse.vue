@@ -380,19 +380,32 @@ export default {
     async fetchFeaturedCourses() {
       try {
         this.featuredLoading = true;
-        
+
         const response = await fetch('/api/student/featured-courses');
-        
+
         if (response.ok) {
           const data = await response.json();
           this.featuredCourses = data;
-          
+
+          // Log where thumbnails are loading from
+          console.log('📥 FEATURED COURSES LOADED');
+          data.forEach((course, index) => {
+            if (course.thumbnail) {
+              const isSpaces = course.thumbnail.includes('digitaloceanspaces.com');
+              console.log(`🖼️ Course #${index + 1}: ${course.title}`);
+              console.log(`   📍 Loading from: ${isSpaces ? '☁️ DigitalOcean Spaces' : '💾 Local Storage'}`);
+              console.log(`   🔗 URL: ${course.thumbnail}`);
+            } else {
+              console.log(`⚠️ Course #${index + 1}: ${course.title} - No thumbnail`);
+            }
+          });
+
           // Extract unique categories
           const categoriesSet = new Set(data.map(course => course.category));
           this.categories = [...categoriesSet];
         }
       } catch (error) {
-        // Silent error handling for production
+        console.error('❌ Failed to fetch featured courses:', error);
       } finally {
         this.featuredLoading = false;
       }
@@ -402,29 +415,44 @@ export default {
       try {
         this.loading = true;
         this.error = null;
-        
+
         const params = new URLSearchParams({
           page: this.currentPage,
           sort_by: this.sortBy
         });
-        
+
         if (this.searchQuery) params.append('search', this.searchQuery);
         if (this.selectedCategory) params.append('category', this.selectedCategory);
         if (this.selectedLevel) params.append('level', this.selectedLevel);
-        
+
         const response = await fetch(`/api/student/courses?${params}`);
-        
+
         if (response.ok) {
           const data = await response.json();
-          
+
           this.courses = data.data;
           this.totalPages = data.last_page;
           this.totalCourses = data.total;
+
+          // Log where thumbnails are loading from
+          console.log('📥 ALL COURSES LOADED - Page', this.currentPage);
+          data.data.forEach((course, index) => {
+            if (course.thumbnail) {
+              const isSpaces = course.thumbnail.includes('digitaloceanspaces.com');
+              console.log(`🖼️ Course: ${course.title}`);
+              console.log(`   📍 Source: ${isSpaces ? '☁️ Spaces' : '💾 Local'}`);
+              if (!isSpaces && course.thumbnail.includes('/storage/')) {
+                console.warn(`   ⚠️ WARNING: Using local storage - will be lost on deployment!`);
+              }
+            }
+          });
         } else {
           this.error = 'Failed to load courses. Please try again.';
+          console.error('❌ Failed to load courses:', response.status);
         }
       } catch (error) {
         this.error = 'Failed to load courses. Please try again.';
+        console.error('❌ Error fetching courses:', error);
       } finally {
         this.loading = false;
       }

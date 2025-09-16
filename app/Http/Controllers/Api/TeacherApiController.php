@@ -446,25 +446,37 @@ class TeacherApiController extends Controller
                 try {
                     $file = $request->file('thumbnail');
 
+                    // Determine actual storage location
+                    $storageLocation = $disk === 'spaces'
+                        ? 'DigitalOcean Spaces (kiyoraka-world)'
+                        : 'Local Storage (public disk)';
+
                     // Log file details before upload
-                    \Log::info('Attempting thumbnail upload', [
+                    \Log::info('📤 UPLOADING THUMBNAIL', [
+                        '🎯 STORAGE_LOCATION' => $storageLocation,
+                        'disk_name' => $disk,
                         'original_name' => $file->getClientOriginalName(),
                         'size' => $file->getSize(),
+                        'size_readable' => round($file->getSize() / 1024, 2) . ' KB',
                         'mime' => $file->getMimeType(),
-                        'disk' => $disk,
                         'env' => config('app.env'),
                         'filesystem_default' => config('filesystems.default'),
-                        'spaces_key' => config('filesystems.disks.spaces.key') ? 'Set' : 'Not set',
-                        'spaces_bucket' => config('filesystems.disks.spaces.bucket')
+                        'spaces_configured' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
+                        'spaces_bucket' => config('filesystems.disks.spaces.bucket') ?: 'NOT SET'
                     ]);
 
                     $thumbnailPath = $file->store('course-thumbnails', $disk);
 
-                    \Log::info('Thumbnail uploaded successfully', [
+                    // Generate the full URL
+                    $fullUrl = \App\Helpers\StorageHelper::getPublicUrl($thumbnailPath);
+
+                    \Log::info('✅ THUMBNAIL UPLOAD SUCCESS', [
+                        '🎯 STORAGE_LOCATION' => $storageLocation,
                         'disk' => $disk,
                         'path' => $thumbnailPath,
-                        'env' => config('app.env'),
-                        'filesystem_default' => config('filesystems.default')
+                        'full_url' => $fullUrl,
+                        'will_persist' => $disk === 'spaces' ? 'YES - Stored in Spaces' : 'NO - Local only',
+                        'env' => config('app.env')
                     ]);
                 } catch (\Exception $e) {
                     \Log::error('Failed to upload thumbnail', [
@@ -512,23 +524,38 @@ class TeacherApiController extends Controller
                     $disk = config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
 
                     try {
-                        \Log::info('Attempting video upload for chapter', [
+                        // Determine actual storage location
+                        $storageLocation = $disk === 'spaces'
+                            ? 'DigitalOcean Spaces (kiyoraka-world)'
+                            : 'Local Storage (public disk)';
+
+                        \Log::info('📤 UPLOADING VIDEO - Chapter ' . ($index + 1), [
+                            '🎯 STORAGE_LOCATION' => $storageLocation,
+                            'chapter_title' => $chapter['title'],
                             'chapter_index' => $index,
+                            'disk_name' => $disk,
                             'original_name' => $videoFile->getClientOriginalName(),
                             'size' => $videoFile->getSize(),
-                            'size_mb' => round($videoFile->getSize() / 1024 / 1024, 2),
+                            'size_mb' => round($videoFile->getSize() / 1024 / 1024, 2) . ' MB',
                             'mime' => $videoFile->getMimeType(),
-                            'disk' => $disk
+                            'spaces_configured' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
+                            'warning' => $disk === 'public' ? '⚠️ Using local storage - files will be lost on deployment!' : null
                         ]);
 
                         $videoPath = $videoFile->store('course-videos', $disk);
                         // Store the relative path, will be accessed via /storage/ or Spaces URL
                         $videoUrl = $videoPath;
 
-                        \Log::info('Video uploaded successfully for chapter', [
-                            'chapter_index' => $index,
+                        // Generate the full URL
+                        $fullUrl = \App\Helpers\StorageHelper::getPublicUrl($videoPath);
+
+                        \Log::info('✅ VIDEO UPLOAD SUCCESS - Chapter ' . ($index + 1), [
+                            '🎯 STORAGE_LOCATION' => $storageLocation,
+                            'chapter_title' => $chapter['title'],
                             'disk' => $disk,
-                            'path' => $videoPath
+                            'path' => $videoPath,
+                            'full_url' => $fullUrl,
+                            'will_persist' => $disk === 'spaces' ? 'YES - Stored in Spaces' : 'NO - Local only'
                         ]);
                     } catch (\Exception $e) {
                         \Log::error('Failed to upload video for chapter', [
