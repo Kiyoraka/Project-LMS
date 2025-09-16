@@ -216,12 +216,11 @@ class StudentApiController extends Controller
             // Thumbnail is now a full URL in the database
             // Log thumbnail URL for debugging
             if ($course->thumbnail) {
-                \Log::debug('🖼️ Thumbnail URL Generated', [
+                \Log::debug('🖼️ Thumbnail URL from Database', [
                     'course_id' => $course->id,
                     'course_title' => $course->title,
-                    'thumbnail_path' => $course->thumbnail,
-                    'generated_url' => $thumbnailUrl,
-                    'using_spaces' => strpos($thumbnailUrl, 'digitaloceanspaces.com') !== false ? 'YES' : 'NO'
+                    'thumbnail_url' => $course->thumbnail,
+                    'using_spaces' => strpos($course->thumbnail, 'digitaloceanspaces.com') !== false ? 'YES' : 'NO'
                 ]);
             }
 
@@ -238,7 +237,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $enrollment->course->thumbnail,
+                'thumbnail' => $course->thumbnail,  // Direct URL from database
                 'is_featured' => $course->featured ?? false,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()

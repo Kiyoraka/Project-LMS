@@ -89,7 +89,7 @@
               <tbody>
                 <tr v-for="course in recentCourses" :key="course.id" class="course-row">
                   <td class="course-info">
-                    <div class="course-thumbnail" :style="{ backgroundImage: course.thumbnail ? `url(/storage/${course.thumbnail})` : 'none' }">
+                    <div class="course-thumbnail" :style="{ backgroundImage: course.thumbnail ? `url(${course.thumbnail})` : 'none' }">
                       <i v-if="!course.thumbnail" class="fas fa-book"></i>
                     </div>
                     <div class="course-title">{{ course.title }}</div>
@@ -142,8 +142,8 @@
                   <!-- Student Info Section -->
                   <div class="student-section">
                     <div class="student-avatar">
-                      <img v-if="enrollment.student.avatar" 
-                           :src="`/storage/${enrollment.student.avatar}`" 
+                      <img v-if="enrollment.student.avatar"
+                           :src="enrollment.student.avatar.startsWith('http') ? enrollment.student.avatar : `/storage/${enrollment.student.avatar}`"
                            :alt="enrollment.student.name"
                            @error="handleImageError($event, enrollment.student.name)" />
                       <div v-else class="avatar-fallback">
