@@ -8,6 +8,7 @@ use App\Models\CourseEnrollment;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,8 +95,8 @@ class TeacherApiController extends Controller
         } elseif ($period == 'month') {
             // Show weekly data for month view (last 4 weeks)
             for ($i = 3; $i >= 0; $i--) {
-                $weekStart = now()->subWeeks($i)->startOfWeek();
-                $weekEnd = now()->subWeeks($i)->endOfWeek();
+                $weekStart = Carbon::now()->subWeeks($i)->startOfWeek();
+                $weekEnd = Carbon::now()->subWeeks($i)->endOfWeek();
                 $chartLabels[] = 'Week of ' . $weekStart->format('M d');
 
                 $count = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {
@@ -107,9 +108,9 @@ class TeacherApiController extends Controller
                 $chartData[] = $count;
             }
         } else {
-            // Show monthly data for year view (12 months)
+            // Default to year view - Show monthly data for year view (12 months)
             for ($i = 11; $i >= 0; $i--) {
-                $date = now()->subMonths($i);
+                $date = Carbon::now()->subMonths($i);
                 $chartLabels[] = $date->format('M Y');
 
                 $count = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {

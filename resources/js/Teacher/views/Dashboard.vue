@@ -266,7 +266,13 @@ async function fetchDashboardData() {
 // Update chart when period changes
 async function updateChart() {
   await fetchDashboardData();
-  updateChartData();
+
+  // Destroy and recreate chart to ensure proper rendering
+  if (enrollmentChart) {
+    enrollmentChart.destroy();
+    enrollmentChart = null;
+  }
+  initializeChart();
 }
 
 // Update chart data without recreating the chart
