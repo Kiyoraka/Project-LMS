@@ -70,28 +70,42 @@ class TeacherApiController extends Controller
     public function getEnrollmentChart(Request $request)
     {
         $teacher = Auth::user();
-        $period = $request->get('period', 12); // Default to 12 months
-        
-        // Get enrollment data for the specified period
-        $enrollmentsByMonth = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {
-            $query->where('user_id', $teacher->id);
-        })
-        ->select(DB::raw('MONTH(enrolled_at) as month'), DB::raw('YEAR(enrolled_at) as year'), DB::raw('COUNT(*) as count'))
-        ->whereRaw('enrolled_at >= DATE_SUB(NOW(), INTERVAL ? MONTH)', [$period])
-        ->groupBy('year', 'month')
-        ->orderBy('year')
-        ->orderBy('month')
-        ->get();
-        
-        // Format for chart.js
+        $period = $request->get('period', 'month'); // Default to month view
+
         $chartLabels = [];
         $chartData = [];
-        
-        foreach ($enrollmentsByMonth as $record) {
-            $date = \DateTime::createFromFormat('!m', $record->month);
-            $monthName = $date->format('M');
-            $chartLabels[] = $monthName . ' ' . $record->year;
-            $chartData[] = $record->count;
+
+        if ($period == 'month' || $period == '3' || $period == '6') {
+            // Show daily data for month view (last 30 days)
+            $days = 30;
+
+            for ($i = $days - 1; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                $chartLabels[] = $date->format('M d');
+
+                $count = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {
+                    $query->where('user_id', $teacher->id);
+                })
+                ->whereDate('enrolled_at', $date->toDateString())
+                ->count();
+
+                $chartData[] = $count;
+            }
+        } else {
+            // Show monthly data for year view (12 months)
+            for ($i = 11; $i >= 0; $i--) {
+                $date = now()->subMonths($i);
+                $chartLabels[] = $date->format('M Y');
+
+                $count = CourseEnrollment::whereHas('course', function ($query) use ($teacher) {
+                    $query->where('user_id', $teacher->id);
+                })
+                ->whereMonth('enrolled_at', $date->month)
+                ->whereYear('enrolled_at', $date->year)
+                ->count();
+
+                $chartData[] = $count;
+            }
         }
 
         return response()->json([
