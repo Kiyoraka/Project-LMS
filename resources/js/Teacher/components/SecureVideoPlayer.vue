@@ -119,9 +119,13 @@ const isLocalVideo = computed(() => {
     return true;
   }
 
-  // Check if it's a local storage URL
+  // Check if it's a local storage URL or Spaces URL (both are direct video files)
   try {
     const url = new URL(props.videoUrl, window.location.origin);
+    // Treat Spaces URLs as local videos (direct file access)
+    if (url.hostname.includes('digitaloceanspaces.com')) {
+      return true;
+    }
     return url.pathname.includes('/storage/');
   } catch {
     return true; // If URL parsing fails, assume it's a local path
@@ -132,7 +136,7 @@ const isLocalVideo = computed(() => {
 const localVideoUrl = computed(() => {
   if (!isLocalVideo.value || !props.videoUrl) return null;
 
-  // If it's already a full URL, use it
+  // If it's already a full URL (including Spaces URLs), use it directly
   if (props.videoUrl.startsWith('http://') || props.videoUrl.startsWith('https://')) {
     return props.videoUrl;
   }
