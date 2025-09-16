@@ -740,16 +740,48 @@ class TeacherApiController extends Controller
             
             // Handle thumbnail changes
             if ($request->hasFile('thumbnail')) {
-                // Delete old thumbnail if exists
+                // Determine which disk to use
+                $disk = config('filesystems.default') === 'spaces' && config('app.env') === 'production'
+                    ? 'spaces'
+                    : 'public';
+
+                // Delete old thumbnail if exists (try to extract path from URL)
                 if ($course->thumbnail) {
-                    Storage::disk('public')->delete($course->thumbnail);
+                    // If it's a full URL, try to extract the path
+                    if (strpos($course->thumbnail, 'digitaloceanspaces.com') !== false) {
+                        $path = parse_url($course->thumbnail, PHP_URL_PATH);
+                        $path = ltrim($path, '/');
+                        Storage::disk('spaces')->delete($path);
+                    } elseif (strpos($course->thumbnail, '/storage/') === 0) {
+                        $path = str_replace('/storage/', '', $course->thumbnail);
+                        Storage::disk('public')->delete($path);
+                    }
                 }
+
                 // Upload new thumbnail
-                $updateData['thumbnail'] = $request->file('thumbnail')->store('course-thumbnails', 'public');
+                $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', $disk);
+
+                // Generate the full URL for database storage
+                if ($disk === 'spaces') {
+                    // For Spaces, save the full CDN URL
+                    $spacesUrl = rtrim(config('filesystems.disks.spaces.url', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com'), '/');
+                    $updateData['thumbnail'] = $spacesUrl . '/' . $thumbnailPath;
+                } else {
+                    // For local, use the storage path
+                    $updateData['thumbnail'] = '/storage/' . $thumbnailPath;
+                }
             } elseif ($request->has('remove_thumbnail') && $request->remove_thumbnail === 'true') {
                 // Remove existing thumbnail
                 if ($course->thumbnail) {
-                    Storage::disk('public')->delete($course->thumbnail);
+                    // If it's a full URL, try to extract the path
+                    if (strpos($course->thumbnail, 'digitaloceanspaces.com') !== false) {
+                        $path = parse_url($course->thumbnail, PHP_URL_PATH);
+                        $path = ltrim($path, '/');
+                        Storage::disk('spaces')->delete($path);
+                    } elseif (strpos($course->thumbnail, '/storage/') === 0) {
+                        $path = str_replace('/storage/', '', $course->thumbnail);
+                        Storage::disk('public')->delete($path);
+                    }
                 }
                 $updateData['thumbnail'] = null;
             }
@@ -786,8 +818,23 @@ class TeacherApiController extends Controller
                 // Check for new video upload
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
-                    $videoPath = $videoFile->store('course-videos', 'public');
-                    $videoUrl = $videoPath; // Override with new upload path
+
+                    // Determine which disk to use
+                    $disk = config('filesystems.default') === 'spaces' && config('app.env') === 'production'
+                        ? 'spaces'
+                        : 'public';
+
+                    $videoPath = $videoFile->store('course-videos', $disk);
+
+                    // Generate the full URL for database storage
+                    if ($disk === 'spaces') {
+                        // For Spaces, save the full CDN URL
+                        $spacesUrl = rtrim(config('filesystems.disks.spaces.url', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com'), '/');
+                        $videoUrl = $spacesUrl . '/' . $videoPath;
+                    } else {
+                        // For local, use the storage path
+                        $videoUrl = '/storage/' . $videoPath;
+                    }
                 }
 
                 Lesson::create([
