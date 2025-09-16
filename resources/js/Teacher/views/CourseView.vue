@@ -12,10 +12,10 @@
       <div class="course-header-section">
         <div class="header-content">
           <div class="course-image-container">
-            <img 
-              v-if="course.thumbnail" 
-              :src="`/storage/${course.thumbnail}`" 
-              :alt="course.title" 
+            <img
+              v-if="course.thumbnail"
+              :src="course.thumbnail"
+              :alt="course.title"
               class="course-image"
             >
             <div v-else class="course-placeholder">

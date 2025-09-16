@@ -133,7 +133,7 @@
                 </div>
                 
                 <div v-else-if="course.thumbnail && !removeCurrentImageFlag" class="current-image">
-                  <img :src="`/storage/${course.thumbnail}`" alt="Current course image" class="preview-image">
+                  <img :src="course.thumbnail" alt="Current course image" class="preview-image">
                   <div class="image-actions">
                     <button type="button" @click="$refs.courseImageInput.click()" class="btn btn-sm btn-secondary">
                       <i class="fas fa-camera"></i>

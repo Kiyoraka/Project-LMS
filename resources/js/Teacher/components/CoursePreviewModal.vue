@@ -26,10 +26,10 @@
             Teacher Preview Mode
           </div>
           <div class="course-header">
-            <img 
-              v-if="course.thumbnail" 
-              :src="`/storage/${course.thumbnail}`" 
-              :alt="course.title" 
+            <img
+              v-if="course.thumbnail"
+              :src="course.thumbnail"
+              :alt="course.title"
               class="course-thumbnail"
             >
             <div v-else class="course-placeholder">
