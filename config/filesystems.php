@@ -66,7 +66,7 @@ return [
             'secret' => env('DO_SPACES_SECRET'),
             'region' => env('DO_SPACES_REGION', 'sgp1'),
             'bucket' => env('DO_SPACES_BUCKET'),
-            'url' => env('DO_SPACES_URL'),
+            'url' => env('DO_SPACES_URL', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com'),
             'endpoint' => env('DO_SPACES_ENDPOINT'),
             'use_path_style_endpoint' => false,
             'visibility' => 'public',

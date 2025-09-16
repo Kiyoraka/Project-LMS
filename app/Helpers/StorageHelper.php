@@ -40,13 +40,17 @@ class StorageHelper
 
         // For production with DigitalOcean Spaces
         if ($shouldUseSpaces) {
-            // Use Spaces URL directly
-            $url = Storage::disk('spaces')->url($path);
+            // Build the Spaces URL manually to ensure it's correct
+            // Don't rely on Storage::disk('spaces')->url() as it may not use the CDN URL
+            $spacesUrl = config('filesystems.disks.spaces.url', 'https://kiyoraka-world.sgp1.digitaloceanspaces.com');
+            $spacesUrl = rtrim($spacesUrl, '/');
+            $url = $spacesUrl . '/' . ltrim($path, '/');
 
             Log::info('✅ Generated Spaces URL', [
                 'url' => $url,
                 'path' => $path,
-                'method' => 'spaces_disk'
+                'method' => 'manual_spaces_url',
+                'spaces_base_url' => $spacesUrl
             ]);
 
             return $url;
@@ -97,8 +101,12 @@ class StorageHelper
             return false;
         }
 
-        // Check in Spaces if in production
-        if (config('app.env') === 'production' && config('filesystems.default') === 'spaces') {
+        $isProduction = config('app.env') === 'production';
+        $defaultDisk = config('filesystems.default');
+        $shouldUseSpaces = $isProduction && $defaultDisk === 'spaces';
+
+        // Check in Spaces if in production with Spaces configured
+        if ($shouldUseSpaces) {
             return Storage::disk('spaces')->exists($path);
         }
 
@@ -117,7 +125,13 @@ class StorageHelper
             return null;
         }
 
-        $bytes = Storage::disk('public')->size($path);
+        $isProduction = config('app.env') === 'production';
+        $defaultDisk = config('filesystems.default');
+        $shouldUseSpaces = $isProduction && $defaultDisk === 'spaces';
+
+        // Get size from appropriate disk
+        $disk = $shouldUseSpaces ? 'spaces' : 'public';
+        $bytes = Storage::disk($disk)->size($path);
 
         $units = ['B', 'KB', 'MB', 'GB'];
         $factor = floor((strlen($bytes) - 1) / 3);
