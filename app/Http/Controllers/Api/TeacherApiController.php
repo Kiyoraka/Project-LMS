@@ -440,11 +440,26 @@ class TeacherApiController extends Controller
             // Handle thumbnail upload
             $thumbnailPath = null;
             if ($request->hasFile('thumbnail')) {
-                // Use Spaces in production, public disk in local
-                $disk = config('app.env') === 'production' && config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+                // Force Spaces disk if FILESYSTEM_DISK is set to spaces
+                $disk = config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
 
                 try {
-                    $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', $disk);
+                    $file = $request->file('thumbnail');
+
+                    // Log file details before upload
+                    \Log::info('Attempting thumbnail upload', [
+                        'original_name' => $file->getClientOriginalName(),
+                        'size' => $file->getSize(),
+                        'mime' => $file->getMimeType(),
+                        'disk' => $disk,
+                        'env' => config('app.env'),
+                        'filesystem_default' => config('filesystems.default'),
+                        'spaces_key' => config('filesystems.disks.spaces.key') ? 'Set' : 'Not set',
+                        'spaces_bucket' => config('filesystems.disks.spaces.bucket')
+                    ]);
+
+                    $thumbnailPath = $file->store('course-thumbnails', $disk);
+
                     \Log::info('Thumbnail uploaded successfully', [
                         'disk' => $disk,
                         'path' => $thumbnailPath,
@@ -454,6 +469,7 @@ class TeacherApiController extends Controller
                 } catch (\Exception $e) {
                     \Log::error('Failed to upload thumbnail', [
                         'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
                         'disk' => $disk,
                         'env' => config('app.env')
                     ]);
@@ -492,10 +508,19 @@ class TeacherApiController extends Controller
                 $videoUrl = null;
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
-                    // Use Spaces in production, public disk in local
-                    $disk = config('app.env') === 'production' && config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+                    // Force Spaces disk if FILESYSTEM_DISK is set to spaces
+                    $disk = config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
 
                     try {
+                        \Log::info('Attempting video upload for chapter', [
+                            'chapter_index' => $index,
+                            'original_name' => $videoFile->getClientOriginalName(),
+                            'size' => $videoFile->getSize(),
+                            'size_mb' => round($videoFile->getSize() / 1024 / 1024, 2),
+                            'mime' => $videoFile->getMimeType(),
+                            'disk' => $disk
+                        ]);
+
                         $videoPath = $videoFile->store('course-videos', $disk);
                         // Store the relative path, will be accessed via /storage/ or Spaces URL
                         $videoUrl = $videoPath;
@@ -509,6 +534,7 @@ class TeacherApiController extends Controller
                         \Log::error('Failed to upload video for chapter', [
                             'chapter_index' => $index,
                             'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
                             'disk' => $disk
                         ]);
                         throw new \Exception('Failed to upload video for chapter ' . ($index + 1) . ': ' . $e->getMessage());
