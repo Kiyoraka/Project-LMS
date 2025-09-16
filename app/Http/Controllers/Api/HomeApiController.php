@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\StorageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class HomeApiController extends Controller
 {
@@ -36,7 +36,7 @@ class HomeApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $course->thumbnail ? Storage::url($course->thumbnail) : null,
+                'thumbnail' => StorageHelper::getPublicUrl($course->thumbnail),
                 'created_at' => $course->created_at->toISOString()
             ];
         });

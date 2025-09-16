@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AdminApiController;
+use App\Http\Controllers\Api\DiagnosticController;
 use App\Http\Controllers\Api\TeacherApiController;
 use App\Http\Controllers\Api\TeacherMessageApiController;
 use App\Http\Controllers\Api\StudentApiController;
@@ -265,4 +266,11 @@ Route::prefix('student')->name('api.student.')->middleware(['web', 'auth', 'stud
     Route::put('/profile', [StudentApiController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profile/upload-image', [StudentApiController::class, 'uploadProfileImage'])->name('profile.upload.image');
     Route::delete('/profile/remove-image', [StudentApiController::class, 'removeProfileImage'])->name('profile.remove.image');
+});
+
+// Diagnostic routes (for debugging storage issues)
+Route::prefix('diagnostics')->group(function () {
+    Route::get('/storage-check', [DiagnosticController::class, 'checkStorage']);
+    Route::post('/fix-storage', [DiagnosticController::class, 'fixStorageLink']);
+    Route::get('/thumbnails', [DiagnosticController::class, 'listThumbnails']);
 });

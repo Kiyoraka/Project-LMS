@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\StorageHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class StudentApiController extends Controller
@@ -31,6 +33,13 @@ class StudentApiController extends Controller
         $enrollments = CourseEnrollment::with(['course'])
             ->where('user_id', $student->id)
             ->get();
+
+        // Log enrollment data for debugging
+        Log::info('Dashboard enrollments', [
+            'user_id' => $student->id,
+            'total_enrollments' => $enrollments->count(),
+            'completed_courses' => $enrollments->where('status', 'completed')->count()
+        ]);
         
         // Calculate overall statistics
         $totalEnrollments = $enrollments->count();
@@ -47,12 +56,15 @@ class StudentApiController extends Controller
         
         // Get recent course enrollments for "My Courses" section
         $recentEnrollments = $enrollments->take(3)->map(function ($enrollment) {
+            // Use StorageHelper for proper URL generation on DigitalOcean
+            $thumbnailUrl = StorageHelper::getPublicUrl($enrollment->course->thumbnail);
+
             return [
                 'id' => $enrollment->id,
                 'course' => [
                     'id' => $enrollment->course->id,
                     'title' => $enrollment->course->title,
-                    'thumbnail' => $enrollment->course->thumbnail ? Storage::url($enrollment->course->thumbnail) : null,
+                    'thumbnail' => $thumbnailUrl,
                     'level' => $enrollment->course->level ?? 'Beginner'
                 ],
                 'status' => $enrollment->status,
@@ -116,7 +128,7 @@ class StudentApiController extends Controller
                     'course' => [
                         'id' => $enrollment->course->id,
                         'title' => $enrollment->course->title,
-                        'thumbnail' => $enrollment->course->thumbnail ? Storage::url($enrollment->course->thumbnail) : null,
+                        'thumbnail' => StorageHelper::getPublicUrl($enrollment->course->thumbnail),
                         'level' => $enrollment->course->level ?? 'Beginner',
                         'short_description' => $enrollment->course->short_description,
                         'duration_hours' => $enrollment->course->duration_hours ?? 0
@@ -201,7 +213,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $course->thumbnail ? Storage::url($course->thumbnail) : null,
+                'thumbnail' => StorageHelper::getPublicUrl($course->thumbnail),
                 'is_featured' => $course->featured ?? false,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()
@@ -244,7 +256,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $course->thumbnail ? Storage::url($course->thumbnail) : null,
+                'thumbnail' => StorageHelper::getPublicUrl($course->thumbnail),
                 'is_featured' => true,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()
