@@ -62,22 +62,8 @@
         Your browser does not support the video tag.
       </video>
     </div>
-    
-    <!-- Video Information -->
-    <div v-if="lesson" class="video-info">
-      <h4 class="video-title">{{ lesson.title }}</h4>
-      <div class="video-meta">
-        <span v-if="lesson.duration_minutes" class="duration">
-          <i class="fas fa-clock"></i>
-          {{ lesson.duration_minutes }} minutes
-        </span>
-        <span class="security-badge">
-          <i class="fas fa-lock"></i>
-          Protected Content
-        </span>
-      </div>
-      <p v-if="lesson.description" class="video-description">{{ lesson.description }}</p>
-    </div>
+
+    <!-- Video Information section removed to reduce white space -->
   </div>
 </template>
 

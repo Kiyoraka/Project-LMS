@@ -239,7 +239,7 @@
                     <!-- Lesson Description -->
                     <div class="lesson-description-section">
                       <div class="description-header">
-                        <h3>About this lesson</h3>
+                        <h3>Chapter Description</h3>
                       </div>
                       <div class="description-content">
                         <p v-if="currentLesson.description">
@@ -1447,7 +1447,7 @@ export default {
 
 .lesson-body {
   flex: 1;
-  padding: 20px;
+  padding: 15px;
 }
 
 .video-lesson {
@@ -1458,20 +1458,20 @@ export default {
 .lesson-description-section {
   background: white;
   border-radius: 8px;
-  padding: 24px;
-  margin-top: 20px;
+  padding: 12px 16px;
+  margin-top: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .description-header {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
   border-bottom: 2px solid #e5e7eb;
 }
 
 .description-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #1f2937;
 }
