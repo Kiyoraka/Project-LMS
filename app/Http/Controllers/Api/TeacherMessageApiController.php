@@ -122,6 +122,8 @@ class TeacherMessageApiController extends Controller
                 }
 
                 Message::create([
+                    'sender_id' => $teacherId,         // Teacher is the sender
+                    'recipient_id' => $recipientId,   // Student is the recipient
                     'teacher_id' => $teacherId,
                     'student_id' => $recipientId,
                     'course_id' => $courseId,
@@ -129,6 +131,7 @@ class TeacherMessageApiController extends Controller
                     'message' => $messageContent,
                     'is_important' => $isImportant,
                     'is_broadcast' => $isBroadcast,
+                    'sent_by_student' => false,       // Mark as sent by teacher
                 ]);
 
                 $messagesCreated++;
@@ -202,6 +205,8 @@ class TeacherMessageApiController extends Controller
             $messagesCreated = 0;
             foreach ($enrolledStudents as $student) {
                 Message::create([
+                    'sender_id' => $teacherId,         // Teacher is the sender
+                    'recipient_id' => $student->id,    // Student is the recipient
                     'teacher_id' => $teacherId,
                     'student_id' => $student->id,
                     'course_id' => $courseId,
@@ -209,6 +214,7 @@ class TeacherMessageApiController extends Controller
                     'message' => $messageContent,
                     'is_important' => $isImportant,
                     'is_broadcast' => true,
+                    'sent_by_student' => false,        // Mark as sent by teacher
                 ]);
 
                 $messagesCreated++;

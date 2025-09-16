@@ -625,6 +625,8 @@ class StudentMessageApiController extends Controller
 
             // Create the message using the existing database structure
             $message = Message::create([
+                'sender_id' => $studentId,        // Student is the sender
+                'recipient_id' => $teacherId,     // Teacher is the recipient
                 'teacher_id' => $teacherId,
                 'student_id' => $studentId,
                 'course_id' => $courseId,
@@ -695,6 +697,8 @@ class StudentMessageApiController extends Controller
 
             // Create the reply using the existing database structure
             $reply = Message::create([
+                'sender_id' => $studentId,                      // Student is replying
+                'recipient_id' => $originalMessage->teacher_id, // To the teacher
                 'teacher_id' => $originalMessage->teacher_id,
                 'student_id' => $studentId,
                 'course_id' => $originalMessage->course_id,
