@@ -67,9 +67,10 @@
           class="featured-card"
         >
           <div class="course-image">
-            <img 
-              :src="course.thumbnail || '/assets/images/course-placeholder.jpg'" 
+            <img
+              :src="course.thumbnail || 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(course.title)"
               :alt="course.title"
+              @error="handleImageError($event, course.title)"
             >
             <div class="course-badge featured-badge">
               <i class="bi bi-fire"></i>
@@ -161,9 +162,10 @@
             class="course-card"
           >
             <div class="course-image">
-              <img 
-                :src="course.thumbnail || '/assets/images/course-placeholder.jpg'" 
+              <img
+                :src="course.thumbnail || 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(course.title)"
                 :alt="course.title"
+                @error="handleImageError($event, course.title)"
               >
               <div v-if="course.is_new" class="course-badge new-badge">
                 <i class="bi bi-lightning-fill"></i>
@@ -509,6 +511,11 @@ export default {
       this.showEnrollmentModal = false;
       this.enrollmentMessage = '';
       this.enrollmentType = 'success';
+    },
+
+    handleImageError(event, title) {
+      // If image fails to load, use a placeholder
+      event.target.src = 'https://via.placeholder.com/400x250/0077b6/ffffff?text=' + encodeURIComponent(title);
     }
   },
 
