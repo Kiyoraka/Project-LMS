@@ -98,10 +98,6 @@
               </div>
             </div>
             <div class="course-footer">
-              <div class="price">
-                <span v-if="course.price === 0" class="free-tag">Free</span>
-                <span v-else class="price-tag">${{ course.price }}</span>
-              </div>
               <button 
                 @click="enrollInCourse(course)" 
                 class="btn btn-primary btn-enroll"
@@ -202,10 +198,6 @@
                 </div>
               </div>
               <div class="course-footer">
-                <div class="price">
-                  <span v-if="course.price === 0" class="free-tag">Free</span>
-                  <span v-else class="price-tag">${{ course.price }}</span>
-                </div>
                 <button 
                   @click="enrollInCourse(course)" 
                   class="btn btn-primary btn-enroll"
@@ -855,7 +847,7 @@ export default {
 
 .course-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding-top: 16px;
   border-top: 1px solid #f0f0f0;
@@ -877,6 +869,7 @@ export default {
 }
 
 .btn-enroll {
+  width: 100%;
   padding: 8px 20px;
   border-radius: 20px;
   font-size: 0.9rem;
