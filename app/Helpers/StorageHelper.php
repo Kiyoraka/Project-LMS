@@ -20,25 +20,32 @@ class StorageHelper
             return null;
         }
 
+        $isProduction = config('app.env') === 'production';
+        $defaultDisk = config('filesystems.default');
+        $shouldUseSpaces = $isProduction && $defaultDisk === 'spaces';
+
         // Log the URL generation for debugging
         Log::info('🔍 StorageHelper::getPublicUrl DEBUG', [
             'input_path' => $path,
             'app_env' => config('app.env'),
+            'is_production' => $isProduction,
             'app_url' => config('app.url'),
-            'filesystem_disk_config' => config('filesystems.default'),
+            'filesystem_disk_config' => $defaultDisk,
             'filesystem_disk_env' => env('FILESYSTEM_DISK'),
             'spaces_configured' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
             'spaces_bucket' => config('filesystems.disks.spaces.bucket'),
-            'will_use_spaces' => config('filesystems.default') === 'spaces' ? 'YES' : 'NO'
+            'should_use_spaces' => $shouldUseSpaces ? 'YES' : 'NO',
+            'decision' => $shouldUseSpaces ? 'WILL USE SPACES' : 'WILL USE LOCAL/PUBLIC'
         ]);
 
         // For production with DigitalOcean Spaces
-        if (config('app.env') === 'production' && config('filesystems.default') === 'spaces') {
+        if ($shouldUseSpaces) {
             // Use Spaces URL directly
             $url = Storage::disk('spaces')->url($path);
 
-            Log::debug('Generated Spaces URL', [
+            Log::info('✅ Generated Spaces URL', [
                 'url' => $url,
+                'path' => $path,
                 'method' => 'spaces_disk'
             ]);
 
