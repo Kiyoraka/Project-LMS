@@ -21,11 +21,15 @@ class StorageHelper
         }
 
         // Log the URL generation for debugging
-        Log::debug('StorageHelper::getPublicUrl', [
+        Log::info('🔍 StorageHelper::getPublicUrl DEBUG', [
             'input_path' => $path,
             'app_env' => config('app.env'),
             'app_url' => config('app.url'),
-            'filesystem_disk' => config('filesystems.default')
+            'filesystem_disk_config' => config('filesystems.default'),
+            'filesystem_disk_env' => env('FILESYSTEM_DISK'),
+            'spaces_configured' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
+            'spaces_bucket' => config('filesystems.disks.spaces.bucket'),
+            'will_use_spaces' => config('filesystems.default') === 'spaces' ? 'YES' : 'NO'
         ]);
 
         // For production with DigitalOcean Spaces

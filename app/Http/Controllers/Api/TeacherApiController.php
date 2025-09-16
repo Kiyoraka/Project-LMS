@@ -440,8 +440,23 @@ class TeacherApiController extends Controller
             // Handle thumbnail upload
             $thumbnailPath = null;
             if ($request->hasFile('thumbnail')) {
-                // Force Spaces disk in production or when FILESYSTEM_DISK is set
-                $disk = (config('app.env') === 'production' || env('FILESYSTEM_DISK') === 'spaces') ? 'spaces' : 'public';
+                // Determine disk based on configuration
+                $filesystemDefault = config('filesystems.default');
+                $envFilesystemDisk = env('FILESYSTEM_DISK');
+                $isProduction = config('app.env') === 'production';
+
+                // Log configuration details
+                \Log::info('🔍 DISK SELECTION DEBUG', [
+                    'config_filesystems_default' => $filesystemDefault,
+                    'env_FILESYSTEM_DISK' => $envFilesystemDisk,
+                    'is_production' => $isProduction,
+                    'config_app_env' => config('app.env'),
+                    'spaces_key_exists' => config('filesystems.disks.spaces.key') ? 'YES' : 'NO',
+                    'spaces_bucket' => config('filesystems.disks.spaces.bucket'),
+                ]);
+
+                // Use filesystem default configuration
+                $disk = $filesystemDefault ?: 'public';
 
                 try {
                     $file = $request->file('thumbnail');
@@ -520,8 +535,20 @@ class TeacherApiController extends Controller
                 $videoUrl = null;
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
-                    // Force Spaces disk in production or when FILESYSTEM_DISK is set
-                    $disk = (config('app.env') === 'production' || env('FILESYSTEM_DISK') === 'spaces') ? 'spaces' : 'public';
+                    // Determine disk based on configuration
+                    $filesystemDefault = config('filesystems.default');
+                    $envFilesystemDisk = env('FILESYSTEM_DISK');
+
+                    // Log configuration for video upload
+                    \Log::info('🔍 VIDEO DISK SELECTION DEBUG', [
+                        'chapter_index' => $index,
+                        'config_filesystems_default' => $filesystemDefault,
+                        'env_FILESYSTEM_DISK' => $envFilesystemDisk,
+                        'is_production' => config('app.env') === 'production',
+                    ]);
+
+                    // Use filesystem default configuration
+                    $disk = $filesystemDefault ?: 'public';
 
                     try {
                         // Determine actual storage location

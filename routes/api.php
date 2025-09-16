@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AdminApiController;
 use App\Http\Controllers\Api\DiagnosticController;
+use App\Http\Controllers\Api\DebugController;
 use App\Http\Controllers\Api\TeacherApiController;
 use App\Http\Controllers\Api\TeacherMessageApiController;
 use App\Http\Controllers\Api\StudentApiController;
@@ -273,4 +274,10 @@ Route::prefix('diagnostics')->group(function () {
     Route::get('/storage-check', [DiagnosticController::class, 'checkStorage']);
     Route::post('/fix-storage', [DiagnosticController::class, 'fixStorageLink']);
     Route::get('/thumbnails', [DiagnosticController::class, 'listThumbnails']);
+});
+
+// Debug routes for environment and spaces testing
+Route::prefix('debug')->group(function () {
+    Route::get('/environment', [DebugController::class, 'checkEnvironment']);
+    Route::get('/test-spaces', [DebugController::class, 'testSpacesUpload']);
 });
