@@ -52,7 +52,7 @@ class StudentApiController extends Controller
                 'course' => [
                     'id' => $enrollment->course->id,
                     'title' => $enrollment->course->title,
-                    'thumbnail' => $enrollment->course->thumbnail ? asset('storage/' . $enrollment->course->thumbnail) : null,
+                    'thumbnail' => $enrollment->course->thumbnail ? Storage::url($enrollment->course->thumbnail) : null,
                     'level' => $enrollment->course->level ?? 'Beginner'
                 ],
                 'status' => $enrollment->status,
@@ -116,7 +116,7 @@ class StudentApiController extends Controller
                     'course' => [
                         'id' => $enrollment->course->id,
                         'title' => $enrollment->course->title,
-                        'thumbnail' => $enrollment->course->thumbnail ? asset('storage/' . $enrollment->course->thumbnail) : null,
+                        'thumbnail' => $enrollment->course->thumbnail ? Storage::url($enrollment->course->thumbnail) : null,
                         'level' => $enrollment->course->level ?? 'Beginner',
                         'short_description' => $enrollment->course->short_description,
                         'duration_hours' => $enrollment->course->duration_hours ?? 0
@@ -201,7 +201,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $course->thumbnail ? asset('storage/' . $course->thumbnail) : null,
+                'thumbnail' => $course->thumbnail ? Storage::url($course->thumbnail) : null,
                 'is_featured' => $course->featured ?? false,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()
@@ -244,7 +244,7 @@ class StudentApiController extends Controller
                 'modules_count' => $course->modules_count,
                 'lessons_count' => $course->lessons_count,
                 'instructor' => $course->teacher ? $course->teacher->name : 'Unknown',
-                'thumbnail' => $course->thumbnail ? asset('storage/' . $course->thumbnail) : null,
+                'thumbnail' => $course->thumbnail ? Storage::url($course->thumbnail) : null,
                 'is_featured' => true,
                 'is_enrolled' => in_array($course->id, $enrolledCourseIds),
                 'created_at' => $course->created_at->toISOString()
