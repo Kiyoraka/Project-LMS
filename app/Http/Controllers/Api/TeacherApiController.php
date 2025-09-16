@@ -440,8 +440,8 @@ class TeacherApiController extends Controller
             // Handle thumbnail upload
             $thumbnailPath = null;
             if ($request->hasFile('thumbnail')) {
-                // Force Spaces disk if FILESYSTEM_DISK is set to spaces
-                $disk = config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+                // Force Spaces disk in production or when FILESYSTEM_DISK is set
+                $disk = (config('app.env') === 'production' || env('FILESYSTEM_DISK') === 'spaces') ? 'spaces' : 'public';
 
                 try {
                     $file = $request->file('thumbnail');
@@ -520,8 +520,8 @@ class TeacherApiController extends Controller
                 $videoUrl = null;
                 if ($request->hasFile("chapter_videos.{$index}")) {
                     $videoFile = $request->file("chapter_videos.{$index}");
-                    // Force Spaces disk if FILESYSTEM_DISK is set to spaces
-                    $disk = config('filesystems.default') === 'spaces' ? 'spaces' : 'public';
+                    // Force Spaces disk in production or when FILESYSTEM_DISK is set
+                    $disk = (config('app.env') === 'production' || env('FILESYSTEM_DISK') === 'spaces') ? 'spaces' : 'public';
 
                     try {
                         // Determine actual storage location
