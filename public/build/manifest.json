@@ -6,12 +6,12 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-DgnRO5GZ.css",
+    "file": "assets/app-sXB3h-br.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-EEiufWM_.js",
+    "file": "assets/app-C9Kz__v8.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -19,7 +19,7 @@
       "node_modules/html2canvas/dist/html2canvas.esm.js"
     ],
     "css": [
-      "assets/app-B06uLQtV.css"
+      "assets/app-BwQ9xtEJ.css"
     ]
   }
 }

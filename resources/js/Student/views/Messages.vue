@@ -370,7 +370,17 @@
           <div class="form-row">
             <div class="form-group">
               <label for="teacher">Teacher</label>
-              <select v-model="composeData.teacher_id" id="teacher" class="form-select" required>
+              <div v-if="isReplying && replyingToTeacher" class="reply-teacher-info">
+                <div class="teacher-display">
+                  <i class="fas fa-user-circle me-2"></i>
+                  <span>{{ replyingToTeacher.name }} ({{ replyingToTeacher.email }})</span>
+                  <button @click="cancelReply" class="btn btn-sm btn-outline-secondary ms-auto">
+                    <i class="fas fa-times me-1"></i>
+                    Change
+                  </button>
+                </div>
+              </div>
+              <select v-else v-model="composeData.teacher_id" id="teacher" class="form-select" required>
                 <option value="">Select a teacher</option>
                 <option v-for="teacher in teachers" :key="teacher.id" :value="teacher.id">
                   {{ teacher.name }} ({{ teacher.email }})
@@ -455,6 +465,8 @@ export default {
       composing: false,
       teachers: [],
       courses: [],
+      isReplying: false,
+      replyingToTeacher: null,
 
       // Toast Notification
       toast: {
@@ -656,10 +668,17 @@ export default {
     replyToMessage(message) {
       // Switch to compose tab
       this.activeTab = 'compose';
-      
+
+      // Set reply mode
+      this.isReplying = true;
+
+      // Find and store the teacher info
+      const teacherId = message.teacher_id || message.sender_id;
+      this.replyingToTeacher = this.teachers.find(t => t.id === teacherId);
+
       // Pre-populate the compose form
-      this.composeData.teacher_id = message.teacher_id || message.sender_id;
-      
+      this.composeData.teacher_id = teacherId;
+
       // Add "Re: " prefix to subject if not already present
       const subject = message.subject || '';
       if (!subject.toLowerCase().startsWith('re:')) {
@@ -667,15 +686,15 @@ export default {
       } else {
         this.composeData.subject = subject;
       }
-      
+
       // Set course if available
       if (message.course_id) {
         this.composeData.course_id = message.course_id;
       }
-      
+
       // Clear message field for new reply
       this.composeData.message = '';
-      
+
       // Scroll to top so user can see the compose form
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
@@ -785,6 +804,16 @@ export default {
         course_id: '',
         message: ''
       };
+      this.isReplying = false;
+      this.replyingToTeacher = null;
+    },
+
+    cancelReply() {
+      // Reset reply mode but keep the compose tab open
+      this.isReplying = false;
+      this.replyingToTeacher = null;
+      // Optionally clear the teacher selection to let user choose
+      this.composeData.teacher_id = '';
     },
     
     formatDate(dateString) {
@@ -1426,6 +1455,31 @@ export default {
   outline: none;
   border-color: #0077b6;
   box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.1);
+}
+
+/* Reply Teacher Info */
+.reply-teacher-info {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.teacher-display {
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.teacher-display i {
+  color: #0077b6;
+  font-size: 1.2rem;
+}
+
+.teacher-display button {
+  padding: 4px 12px;
+  font-size: 0.85rem;
 }
 
 .form-actions {
