@@ -295,12 +295,17 @@ function initializeChart() {
           data: chartData.value.data,
           backgroundColor: 'rgba(0, 119, 182, 0.1)',
           borderColor: '#0077b6',
-          borderWidth: 2,
-          tension: 0.4,
+          borderWidth: 3,
+          tension: 0.3,
           fill: true,
-          pointBackgroundColor: '#0077b6',
-          pointRadius: 4,
-          pointHoverRadius: 6
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: '#0077b6',
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointHoverBackgroundColor: '#0077b6',
+          pointHoverBorderColor: '#ffffff',
+          pointHoverBorderWidth: 2
         }]
       },
       options: {
@@ -326,8 +331,27 @@ function initializeChart() {
         scales: {
           y: {
             beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)',
+              borderDash: [5, 5]
+            },
             ticks: {
-              precision: 0
+              precision: 0,
+              font: {
+                size: 12
+              },
+              color: '#666'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 12
+              },
+              color: '#666'
             }
           }
         }
