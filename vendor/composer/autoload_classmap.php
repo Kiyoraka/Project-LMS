@@ -35,6 +35,7 @@ return array(
     'App\\Helpers\\StorageHelper' => $baseDir . '/app/Helpers/StorageHelper.php',
     'App\\Http\\Controllers\\Admin\\AdminController' => $baseDir . '/app/Http/Controllers/Admin/AdminController.php',
     'App\\Http\\Controllers\\Api\\AdminApiController' => $baseDir . '/app/Http/Controllers/Api/AdminApiController.php',
+    'App\\Http\\Controllers\\Api\\DebugController' => $baseDir . '/app/Http/Controllers/Api/DebugController.php',
     'App\\Http\\Controllers\\Api\\DiagnosticController' => $baseDir . '/app/Http/Controllers/Api/DiagnosticController.php',
     'App\\Http\\Controllers\\Api\\HomeApiController' => $baseDir . '/app/Http/Controllers/Api/HomeApiController.php',
     'App\\Http\\Controllers\\Api\\StudentApiController' => $baseDir . '/app/Http/Controllers/Api/StudentApiController.php',

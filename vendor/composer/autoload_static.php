@@ -595,6 +595,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Helpers\\StorageHelper' => __DIR__ . '/../..' . '/app/Helpers/StorageHelper.php',
         'App\\Http\\Controllers\\Admin\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AdminController.php',
         'App\\Http\\Controllers\\Api\\AdminApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AdminApiController.php',
+        'App\\Http\\Controllers\\Api\\DebugController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/DebugController.php',
         'App\\Http\\Controllers\\Api\\DiagnosticController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/DiagnosticController.php',
         'App\\Http\\Controllers\\Api\\HomeApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/HomeApiController.php',
         'App\\Http\\Controllers\\Api\\StudentApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/StudentApiController.php',
