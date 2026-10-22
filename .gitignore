@@ -41,3 +41,6 @@ coverage/
 
 .env
 .claude/settings.local.json
+
+# Alice workspace (plans, push ledgers)
+/Project Resources/
